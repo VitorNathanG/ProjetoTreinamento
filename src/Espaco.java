@@ -2,15 +2,28 @@ import java.util.ArrayList;
 
 public class Espaco {
     private String nomeEspaco;
-    private ArrayList<Pessoa>[] integrantesEspacoPrimeiraEtapa = new ArrayList();
+    private ArrayList<Pessoa> integrantesPrimeiraEtapa = new ArrayList();
+    private ArrayList<Pessoa> integrantesSegundaEtapa = new ArrayList();
 
     public Espaco(String nomeEspaco) {
         this.setNomeEspaco(nomeEspaco);
         System.out.println("Novo espaço criado com nome \"" + nomeEspaco + "\"");
     }
 
-    public ArrayList<Pessoa> getIntegrantesEspaco() {
-        return integrantesEspacoPrimeiraEtapa;
+    public ArrayList<Pessoa> getIntegrantesSegundaEtapa() {
+        return integrantesSegundaEtapa;
+    }
+
+    public void setIntegrantesSegundaEtapa(ArrayList<Pessoa> integrantesSegundaEtapa) {
+        this.integrantesSegundaEtapa = integrantesSegundaEtapa;
+    }
+
+    public ArrayList<Pessoa> getIntegrantesPrimeiraEtapa() {
+        return integrantesPrimeiraEtapa;
+    }
+
+    public void setIntegrantesPrimeiraEtapa(ArrayList<Pessoa> integrantesPrimeiraEtapa) {
+        this.integrantesPrimeiraEtapa = integrantesPrimeiraEtapa;
     }
 
     public String getNomeEspaco() {
@@ -21,29 +34,31 @@ public class Espaco {
         this.nomeEspaco = nomeEspaco;
     }
 
-    public void setIntegrantesEspaco(ArrayList<Pessoa> integrantesEspaco) {
-        this.integrantesEspacoPrimeiraEtapa = integrantesEspaco;
+    public void adicionarIntegrantesPrimeiraEtapa(Pessoa... novosIntegrantes) {
+        for (Pessoa pessoa : novosIntegrantes) {
+            this.getIntegrantesPrimeiraEtapa().add(pessoa);
+            pessoa.setEspacoPrimeiraEtapa(this.getNomeEspaco());
+            System.out.println("O integrante " + pessoa.getNome() + 
+            " foi adicionado ao espaço \"" + this.getNomeEspaco() + "\" na primeira etapa");
+        }        
     }
 
-    public void adicionarIntegrantes(Pessoa... novosIntegrantes){
-        try {
-            for (Pessoa pessoa : novosIntegrantes) {
-                this.getIntegrantesEspaco().add(pessoa);
-                System.out.println("O integrante " + pessoa.getNome() + " foi adicionado ao espaço \"" + this.getNomeEspaco() + "\"");
-            }
-        } catch (Exception e) {
-            AvisoDeErro.executar(e.toString());
-        }
-        
+    public void removerIntegrantesPrimeiraEtapa(Pessoa integrante){
+        this.getIntegrantesPrimeiraEtapa().remove(integrante);   
+        integrante.setEspacoPrimeiraEtapa(null);     
     }
 
-    public void removerIntegrantes(Pessoa integrante){
-        try {
-            this.getIntegrantesEspaco().remove(integrante);
-        } catch (Exception e) {
-            AvisoDeErro.executar(e.toString());
-        }
-        
+    public void adicionarIntegrantesSegundaEtapa(Pessoa... novosIntegrantes) {
+        for (Pessoa pessoa : novosIntegrantes) {
+            this.getIntegrantesSegundaEtapa().add(pessoa);
+            pessoa.setEspacoSegundaEtapa(this.getNomeEspaco());
+            System.out.println("O integrante " + pessoa.getNome() + 
+            " foi adicionado ao espaço \"" + this.getNomeEspaco() + "\" na segunda etapa");
+        }        
     }
 
+    public void removerIntegrantesSegundaEtapa(Pessoa integrante){
+        this.getIntegrantesSegundaEtapa().remove(integrante);        
+        integrante.setEspacoSegundaEtapa(null);
+    }
 }
