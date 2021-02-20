@@ -145,5 +145,5 @@ public class FileHandler {
         }
     }
 
-    private FileHandling(){}
+    private FileHandler(){}
 }

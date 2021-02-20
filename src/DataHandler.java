@@ -73,7 +73,11 @@ public class DataHandler {
         StringBuilder textoRetorno = new StringBuilder();
         String[] infoStrings = termos;
         for (String string : infoStrings) {
-            textoRetorno.append(string + "$");
+            if (string == null){
+                textoRetorno.append("$");
+            } else {
+                textoRetorno.append(string + "$");
+            }
         }
         return textoRetorno.toString();
     }
@@ -81,11 +85,11 @@ public class DataHandler {
     public static String[][] gerarStrings(List<Pessoa> pessoasList){
         String[][] retorno = new String[pessoasList.size()][5];
         for (int i = 0; i < pessoasList.size(); i++) {
-            retorno[i][0] = new String(pessoasList.get(i).getNome());
-            retorno[i][1] = new String(pessoasList.get(i).getEspacoPrimeiraEtapa());
-            retorno[i][2] = new String(pessoasList.get(i).getEspacoSegundaEtapa());
-            retorno[i][3] = new String(pessoasList.get(i).getEspacoCafePrimeiraEtapa());
-            retorno[i][4] = new String(pessoasList.get(i).getEspacoCafeSegundaEtapa());
+            retorno[i][0] = pessoasList.get(i).getNome();
+            retorno[i][1] = pessoasList.get(i).getEspacoPrimeiraEtapa();
+            retorno[i][2] = pessoasList.get(i).getEspacoSegundaEtapa();
+            retorno[i][3] = pessoasList.get(i).getEspacoCafePrimeiraEtapa();
+            retorno[i][4] = pessoasList.get(i).getEspacoCafeSegundaEtapa();
         }
         return retorno;
     }

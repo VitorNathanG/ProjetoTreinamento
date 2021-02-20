@@ -1,5 +1,3 @@
-import java.io.File;
-
 public class Pessoa {
 
     private String nome;
@@ -7,10 +5,6 @@ public class Pessoa {
     private String espacoCafePrimeiraEtapa;
     private String espacoCafeSegundaEtapa;
     private String espacoSegundaEtapa;
-
-    public Pessoa(String nome) {
-        this.setNome(nome);
-    }
 
     public Pessoa(String nome, String espacoPrimeiraEtapa, String espacoSegundaEtapa, 
                   String espacoCafePrimeiraEtapa, String espacoCafeSegundaEtapa){
