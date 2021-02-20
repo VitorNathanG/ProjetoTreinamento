@@ -15,7 +15,7 @@ import java.nio.file.Files;
  * @author Vitor Nathan Gonçalves
  * @version 1.0
  */
-public class FileHandling {
+public class FileHandler {
     
     //Declaração do line separator, para possibilitar compatibilidade entre S.O.
     public static final String ENTER = System.getProperty("line.separator");
@@ -133,7 +133,7 @@ public class FileHandling {
                 for (int i = 1; i < qtdLinha; i++) {
                     apendice = br.readLine();
                     if (i == indexLinha - 1 || apendice == null) {
-                        continue;
+                        
                     } else {
                         novoTextoArquivo += ENTER + apendice;
                     }
@@ -144,4 +144,6 @@ public class FileHandling {
             e.printStackTrace();
         }
     }
+
+    private FileHandling(){}
 }

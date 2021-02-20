@@ -64,10 +64,10 @@ public class Pessoa {
 
     @Override
     public String toString(){
-        return this.getNome() + ": " + FileHandling.ENTER +
-                this.getEspacoPrimeiraEtapa() + FileHandling.ENTER +
-                this.getEspacoSegundaEtapa() + FileHandling.ENTER +
-                this.getEspacoCafePrimeiraEtapa() + FileHandling.ENTER +
+        return this.getNome() + ": " + FileHandler.ENTER +
+                this.getEspacoPrimeiraEtapa() + FileHandler.ENTER +
+                this.getEspacoSegundaEtapa() + FileHandler.ENTER +
+                this.getEspacoCafePrimeiraEtapa() + FileHandler.ENTER +
                 this.getEspacoCafeSegundaEtapa();
     }
 }

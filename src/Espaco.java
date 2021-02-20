@@ -1,28 +1,29 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public class Espaco {
     private String nomeEspaco;
-    private ArrayList<Pessoa> integrantesPrimeiraEtapa = new ArrayList();
-    private ArrayList<Pessoa> integrantesSegundaEtapa = new ArrayList();
+    private List<Pessoa> integrantesPrimeiraEtapa = new ArrayList<>();
+    private List<Pessoa> integrantesSegundaEtapa = new ArrayList<>();
 
     public Espaco(String nomeEspaco) {
         this.setNomeEspaco(nomeEspaco);
         System.out.println("Novo espaço criado com nome \"" + nomeEspaco + "\"");
     }
 
-    public ArrayList<Pessoa> getIntegrantesSegundaEtapa() {
+    public List<Pessoa> getIntegrantesSegundaEtapa() {
         return integrantesSegundaEtapa;
     }
 
-    public void setIntegrantesSegundaEtapa(ArrayList<Pessoa> integrantesSegundaEtapa) {
+    public void setIntegrantesSegundaEtapa(List<Pessoa> integrantesSegundaEtapa) {
         this.integrantesSegundaEtapa = integrantesSegundaEtapa;
     }
 
-    public ArrayList<Pessoa> getIntegrantesPrimeiraEtapa() {
+    public List<Pessoa> getIntegrantesPrimeiraEtapa() {
         return integrantesPrimeiraEtapa;
     }
 
-    public void setIntegrantesPrimeiraEtapa(ArrayList<Pessoa> integrantesPrimeiraEtapa) {
+    public void setIntegrantesPrimeiraEtapa(List<Pessoa> integrantesPrimeiraEtapa) {
         this.integrantesPrimeiraEtapa = integrantesPrimeiraEtapa;
     }
 
