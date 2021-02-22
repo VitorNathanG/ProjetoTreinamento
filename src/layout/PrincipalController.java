@@ -85,11 +85,17 @@ public class PrincipalController implements Initializable {
     }
 
     public void adicionarParticipanteBotaoClicked() {
-        pessoas.add(new Pessoa(Pessoa.separarNome(adicionarParticipanteNome.getText()),
-                Pessoa.separarSobrenome(adicionarParticipanteNome.getText()), "", "",
-                "", ""));
-        adicionarParticipanteNome.setText("");
-        DataHandler.salvarDados(infoPessoas, pessoas, new Pessoa());
+        if (adicionarParticipanteNome.getText().length() < 5) {
+            System.out.println("Nome muito curto");
+        } else if (adicionarParticipanteNome.getText().contains("$")){
+            System.out.println("O caractere $ não é válido");
+        } else {
+            pessoas.add(new Pessoa(Pessoa.separarNome(adicionarParticipanteNome.getText()),
+                    Pessoa.separarSobrenome(adicionarParticipanteNome.getText()), "", "",
+                    "", ""));
+            adicionarParticipanteNome.setText("");
+            DataHandler.salvarDados(infoPessoas, pessoas, new Pessoa());
+        }
     }
 
     public void adicionarSalaBotaoClicked() {
