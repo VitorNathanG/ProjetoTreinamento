@@ -56,7 +56,7 @@
                   </Label>
                   <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="95.0" prefWidth="130.0" spacing="10.0">
                      <children>
-                        <Button fx:id="mudarParaParticipantes" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="130.0" text="Participantes" />
+                        <Button fx:id="mudarParaParticipantes" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#mudarParaParticipantesClicked" prefHeight="25.0" prefWidth="130.0" text="Participantes" />
                         <Button fx:id="mudarParaSalas" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="130.0" text="Salas" />
                         <Button fx:id="mudarParaEspacosCafe" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="130.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="130.0" text="Espaços de Café" />
                      </children>
@@ -69,10 +69,10 @@
                   <Insets />
                </HBox.margin>
             </VBox>
-            <TableView fx:id="tabela" prefHeight="616.0" prefWidth="720.0">
+            <TableView fx:id="tabelaParticipantes" prefHeight="616.0" prefWidth="720.0">
               <columns>
-                <TableColumn fx:id="colunaNome" prefWidth="150.0" text="Nome" />
-                  <TableColumn fx:id="colunaSobrenome" prefWidth="336.0" text="Sobrenome" />
+                <TableColumn fx:id="colunaNome" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" resizable="false" text="Nome" />
+                  <TableColumn fx:id="colunaSobrenome" prefWidth="184.0" text="Sobrenome" />
               </columns>
                <HBox.margin>
                   <Insets bottom="50.0" top="10.0" />
@@ -82,15 +82,16 @@
       </HBox>
       <AnchorPane layoutY="350.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <Label layoutX="14.0" layoutY="18.0" text="Adicionar Sala:" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="10.0">
+            <Label layoutX="14.0" layoutY="18.0" text="Adicionar Participante:" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="10.0">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <TextField fx:id="nomeSalaAdicionar" layoutX="109.0" layoutY="15.0" prefHeight="26.0" prefWidth="711.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="110.0" AnchorPane.rightAnchor="80.0" />
-            <Button fx:id="nomeSalaAdicionarBotao" layoutX="548.0" layoutY="24.0" mnemonicParsing="false" text="Adicionar" AnchorPane.bottomAnchor="11.0" AnchorPane.rightAnchor="10.0" />
+            <TextField fx:id="nomeParticipanteAdicionar" layoutX="151.0" layoutY="15.0" prefHeight="26.0" prefWidth="669.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="151.0" AnchorPane.rightAnchor="80.0" />
+            <Button fx:id="nomeParticipanteAdicionarBotao" layoutX="548.0" layoutY="24.0" mnemonicParsing="false" onAction="#nomeParticipanteAdicionarBotaoClicked" text="Adicionar" AnchorPane.bottomAnchor="11.0" AnchorPane.rightAnchor="10.0" />
          </children>
       </AnchorPane>
-      <Button mnemonicParsing="false" text="Detalhes" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="55.0" />
+      <Button fx:id="botaoAbrirDetalhes" disable="true" mnemonicParsing="false" prefWidth="65.0" text="Detalhes" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="55.0" />
+      <Button fx:id="botaoExcluir" disable="true" mnemonicParsing="false" prefWidth="65.0" text="Excluir" AnchorPane.bottomAnchor="90.0" AnchorPane.leftAnchor="55.0" />
    </children>
 </AnchorPane>

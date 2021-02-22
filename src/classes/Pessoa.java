@@ -9,9 +9,12 @@ public class Pessoa {
     private String espacoCafeSegundaEtapa;
     private String espacoSegundaEtapa;
 
-    public Pessoa(String nome, String espacoPrimeiraEtapa, String espacoSegundaEtapa, 
+    public Pessoa(){}
+
+    public Pessoa(String nome, String sobrenome, String espacoPrimeiraEtapa, String espacoSegundaEtapa,
                   String espacoCafePrimeiraEtapa, String espacoCafeSegundaEtapa){
         this.setNome(nome);
+        this.setSobrenome(sobrenome);
         this.setEspacoCafePrimeiraEtapa(espacoCafePrimeiraEtapa);
         this.setEspacoCafeSegundaEtapa(espacoCafeSegundaEtapa);
         this.setEspacoPrimeiraEtapa(espacoPrimeiraEtapa);
@@ -56,7 +59,12 @@ public class Pessoa {
     }
 
     public void setNome(String nome) {
-        StringBuilder sobrenome = new StringBuilder(nome);
+        this.nome = nome;
+
+    }
+
+    public static String separarNome(String nomeCompleto) {
+        StringBuilder sobrenome = new StringBuilder(nomeCompleto);
         StringBuilder primeiroNome = new StringBuilder();
         StringBuilder sobrenomeOutput = new StringBuilder();
         sobrenome.reverse();
@@ -68,16 +76,31 @@ public class Pessoa {
             }
         }
         sobrenomeOutput.reverse();
-        nome = nome.replaceFirst(" " + sobrenomeOutput.toString(), "");
+        primeiroNome.append(nomeCompleto.replaceFirst(" " + sobrenomeOutput.toString(), ""));
+        System.out.println(primeiroNome.toString());
+        return primeiroNome.toString();
+    }
 
-        this.sobrenome = sobrenomeOutput.toString();
-        this.nome = nome;
-
+    public static String separarSobrenome(String nomeCompleto) {
+        StringBuilder sobrenome = new StringBuilder(nomeCompleto);
+        StringBuilder sobrenomeOutput = new StringBuilder();
+        sobrenome.reverse();
+        for (int i = 0; i < sobrenome.length(); i++) {
+            if (" ".equals(Character.toString(sobrenome.charAt(i)))) {
+                break;
+            } else {
+                sobrenomeOutput.append(sobrenome.charAt(i));
+            }
+        }
+        sobrenomeOutput.reverse();
+        System.out.println(sobrenomeOutput.toString());
+        return sobrenomeOutput.toString();
     }
 
     @Override
     public String toString(){
         return this.getNome() + ": " + FileHandler.ENTER +
+                this.getSobrenome() + ": " + FileHandler.ENTER +
                 this.getEspacoPrimeiraEtapa() + FileHandler.ENTER +
                 this.getEspacoSegundaEtapa() + FileHandler.ENTER +
                 this.getEspacoCafePrimeiraEtapa() + FileHandler.ENTER +

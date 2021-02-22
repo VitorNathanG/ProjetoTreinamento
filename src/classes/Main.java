@@ -10,7 +10,6 @@ public class Main extends Application {
 
     
     public static void main(String args[]){
-        Pessoa vitor = new Pessoa("Vitor Nathan", "Café", "Café", "Agua", "Domo");
         launch(args);
 
     }

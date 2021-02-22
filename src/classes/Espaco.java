@@ -10,8 +10,9 @@ public class Espaco {
 
     public Espaco(String nomeEspaco) {
         this.setNomeEspaco(nomeEspaco);
-        System.out.println("Novo espaço criado com nome \"" + nomeEspaco + "\"");
     }
+
+    public Espaco() {}
 
     public List<Pessoa> getIntegrantesSegundaEtapa() {
         return integrantesSegundaEtapa;
@@ -41,6 +42,7 @@ public class Espaco {
         for (Pessoa pessoa : novosIntegrantes) {
             this.getIntegrantesPrimeiraEtapa().add(pessoa);
             pessoa.setEspacoPrimeiraEtapa(this.getNomeEspaco());
+
             System.out.println("O integrante " + pessoa.getNome() + 
             " foi adicionado ao espaço \"" + this.getNomeEspaco() + "\" na primeira etapa");
         }        
