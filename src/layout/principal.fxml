@@ -18,7 +18,7 @@
 
 <AnchorPane fx:id="janela" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="285.0" minWidth="470.0" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="layout.PrincipalController">
    <children>
-      <MenuBar fx:id="menu" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <MenuBar fx:id="barraDeMenu" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
           <Menu fx:id="menuArquivo" mnemonicParsing="false" text="Arquivo">
             <items>
@@ -57,8 +57,8 @@
                   <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="95.0" prefWidth="130.0" spacing="10.0">
                      <children>
                         <Button fx:id="mudarParaParticipantes" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#mudarParaParticipantesClicked" prefHeight="25.0" prefWidth="130.0" text="Participantes" />
-                        <Button fx:id="mudarParaSalas" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="130.0" text="Salas" />
-                        <Button fx:id="mudarParaEspacosCafe" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="130.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="130.0" text="Espaços de Café" />
+                        <Button fx:id="mudarParaSalas" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#mudarParaSalasClicked" prefHeight="25.0" prefWidth="130.0" text="Salas" />
+                        <Button fx:id="mudarParaEspacosCafe" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="130.0" mnemonicParsing="false" onAction="#mudarParaEspacosCafeClicked" prefHeight="25.0" prefWidth="130.0" text="Espaços de Café" />
                      </children>
                   </VBox>
                </children>
@@ -69,29 +69,51 @@
                   <Insets />
                </HBox.margin>
             </VBox>
-            <TableView fx:id="tabelaParticipantes" prefHeight="616.0" prefWidth="720.0">
-              <columns>
-                <TableColumn fx:id="colunaNome" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" resizable="false" text="Nome" />
-                  <TableColumn fx:id="colunaSobrenome" prefWidth="184.0" text="Sobrenome" />
-              </columns>
+            <AnchorPane fx:id="anchorPaneTabelas" prefHeight="200.0" prefWidth="720.0">
+               <children>
+                  <TableView fx:id="tabelaParticipantes" prefHeight="616.0" prefWidth="720.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="15.0">
+                    <columns>
+                      <TableColumn fx:id="colunaNome" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" resizable="false" text="Nome" />
+                        <TableColumn fx:id="colunaSobrenome" prefWidth="184.0" text="Sobrenome" />
+                    </columns>
+                  </TableView>
+                  <TableView fx:id="tabelaSalas" prefHeight="616.0" prefWidth="720.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="15.0">
+                     <columns>
+                        <TableColumn fx:id="colunaIdentificacaoSala" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" resizable="false" text="Identificação da Sala" />
+                     </columns>
+                  </TableView>
+               </children>
                <HBox.margin>
-                  <Insets bottom="50.0" top="10.0" />
+                  <Insets bottom="50.0" />
                </HBox.margin>
-            </TableView>
+            </AnchorPane>
          </children>
       </HBox>
-      <AnchorPane layoutY="350.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <AnchorPane fx:id="adicionarParticipantePainel" layoutY="350.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" prefWidth="600.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <Label layoutX="14.0" layoutY="18.0" text="Adicionar Participante:" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="10.0">
+            <Label fx:id="adicionarParticipanteLabel" layoutX="14.0" layoutY="18.0" text="Adicionar Participante:" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="10.0">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <TextField fx:id="nomeParticipanteAdicionar" layoutX="151.0" layoutY="15.0" prefHeight="26.0" prefWidth="669.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="151.0" AnchorPane.rightAnchor="80.0" />
-            <Button fx:id="nomeParticipanteAdicionarBotao" layoutX="548.0" layoutY="24.0" mnemonicParsing="false" onAction="#nomeParticipanteAdicionarBotaoClicked" text="Adicionar" AnchorPane.bottomAnchor="11.0" AnchorPane.rightAnchor="10.0" />
+            <TextField fx:id="adicionarParticipanteNome" layoutX="151.0" layoutY="15.0" prefHeight="26.0" prefWidth="669.0" promptText="nome do participante" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="151.0" AnchorPane.rightAnchor="80.0" />
+            <Button fx:id="adicionarParticipanteBotao" layoutX="548.0" layoutY="24.0" mnemonicParsing="false" onAction="#adicionarParticipanteBotaoClicked" text="Adicionar" AnchorPane.bottomAnchor="11.0" AnchorPane.rightAnchor="10.0" />
          </children>
       </AnchorPane>
-      <Button fx:id="botaoAbrirDetalhes" disable="true" mnemonicParsing="false" prefWidth="65.0" text="Detalhes" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="55.0" />
-      <Button fx:id="botaoExcluir" disable="true" mnemonicParsing="false" prefWidth="65.0" text="Excluir" AnchorPane.bottomAnchor="90.0" AnchorPane.leftAnchor="55.0" />
+      <Button fx:id="botaoAbrirDetalhesParticipante" disable="true" mnemonicParsing="false" prefWidth="65.0" text="Detalhes" visible="false" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="55.0" />
+      <Button fx:id="botaoExcluirParticipante" disable="true" mnemonicParsing="false" prefWidth="65.0" text="Excluir" visible="false" AnchorPane.bottomAnchor="90.0" AnchorPane.leftAnchor="55.0" />
+      <Button fx:id="botaoAbrirDetalhesSala" disable="true" layoutX="65.0" layoutY="625.0" mnemonicParsing="false" prefWidth="65.0" text="Detalhes" visible="false" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="55.0" />
+      <Button fx:id="botaoExcluirSala" disable="true" layoutX="65.0" layoutY="595.0" mnemonicParsing="false" prefWidth="65.0" text="Excluir" visible="false" AnchorPane.bottomAnchor="90.0" AnchorPane.leftAnchor="55.0" />
+      <AnchorPane fx:id="adicionarSalaPainel" layoutX="10.0" layoutY="660.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <Label fx:id="adicionarSalaLabel" layoutX="14.0" layoutY="18.0" text="Adicionar Sala:" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="10.0">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="adicionarSalaNome" layoutX="100.0" layoutY="15.0" prefHeight="26.0" prefWidth="720.0" promptText="nome da sala" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="80.0" />
+            <Button fx:id="adicionarSalaBotao" layoutX="548.0" layoutY="24.0" mnemonicParsing="false" onAction="#adicionarSalaBotaoClicked" text="Adicionar" AnchorPane.bottomAnchor="11.0" AnchorPane.rightAnchor="10.0" />
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>
