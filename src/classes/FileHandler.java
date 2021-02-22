@@ -1,3 +1,5 @@
+package classes;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -105,7 +107,7 @@ public class FileHandler {
     /**
      * Remove n-ésima linha de um arquivo 
      * @param arquivo referência ao arquivo-destino
-     * @param lineIndex número da linha a ser removida
+     * @param indexLinha número da linha a ser removida
      * @throws IndexOutOfBoundsException
      */
     public static void removerLinhas(File arquivo, int indexLinha) throws IndexOutOfBoundsException {
@@ -115,9 +117,8 @@ public class FileHandler {
             // Inicializa as instâncias necessárias
             br = new BufferedReader(fr);
             String novoTextoArquivo = "";
-            int qtdLinha=0;
-            qtdLinha = contLinhas(arquivo);
-          
+            int qtdLinha= contLinhas(arquivo);
+
             //String que armazena a próxima linha a ser adicionada ao novo arquivo
             String apendice;
 

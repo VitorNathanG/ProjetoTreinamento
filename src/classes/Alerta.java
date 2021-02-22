@@ -1,3 +1,5 @@
+package classes;
+
 /**
  * Classe capaz de emitir alertas e erros
  */
