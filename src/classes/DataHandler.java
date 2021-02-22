@@ -1,7 +1,9 @@
 package classes;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -96,8 +98,8 @@ public class DataHandler {
         return retorno;
     }
 
-    public static List<Pessoa> gerarPessoas(String[][] pessoasStrings) {
-        List<Pessoa> retorno = new ArrayList<>();
+    public static ObservableList<Pessoa> gerarPessoas(String[][] pessoasStrings) {
+        ObservableList<Pessoa> retorno = FXCollections.observableArrayList();
         for (String[] strings : pessoasStrings) {
             retorno.add(new Pessoa(strings[0], strings[1], strings[2], strings[3], strings[4]));
         }

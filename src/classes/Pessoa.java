@@ -3,6 +3,7 @@ package classes;
 public class Pessoa {
 
     private String nome;
+    private String sobrenome;
     private String espacoPrimeiraEtapa;
     private String espacoCafePrimeiraEtapa;
     private String espacoCafeSegundaEtapa;
@@ -55,7 +56,23 @@ public class Pessoa {
     }
 
     public void setNome(String nome) {
+        StringBuilder sobrenome = new StringBuilder(nome);
+        StringBuilder primeiroNome = new StringBuilder();
+        StringBuilder sobrenomeOutput = new StringBuilder();
+        sobrenome.reverse();
+        for (int i = 0; i < sobrenome.length(); i++) {
+            if (" ".equals(Character.toString(sobrenome.charAt(i)))) {
+                break;
+            } else {
+                sobrenomeOutput.append(sobrenome.charAt(i));
+            }
+        }
+        sobrenomeOutput.reverse();
+        nome = nome.replaceFirst(" " + sobrenomeOutput.toString(), "");
+
+        this.sobrenome = sobrenomeOutput.toString();
         this.nome = nome;
+
     }
 
     @Override
@@ -65,5 +82,13 @@ public class Pessoa {
                 this.getEspacoSegundaEtapa() + FileHandler.ENTER +
                 this.getEspacoCafePrimeiraEtapa() + FileHandler.ENTER +
                 this.getEspacoCafeSegundaEtapa();
+    }
+
+    public String getSobrenome() {
+        return sobrenome;
+    }
+
+    public void setSobrenome(String sobrenome) {
+        this.sobrenome = sobrenome;
     }
 }
