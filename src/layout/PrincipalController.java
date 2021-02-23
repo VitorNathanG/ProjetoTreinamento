@@ -289,6 +289,23 @@ public class PrincipalController implements Initializable {
         }
     }
 
+    public void botaoAbrirDetalhesSalaClicked(){
+        espacoTreinamentoSelecionado = tabelaSalas.getSelectionModel().getSelectedItem();
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("informacaosala.fxml"));
+
+            Scene cena = new Scene(root);
+            Stage palco = new Stage();
+            palco.setScene(cena);
+            palco.setResizable(false);
+            palco.initModality(Modality.APPLICATION_MODAL);
+            palco.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void mudarParaParticipantesClicked() {
         ocultarElementos(elementosOcultaveis);
         adicionarParticipantePainel.setVisible(true);
