@@ -5,8 +5,10 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -19,6 +21,7 @@ import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -59,11 +62,13 @@ public class PrincipalController implements Initializable {
 
     @FXML private AnchorPane adicionarSalaPainel;
     @FXML private TextField adicionarSalaNome;
+    @FXML private TextField adicionarSalaLotacao;
     @FXML private Button adicionarSalaBotao;
     @FXML private Label adicionarSalaLabel;
 
     @FXML private AnchorPane adicionarEspacoCafePainel;
     @FXML private TextField adicionarEspacoCafeNome;
+    @FXML private TextField adicionarEspacoCafeLotacao;
     @FXML private Button adicionarEspacoCafeBotao;
     @FXML private Label adicionarEspacoCafeLabel;
 
@@ -98,10 +103,12 @@ public class PrincipalController implements Initializable {
     };
 
     public static IntegerProperty salvarAoSair = new SimpleIntegerProperty();
-
     private static boolean modificacoesRealizadas;
-
     private static Region[] elementosOcultaveis;
+    private static Pessoa pessoaSelecionada;
+    private static EspacoCafe espacoCafeSelecionado;
+    private static EspacoTreinamento espacoTreinamentoSelecionado;
+
 
     public static boolean isModificacoesRealizadas() {
         return modificacoesRealizadas;
@@ -109,6 +116,30 @@ public class PrincipalController implements Initializable {
 
     public static void setModificacoesRealizadas(boolean modificacoesRealizadas) {
         PrincipalController.modificacoesRealizadas = modificacoesRealizadas;
+    }
+
+    public static Pessoa getPessoaSelecionada() {
+        return pessoaSelecionada;
+    }
+
+    public static void setPessoaSelecionada(Pessoa pessoaSelecionada) {
+        PrincipalController.pessoaSelecionada = pessoaSelecionada;
+    }
+
+    public static EspacoCafe getEspacoCafeSelecionado() {
+        return espacoCafeSelecionado;
+    }
+
+    public static void setEspacoCafeSelecionado(EspacoCafe espacoCafe) {
+        PrincipalController.espacoCafeSelecionado = espacoCafe;
+    }
+
+    public static EspacoTreinamento getEspacoTreinamentoSelecionado() {
+        return espacoTreinamentoSelecionado;
+    }
+
+    public static void setEspacoTreinamentoSelecionado(EspacoTreinamento espacoTreinamentoSelecionado) {
+        PrincipalController.espacoTreinamentoSelecionado = espacoTreinamentoSelecionado;
     }
 
     public void fazerBackupMenuClicked(){
@@ -182,15 +213,42 @@ public class PrincipalController implements Initializable {
     }
 
     public void adicionarSalaBotaoClicked() {
-        salasTreinamento.add(new EspacoTreinamento(adicionarSalaNome.getText(), EspacoTreinamento.getLotacao()));
-        adicionarSalaNome.setText("");
-        setModificacoesRealizadas(true);
+        try {
+            if (Integer.parseInt(adicionarSalaLotacao.getText()) < 1){
+                throw new NumberFormatException();
+            } else if (adicionarSalaNome.getText().contains("$")){
+                emitirAlertBox("Erro","O caractere $ não é válido");
+            } else if (adicionarSalaNome.getText().length() < 1) {
+                emitirAlertBox("Adicionar Nome da Sala", "Digite um valor no local indicado");
+            } else {
+                salasTreinamento.add(new EspacoTreinamento(adicionarSalaNome.getText(), Integer.parseInt(adicionarSalaLotacao.getText())));
+                adicionarSalaNome.setText("");
+                adicionarSalaLotacao.setText("");
+                setModificacoesRealizadas(true);
+            }
+        } catch (NumberFormatException e) {
+            emitirAlertBox("Erro na lotação", "Verifique o valor da lotação");
+        }
     }
 
     public void adicionarEspacoCafeBotaoClicked() {
-        espacosCafe.add(new EspacoCafe(adicionarEspacoCafeNome.getText(), 15)); //TODO definir lotação
-        adicionarSalaNome.setText("");
-        setModificacoesRealizadas(true);
+
+        try {
+            if (Integer.parseInt(adicionarEspacoCafeLotacao.getText()) < 1){
+                throw new NumberFormatException();
+            } else if (adicionarEspacoCafeNome.getText().contains("$")){
+                emitirAlertBox("Erro","O caractere $ não é válido");
+            } else if (adicionarEspacoCafeNome.getText().length() < 1) {
+                emitirAlertBox("Adicionar Nome do Espaços", "Digite um valor no local indicado");
+            } else {
+                espacosCafe.add(new EspacoCafe(adicionarEspacoCafeNome.getText(), Integer.parseInt(adicionarEspacoCafeLotacao.getText())));
+                adicionarEspacoCafeNome.setText("");
+                adicionarEspacoCafeLotacao.setText("");
+                setModificacoesRealizadas(true);
+            }
+        } catch (NumberFormatException e) {
+            emitirAlertBox("Erro na lotação", "Verifique o valor da lotação");
+        }
     }
 
     public void botaoExcluirParticipanteClicked(){
@@ -212,6 +270,23 @@ public class PrincipalController implements Initializable {
         tabelaEspacosCafe.getItems().removeAll(selecionado);
         espacosCafe.remove(selecionado);
         setModificacoesRealizadas(true);
+    }
+
+    public void botaoAbrirDetalhesParticipanteClicked(){
+        pessoaSelecionada = tabelaParticipantes.getSelectionModel().getSelectedItem();
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("informacaoparticipante.fxml"));
+
+            Scene cena = new Scene(root);
+            Stage palco = new Stage();
+            palco.setScene(cena);
+            palco.setResizable(false);
+            palco.initModality(Modality.APPLICATION_MODAL);
+            palco.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void mudarParaParticipantesClicked() {
@@ -359,6 +434,7 @@ public class PrincipalController implements Initializable {
         DataHandler.salvarDados(infoSalasTreinamento, salasTreinamento, new EspacoTreinamento());
         DataHandler.salvarDados(infoEspacosCafe, espacosCafe, new EspacoCafe());
         emitirAlertBox("Salvamento", "Os dados foram salvos");
+        setModificacoesRealizadas(false);
     }
 
     private void criarOpcoesDeSaida(){
@@ -384,7 +460,7 @@ public class PrincipalController implements Initializable {
         layout.getChildren().setAll(texto, botaoOk);
         layout.setAlignment(Pos.CENTER);
         layout.setPrefHeight(150);
-        layout.setPrefWidth(250);
+        layout.setPrefWidth(300);
         Scene cena = new Scene(layout);
         palcoAlertBox.setResizable(false);
         palcoAlertBox.initModality(Modality.APPLICATION_MODAL);

@@ -106,7 +106,7 @@
             <Button fx:id="adicionarParticipanteBotao" layoutX="548.0" layoutY="24.0" mnemonicParsing="false" onAction="#adicionarParticipanteBotaoClicked" text="Adicionar" AnchorPane.bottomAnchor="11.0" AnchorPane.rightAnchor="10.0" />
          </children>
       </AnchorPane>
-      <Button fx:id="botaoAbrirDetalhesParticipante" disable="true" mnemonicParsing="false" prefWidth="65.0" text="Detalhes" visible="false" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="55.0" />
+      <Button fx:id="botaoAbrirDetalhesParticipante" disable="true" mnemonicParsing="false" onAction="#botaoAbrirDetalhesParticipanteClicked" prefWidth="65.0" text="Detalhes" visible="false" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="55.0" />
       <Button fx:id="botaoExcluirParticipante" disable="true" mnemonicParsing="false" onAction="#botaoExcluirParticipanteClicked" prefWidth="65.0" text="Excluir" visible="false" AnchorPane.bottomAnchor="90.0" AnchorPane.leftAnchor="55.0" />
       <Button fx:id="botaoAbrirDetalhesSala" disable="true" layoutX="65.0" layoutY="625.0" mnemonicParsing="false" prefWidth="65.0" text="Detalhes" visible="false" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="55.0" />
       <Button fx:id="botaoExcluirSala" disable="true" layoutX="65.0" layoutY="595.0" mnemonicParsing="false" onAction="#botaoExcluirSalaClicked" prefWidth="65.0" text="Excluir" visible="false" AnchorPane.bottomAnchor="90.0" AnchorPane.leftAnchor="55.0" />

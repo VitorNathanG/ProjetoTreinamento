@@ -79,7 +79,7 @@ public class DataHandler {
     public static void salvarDados(File arquivo, List<EspacoTreinamento> espacoTreinamentos, EspacoTreinamento dummy){
         StringBuilder textoSalvar = new StringBuilder();
         for (EspacoTreinamento espaco : espacoTreinamentos) {
-            textoSalvar.append(FileHandler.ENTER).append(unirStringParaSalvar(espaco.getNomeEspaco(), String.valueOf(EspacoTreinamento.getLotacao())));
+            textoSalvar.append(FileHandler.ENTER).append(unirStringParaSalvar(espaco.getNomeEspaco(), String.valueOf(espaco.getLotacao())));
         }
 
         FileHandler.escreverArquivo(arquivo , textoSalvar.toString());
@@ -101,7 +101,7 @@ public class DataHandler {
 
     public static void adicionarSalaTreinamento(File arquivo, EspacoTreinamento salaTreinamento){
         StringBuilder textoSalvar = new StringBuilder();
-        textoSalvar.append(unirStringParaSalvar(salaTreinamento.getNomeEspaco(), String.valueOf(EspacoTreinamento.getLotacao())));
+        textoSalvar.append(unirStringParaSalvar(salaTreinamento.getNomeEspaco(), String.valueOf(salaTreinamento.getLotacao())));
         FileHandler.adicionarAoArquivo(arquivo, textoSalvar.toString());
     }
 
@@ -134,6 +134,9 @@ public class DataHandler {
     public static ObservableList<Pessoa> gerarPessoas(String[][] pessoasStrings) {
         ObservableList<Pessoa> retorno = FXCollections.observableArrayList();
         for (String[] strings : pessoasStrings) {
+            if (strings[0] == null) {
+                break;
+            }
             retorno.add(new Pessoa(strings[0], strings[1], strings[2], strings[3], strings[4], strings[5]));
         }
         return retorno;
@@ -151,6 +154,10 @@ public class DataHandler {
     public static ObservableList<EspacoCafe> gerarEspacosCafe(String[][] espacosStrings) {
         ObservableList<EspacoCafe> retorno = FXCollections.observableArrayList();
         for (String[] strings : espacosStrings) {
+            if(strings[1]==null) {
+                break;
+                //strings[1] = String.valueOf(0);
+            }
             retorno.add(new EspacoCafe(strings[0], Integer.parseInt(strings[1])));
         }
         return retorno;
@@ -160,7 +167,7 @@ public class DataHandler {
         String[][] retorno = new String[espacoTreinamentoList.size()][1];
         for (int i = 0; i < espacoTreinamentoList.size(); i++) {
             retorno[i][0] = espacoTreinamentoList.get(i).getNomeEspaco();
-            retorno[i][1] = String.valueOf(EspacoTreinamento.getLotacao());
+            retorno[i][1] = String.valueOf(espacoTreinamentoList.get(i).getLotacao());
         }
         return retorno;
     }
@@ -168,6 +175,9 @@ public class DataHandler {
     public static ObservableList<EspacoTreinamento> gerarSalasTreinamento(String[][] salasStrings) {
         ObservableList<EspacoTreinamento> retorno = FXCollections.observableArrayList();
         for (String[] strings : salasStrings) {
+            if(strings[1] == null) {
+                break;
+            }
             retorno.add(new EspacoTreinamento(strings[0], Integer.parseInt(strings[1])));
         }
         return retorno;
