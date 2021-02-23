@@ -16,28 +16,27 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="janela" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="285.0" minWidth="470.0" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="layout.PrincipalController">
+<AnchorPane fx:id="janela" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="285.0" minWidth="470.0" prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="layout.PrincipalController">
    <children>
       <MenuBar fx:id="barraDeMenu" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
           <Menu fx:id="menuArquivo" mnemonicParsing="false" text="Arquivo">
             <items>
-              <MenuItem fx:id="abrirArquivoSalas" mnemonicParsing="false" text="Abrir Arquivo de Salas" />
-                  <MenuItem fx:id="abrirArquivoParticipantes" mnemonicParsing="false" text="Abrir Arquivo de Participantes" />
-                  <MenuItem fx:id="abrirArquivoEspacosCafe" mnemonicParsing="false" text="Abrir Arquivo de Espaços de Café" />
+                  <MenuItem fx:id="salvarDadosMenuItem" mnemonicParsing="false" onAction="#salvarDados" text="Salvar Dados" />
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem fx:id="salvarDados" mnemonicParsing="false" text="Salvar Dados" />
+                  <MenuItem fx:id="salvarESairMenuItem" mnemonicParsing="false" onAction="#salvarESair" text="Salvar e Sair" />
+                  <MenuItem fx:id="sairSemSalvarMenuItem" mnemonicParsing="false" onAction="#sairSemSalvar" text="Sair sem Salvar" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Backup">
             <items>
-                  <MenuItem fx:id="fazerBackup" mnemonicParsing="false" text="Fazer Backup dos Dados" />
-                  <MenuItem fx:id="recuperarBackup" mnemonicParsing="false" text="Recuperar Backup" />
+                  <MenuItem fx:id="fazerBackupMenuItem" mnemonicParsing="false" onAction="#fazerBackupMenuClicked" text="Fazer Backup dos Dados" />
+                  <MenuItem fx:id="recuperarBackupMenuItem" mnemonicParsing="false" onAction="#recuperarBackupMenuClicked" text="Recuperar Backup" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Ajuda">
             <items>
-              <MenuItem fx:id="abrirReadme" mnemonicParsing="false" text="Abrir README" />
+              <MenuItem fx:id="abrirReadmeMenuItem" mnemonicParsing="false" text="Abrir README" />
             </items>
           </Menu>
         </menus>
@@ -73,13 +72,20 @@
                <children>
                   <TableView fx:id="tabelaParticipantes" prefHeight="616.0" prefWidth="720.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="15.0">
                     <columns>
-                      <TableColumn fx:id="colunaNome" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" resizable="false" text="Nome" />
+                      <TableColumn fx:id="colunaNome" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" resizable="false" text="Nome" />
                         <TableColumn fx:id="colunaSobrenome" prefWidth="184.0" text="Sobrenome" />
                     </columns>
                   </TableView>
                   <TableView fx:id="tabelaSalas" prefHeight="616.0" prefWidth="720.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="15.0">
                      <columns>
-                        <TableColumn fx:id="colunaIdentificacaoSala" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" resizable="false" text="Identificação da Sala" />
+                        <TableColumn fx:id="colunaIdentificacaoSala" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" resizable="false" text="Identificação da Sala" />
+                        <TableColumn fx:id="colunaLotacaoSala" prefWidth="75.0" resizable="false" text="Lotação da Sala" />
+                     </columns>
+                  </TableView>
+                  <TableView fx:id="tabelaEspacosCafe" prefHeight="616.0" prefWidth="720.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="15.0">
+                     <columns>
+                        <TableColumn fx:id="colunaIdentificacaoEspacosCafe" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" resizable="false" text="Identificação do Espaço de Café" />
+                        <TableColumn fx:id="colunaLotacaoEspacosCafe" prefWidth="75.0" resizable="false" text="Lotação do Espaço" />
                      </columns>
                   </TableView>
                </children>
@@ -101,18 +107,33 @@
          </children>
       </AnchorPane>
       <Button fx:id="botaoAbrirDetalhesParticipante" disable="true" mnemonicParsing="false" prefWidth="65.0" text="Detalhes" visible="false" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="55.0" />
-      <Button fx:id="botaoExcluirParticipante" disable="true" mnemonicParsing="false" prefWidth="65.0" text="Excluir" visible="false" AnchorPane.bottomAnchor="90.0" AnchorPane.leftAnchor="55.0" />
+      <Button fx:id="botaoExcluirParticipante" disable="true" mnemonicParsing="false" onAction="#botaoExcluirParticipanteClicked" prefWidth="65.0" text="Excluir" visible="false" AnchorPane.bottomAnchor="90.0" AnchorPane.leftAnchor="55.0" />
       <Button fx:id="botaoAbrirDetalhesSala" disable="true" layoutX="65.0" layoutY="625.0" mnemonicParsing="false" prefWidth="65.0" text="Detalhes" visible="false" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="55.0" />
-      <Button fx:id="botaoExcluirSala" disable="true" layoutX="65.0" layoutY="595.0" mnemonicParsing="false" prefWidth="65.0" text="Excluir" visible="false" AnchorPane.bottomAnchor="90.0" AnchorPane.leftAnchor="55.0" />
-      <AnchorPane fx:id="adicionarSalaPainel" layoutX="10.0" layoutY="660.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <Button fx:id="botaoExcluirSala" disable="true" layoutX="65.0" layoutY="595.0" mnemonicParsing="false" onAction="#botaoExcluirSalaClicked" prefWidth="65.0" text="Excluir" visible="false" AnchorPane.bottomAnchor="90.0" AnchorPane.leftAnchor="55.0" />
+      <AnchorPane fx:id="adicionarSalaPainel" layoutX="10.0" layoutY="660.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" prefWidth="600.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
             <Label fx:id="adicionarSalaLabel" layoutX="14.0" layoutY="18.0" text="Adicionar Sala:" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="10.0">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <TextField fx:id="adicionarSalaNome" layoutX="100.0" layoutY="15.0" prefHeight="26.0" prefWidth="720.0" promptText="nome da sala" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="80.0" />
+            <TextField fx:id="adicionarSalaNome" layoutX="100.0" layoutY="15.0" prefHeight="26.0" prefWidth="720.0" promptText="nome da sala" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="200.0" />
             <Button fx:id="adicionarSalaBotao" layoutX="548.0" layoutY="24.0" mnemonicParsing="false" onAction="#adicionarSalaBotaoClicked" text="Adicionar" AnchorPane.bottomAnchor="11.0" AnchorPane.rightAnchor="10.0" />
+            <TextField fx:id="adicionarSalaLotacao" layoutX="723.0" layoutY="14.0" maxWidth="113.0" minWidth="113.0" prefHeight="26.0" prefWidth="113.0" promptText="lotação" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="82.0" />
+         </children>
+      </AnchorPane>
+      <Button fx:id="botaoAbrirDetalhesEspacoCafe" disable="true" layoutX="65.0" layoutY="625.0" mnemonicParsing="false" prefWidth="65.0" text="Detalhes" visible="false" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="55.0" />
+      <Button fx:id="botaoExcluirEspacoCafe" disable="true" layoutX="65.0" layoutY="595.0" mnemonicParsing="false" onAction="#botaoExcluirEspacoCafeClicked" prefWidth="65.0" text="Excluir" visible="false" AnchorPane.bottomAnchor="90.0" AnchorPane.leftAnchor="55.0" />
+      <AnchorPane fx:id="adicionarEspacoCafePainel" layoutX="10.0" layoutY="660.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" prefWidth="600.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <Label fx:id="adicionarEspacoCafeLabel" layoutX="14.0" layoutY="18.0" text="Adicionar Espaço: " AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="10.0">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="adicionarEspacoCafeNome" layoutX="117.0" layoutY="15.0" prefHeight="26.0" prefWidth="703.0" promptText="nome do espaço" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="117.0" AnchorPane.rightAnchor="200.0" />
+            <TextField fx:id="adicionarEspacoCafeLotacao" layoutX="717.0" layoutY="13.0" maxWidth="113.0" minWidth="113.0" prefHeight="26.0" prefWidth="113.0" promptText="lotação" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="82.0" />
+            <Button fx:id="adicionarEspacoCafeBotao" layoutX="548.0" layoutY="24.0" mnemonicParsing="false" onAction="#adicionarEspacoCafeBotaoClicked" text="Adicionar" AnchorPane.bottomAnchor="11.0" AnchorPane.rightAnchor="10.0" />
          </children>
       </AnchorPane>
    </children>

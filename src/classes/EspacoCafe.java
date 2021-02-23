@@ -2,20 +2,22 @@ package classes;
 
 public class EspacoCafe extends Espaco {
 
-    private static int lotacao;
-    public EspacoCafe(String nomeEspaco) {
+    private int lotacao;
+    public EspacoCafe(String nomeEspaco, int lotacao) {
+
         super(nomeEspaco);
+        this.setLotacao(lotacao);
     }
 
     public EspacoCafe() {
         super();
     }
 
-    public static int getLotacao() {
+    public int getLotacao() {
         return lotacao;
     }
 
-    public static void setLotacao(int lotacao) {
-        EspacoCafe.lotacao = lotacao;
+    public void setLotacao(int lotacao) {
+        this.lotacao = lotacao;
     }
 }

@@ -63,17 +63,17 @@ public class DataHandler {
         }
         
         FileHandler.escreverArquivo(arquivo , textoSalvar.toString());
-        FileHandler.removerLinhas(arquivo, 1);
+        FileHandler.removerLinha(arquivo, 1);
     }
 
     public static void salvarDados(File arquivo, List<EspacoCafe> espacoCafe, EspacoCafe dummy){
         StringBuilder textoSalvar = new StringBuilder();
         for (EspacoCafe espaco : espacoCafe) {
-            textoSalvar.append(FileHandler.ENTER).append(unirStringParaSalvar(espaco.getNomeEspaco()));
+            textoSalvar.append(FileHandler.ENTER).append(unirStringParaSalvar(espaco.getNomeEspaco(), String.valueOf(espaco.getLotacao())));
         }
 
         FileHandler.escreverArquivo(arquivo , textoSalvar.toString());
-        FileHandler.removerLinhas(arquivo, 1);
+        FileHandler.removerLinha(arquivo, 1);
     }
 
     public static void salvarDados(File arquivo, List<EspacoTreinamento> espacoTreinamentos, EspacoTreinamento dummy){
@@ -83,7 +83,7 @@ public class DataHandler {
         }
 
         FileHandler.escreverArquivo(arquivo , textoSalvar.toString());
-        FileHandler.removerLinhas(arquivo, 1);
+        FileHandler.removerLinha(arquivo, 1);
     }
 
     public static void adicionarPessoa(File arquivo, Pessoa pessoa){
@@ -95,7 +95,7 @@ public class DataHandler {
 
     public static void adicionarEspacoCafe(File arquivo, EspacoCafe espacoCafe){
         StringBuilder textoSalvar = new StringBuilder();
-        textoSalvar.append(unirStringParaSalvar(espacoCafe.getNomeEspaco()));
+        textoSalvar.append(unirStringParaSalvar(espacoCafe.getNomeEspaco(), String.valueOf(espacoCafe.getLotacao())));
         FileHandler.adicionarAoArquivo(arquivo, textoSalvar.toString());
     }
 
@@ -143,6 +143,7 @@ public class DataHandler {
         String[][] retorno = new String[espacoCafeList.size()][1];
         for (int i = 0; i < espacoCafeList.size(); i++) {
             retorno[i][0] = espacoCafeList.get(i).getNomeEspaco();
+            retorno[i][1] = String.valueOf(espacoCafeList.get(i).getLotacao());
         }
         return retorno;
     }
@@ -150,7 +151,7 @@ public class DataHandler {
     public static ObservableList<EspacoCafe> gerarEspacosCafe(String[][] espacosStrings) {
         ObservableList<EspacoCafe> retorno = FXCollections.observableArrayList();
         for (String[] strings : espacosStrings) {
-            retorno.add(new EspacoCafe(strings[0]));
+            retorno.add(new EspacoCafe(strings[0], Integer.parseInt(strings[1])));
         }
         return retorno;
     }

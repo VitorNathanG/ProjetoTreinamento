@@ -23,15 +23,15 @@ public class FileHandler {
     public static final String ENTER = System.getProperty("line.separator");
 
     /**
-     * Caso não exista, cria um novo arquivo no endereço especificado.
-     * Se já existir, não faz nada
+     * Cria uma referência ao arquivo no endereço especificado.
+     * Cria um novo arquivo no computador, caso não exista
      * @param endereco endereço do arquivo no sistema
      * @return File, instanciado corretamente
      */
     public static File criarArquivo(String endereco) {
         File arquivo = new File(endereco);
         try {
-            if (!arquivo.exists()) {
+            if (!arquivo.exists()) { //cria um novo arquivo caso ele não exista
                 arquivo.createNewFile();
             } 
         } catch (Exception e) {
@@ -41,13 +41,13 @@ public class FileHandler {
     }
 
     /**
-     * Lê um arquivo completo e retorna-o em forma de String
+     * Lê um arquivo completo e retorna-o em uma única String
      * @param arquivo referência ao arquivo-destino
      * @return String com o texto completo do arquivo
      */
     public static String lerArquivo(File arquivo){
         try(BufferedReader br = new BufferedReader(new FileReader(arquivo))){
-            return new String(Files.readAllBytes(arquivo.toPath()));
+            return new String(Files.readAllBytes(arquivo.toPath())); //lê o arquivo inteiro
         } catch (Exception e){
             Alerta.novoErro(e.getClass().toString(), "exceção no método FileHandling.lerArquivo(). Arquivo não encontrado");
             return "";
@@ -63,10 +63,10 @@ public class FileHandler {
     public static void adicionarAoArquivo(File arquivo, String... texto) {
         try  (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(arquivo, true)))) {
             for (String string : texto) {
-                if (string.isBlank()){
+                if (string.isBlank()){          //ignora as linhas em branco da string
                     continue;
                 }
-                out.write(ENTER + string);
+                out.write(ENTER + string);   //adiciona a próxima linha
             }
         } catch (Exception e) {
             Alerta.novoErro(e.getClass().toString(), "exceção no método FileHandling.adicionarAoArquivo(). Arquivo inválido.");
@@ -94,11 +94,11 @@ public class FileHandler {
     public static int contLinhas(File arquivo){
         try (FileReader x = new FileReader(arquivo)){
             LineNumberReader linhaLeitura = new LineNumberReader(x);
-            linhaLeitura.skip(arquivo.length());
-            int qtdLinha = linhaLeitura.getLineNumber();
+            linhaLeitura.skip(arquivo.length());            //pula para a ultima linha do arquivo
+            int qtdLinha = linhaLeitura.getLineNumber();    //recupera o número da última linha do arquivo
             linhaLeitura.close();
-            return qtdLinha + 1;
-        } catch (Exception e) {
+            return qtdLinha + 1;                            //retorna + 1, visto que a contagem de linhas
+        } catch (Exception e) {                             //começa em 0
             Alerta.novoErro("IOException", "removerDoArquivo em FileHandling. O arquivo passado para contLinhas não existe.");
             return 0;
         }
@@ -108,9 +108,8 @@ public class FileHandler {
      * Remove n-ésima linha de um arquivo 
      * @param arquivo referência ao arquivo-destino
      * @param indexLinha número da linha a ser removida
-     * @throws IndexOutOfBoundsException
      */
-    public static void removerLinhas(File arquivo, int indexLinha) throws IndexOutOfBoundsException {
+    public static void removerLinha(File arquivo, int indexLinha) {
         BufferedReader br;
         
         try (FileReader fr = new FileReader(arquivo)) {
@@ -146,5 +145,8 @@ public class FileHandler {
         }
     }
 
+    /**
+     * Construtor privado para evitar instanciamento
+     */
     private FileHandler(){}
 }
