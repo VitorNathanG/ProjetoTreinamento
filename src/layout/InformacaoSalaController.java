@@ -1,6 +1,6 @@
 package layout;
 
-import classes.EspacoTreinamento;
+import classes.Espaco;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -23,7 +23,7 @@ public class InformacaoSalaController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        EspacoTreinamento salaTreinamento = PrincipalController.getEspacoTreinamentoSelecionado();
+        Espaco salaTreinamento = PrincipalController.getEspacoTreinamentoSelecionado();
         nomeSalaTreinamento.setText(salaTreinamento.getNomeEspaco());
         lotacaoSalaTreinamento.setText(String.valueOf(salaTreinamento.getLotacao()));
         totalIntegrantesPrimeiraEtapa.setText(String.valueOf(salaTreinamento.getIntegrantesPrimeiraEtapa().size()));

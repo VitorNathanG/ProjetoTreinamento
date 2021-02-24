@@ -70,7 +70,7 @@
             </VBox>
             <AnchorPane fx:id="anchorPaneTabelas" prefHeight="200.0" prefWidth="720.0">
                <children>
-                  <TableView fx:id="tabelaParticipantes" prefHeight="616.0" prefWidth="720.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="15.0">
+                  <TableView fx:id="tabelaParticipantes" editable="true" prefHeight="616.0" prefWidth="720.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="15.0">
                     <columns>
                       <TableColumn fx:id="colunaNome" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" resizable="false" text="Nome" />
                         <TableColumn fx:id="colunaSobrenome" prefWidth="184.0" text="Sobrenome" />

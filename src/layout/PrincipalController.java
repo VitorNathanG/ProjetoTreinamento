@@ -47,13 +47,13 @@ public class PrincipalController implements Initializable {
     @FXML private TableColumn<Pessoa, String> colunaNome;
     @FXML private TableColumn<Pessoa, String> colunaSobrenome;
 
-    @FXML private TableView<EspacoTreinamento> tabelaSalas;
-    @FXML private TableColumn<EspacoTreinamento, String> colunaIdentificacaoSala;
-    @FXML private TableColumn<EspacoTreinamento, Integer> colunaLotacaoSala;
+    @FXML private TableView<Espaco> tabelaSalas;
+    @FXML private TableColumn<Espaco, String> colunaIdentificacaoSala;
+    @FXML private TableColumn<Espaco, Integer> colunaLotacaoSala;
 
-    @FXML private TableView<EspacoCafe> tabelaEspacosCafe;
-    @FXML private TableColumn<EspacoCafe, String> colunaIdentificacaoEspacosCafe;
-    @FXML private TableColumn<EspacoCafe, Integer> colunaLotacaoEspacosCafe;
+    @FXML private TableView<Espaco> tabelaEspacosCafe;
+    @FXML private TableColumn<Espaco, String> colunaIdentificacaoEspacosCafe;
+    @FXML private TableColumn<Espaco, Integer> colunaLotacaoEspacosCafe;
 
     @FXML private AnchorPane adicionarParticipantePainel;
     @FXML private TextField adicionarParticipanteNome;
@@ -82,10 +82,10 @@ public class PrincipalController implements Initializable {
     @FXML private Button botaoExcluirEspacoCafe;
 
     private File infoEspacosCafe = FileHandler.criarArquivo("dados\\InfoEspacosCafe.data");
-    private ObservableList<EspacoCafe> espacosCafe = DataHandler.gerarEspacosCafe(DataHandler.recuperarDadosSalvos(infoEspacosCafe));
+    private ObservableList<Espaco> espacosCafe = DataHandler.gerarEspacos(DataHandler.recuperarDadosSalvos(infoEspacosCafe));
 
     private File infoSalasTreinamento = FileHandler.criarArquivo("dados\\InfoSalasTreinamento.data");
-    private ObservableList<EspacoTreinamento> salasTreinamento = DataHandler.gerarSalasTreinamento(DataHandler.recuperarDadosSalvos(infoSalasTreinamento));
+    private ObservableList<Espaco> salasTreinamento = DataHandler.gerarEspacos(DataHandler.recuperarDadosSalvos(infoSalasTreinamento));
 
     private File infoPessoas = FileHandler.criarArquivo("dados\\InfoPessoas.data");
     private ObservableList<Pessoa> pessoas = DataHandler.gerarPessoas(DataHandler.recuperarDadosSalvos(infoPessoas));
@@ -106,8 +106,8 @@ public class PrincipalController implements Initializable {
     private static boolean modificacoesRealizadas;
     private static Region[] elementosOcultaveis;
     private static Pessoa pessoaSelecionada;
-    private static EspacoCafe espacoCafeSelecionado;
-    private static EspacoTreinamento espacoTreinamentoSelecionado;
+    private static Espaco espacoCafeSelecionado;
+    private static Espaco espacoTreinamentoSelecionado;
 
 
     public static boolean isModificacoesRealizadas() {
@@ -126,26 +126,26 @@ public class PrincipalController implements Initializable {
         PrincipalController.pessoaSelecionada = pessoaSelecionada;
     }
 
-    public static EspacoCafe getEspacoCafeSelecionado() {
+    public static Espaco getEspacoCafeSelecionado() {
         return espacoCafeSelecionado;
     }
 
-    public static void setEspacoCafeSelecionado(EspacoCafe espacoCafe) {
+    public static void setEspacoCafeSelecionado(Espaco espacoCafe) {
         PrincipalController.espacoCafeSelecionado = espacoCafe;
     }
 
-    public static EspacoTreinamento getEspacoTreinamentoSelecionado() {
+    public static Espaco getEspacoTreinamentoSelecionado() {
         return espacoTreinamentoSelecionado;
     }
 
-    public static void setEspacoTreinamentoSelecionado(EspacoTreinamento espacoTreinamentoSelecionado) {
+    public static void setEspacoTreinamentoSelecionado(Espaco espacoTreinamentoSelecionado) {
         PrincipalController.espacoTreinamentoSelecionado = espacoTreinamentoSelecionado;
     }
 
     public void fazerBackupMenuClicked(){
         DataHandler.salvarDados(FileHandler.criarArquivo("backup\\InfoPessoas.bkp"), pessoas, new Pessoa());
-        DataHandler.salvarDados(FileHandler.criarArquivo("backup\\InfoEspacosCafe.bkp"), espacosCafe, new EspacoCafe());
-        DataHandler.salvarDados(FileHandler.criarArquivo("backup\\InfoSalasTreinamento.bkp"), salasTreinamento, new EspacoTreinamento());
+        DataHandler.salvarDados(FileHandler.criarArquivo("backup\\InfoEspacosCafe.bkp"), espacosCafe, new Espaco());
+        DataHandler.salvarDados(FileHandler.criarArquivo("backup\\InfoSalasTreinamento.bkp"), salasTreinamento, new Espaco());
         emitirAlertBox("Backup", "O backup foi realizado com sucesso");
     }
 
@@ -156,9 +156,9 @@ public class PrincipalController implements Initializable {
         if (!infoEspacosCafeBackup.exists()||!infoPessoasBackup.exists()|| !infoSalasTreinamentoBackup.exists()) {
             emitirAlertBox("Recuperar Backup", "Os arquivos de backup estão incompletos");
         } else {
-            espacosCafe = DataHandler.gerarEspacosCafe(DataHandler.recuperarDadosSalvos(infoEspacosCafeBackup));
+            espacosCafe = DataHandler.gerarEspacos(DataHandler.recuperarDadosSalvos(infoEspacosCafeBackup));
             pessoas = DataHandler.gerarPessoas(DataHandler.recuperarDadosSalvos(infoPessoasBackup));
-            salasTreinamento = DataHandler.gerarSalasTreinamento(DataHandler.recuperarDadosSalvos(infoSalasTreinamentoBackup));
+            salasTreinamento = DataHandler.gerarEspacos(DataHandler.recuperarDadosSalvos(infoSalasTreinamentoBackup));
             definirTabelas();
             emitirAlertBox("Recuperar Backup", "O backup foi recuperado");
         }
@@ -221,7 +221,7 @@ public class PrincipalController implements Initializable {
             } else if (adicionarSalaNome.getText().length() < 1) {
                 emitirAlertBox("Adicionar Nome da Sala", "Digite um valor no local indicado");
             } else {
-                salasTreinamento.add(new EspacoTreinamento(adicionarSalaNome.getText(), Integer.parseInt(adicionarSalaLotacao.getText())));
+                salasTreinamento.add(new Espaco(adicionarSalaNome.getText(), Integer.parseInt(adicionarSalaLotacao.getText())));
                 adicionarSalaNome.setText("");
                 adicionarSalaLotacao.setText("");
                 setModificacoesRealizadas(true);
@@ -241,7 +241,7 @@ public class PrincipalController implements Initializable {
             } else if (adicionarEspacoCafeNome.getText().length() < 1) {
                 emitirAlertBox("Adicionar Nome do Espaços", "Digite um valor no local indicado");
             } else {
-                espacosCafe.add(new EspacoCafe(adicionarEspacoCafeNome.getText(), Integer.parseInt(adicionarEspacoCafeLotacao.getText())));
+                espacosCafe.add(new Espaco(adicionarEspacoCafeNome.getText(), Integer.parseInt(adicionarEspacoCafeLotacao.getText())));
                 adicionarEspacoCafeNome.setText("");
                 adicionarEspacoCafeLotacao.setText("");
                 setModificacoesRealizadas(true);
@@ -259,14 +259,14 @@ public class PrincipalController implements Initializable {
     }
 
     public void botaoExcluirSalaClicked(){
-        ObservableList<EspacoTreinamento> selecionado = tabelaSalas.getSelectionModel().getSelectedItems();
+        ObservableList<Espaco> selecionado = tabelaSalas.getSelectionModel().getSelectedItems();
         tabelaSalas.getItems().removeAll(selecionado);
         salasTreinamento.remove(selecionado);
         setModificacoesRealizadas(true);
     }
 
     public void botaoExcluirEspacoCafeClicked(){
-        ObservableList<EspacoCafe> selecionado = tabelaEspacosCafe.getSelectionModel().getSelectedItems();
+        ObservableList<Espaco> selecionado = tabelaEspacosCafe.getSelectionModel().getSelectedItems();
         tabelaEspacosCafe.getItems().removeAll(selecionado);
         espacosCafe.remove(selecionado);
         setModificacoesRealizadas(true);
@@ -387,7 +387,7 @@ public class PrincipalController implements Initializable {
         colunaIdentificacaoSala.setCellValueFactory(new PropertyValueFactory<>("nomeEspaco"));
         colunaIdentificacaoSala.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        colunaLotacaoSala.setCellValueFactory(new PropertyValueFactory<EspacoTreinamento, Integer>("lotacao"));
+        colunaLotacaoSala.setCellValueFactory(new PropertyValueFactory<Espaco, Integer>("lotacao"));
         colunaLotacaoSala.setCellFactory(TextFieldTableCell.forTableColumn(conversor));
 
         tabelaSalas.setItems(salasTreinamento);
@@ -395,7 +395,7 @@ public class PrincipalController implements Initializable {
         colunaIdentificacaoEspacosCafe.setCellValueFactory(new PropertyValueFactory<>("nomeEspaco"));
         colunaIdentificacaoEspacosCafe.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        colunaLotacaoEspacosCafe.setCellValueFactory(new PropertyValueFactory<EspacoCafe, Integer>("lotacao"));
+        colunaLotacaoEspacosCafe.setCellValueFactory(new PropertyValueFactory<Espaco, Integer>("lotacao"));
         colunaLotacaoEspacosCafe.setCellFactory(TextFieldTableCell.forTableColumn(conversor));
 
         tabelaEspacosCafe.setItems(espacosCafe);
@@ -448,8 +448,8 @@ public class PrincipalController implements Initializable {
 
     public void salvarDados(){
         DataHandler.salvarDados(infoPessoas, pessoas, new Pessoa());
-        DataHandler.salvarDados(infoSalasTreinamento, salasTreinamento, new EspacoTreinamento());
-        DataHandler.salvarDados(infoEspacosCafe, espacosCafe, new EspacoCafe());
+        DataHandler.salvarDados(infoSalasTreinamento, salasTreinamento, new Espaco());
+        DataHandler.salvarDados(infoEspacosCafe, espacosCafe, new Espaco());
         emitirAlertBox("Salvamento", "Os dados foram salvos");
         setModificacoesRealizadas(false);
     }

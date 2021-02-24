@@ -7,9 +7,11 @@ public class Espaco {
     private String nomeEspaco;
     private List<Pessoa> integrantesPrimeiraEtapa = new ArrayList<>();
     private List<Pessoa> integrantesSegundaEtapa = new ArrayList<>();
+    private int lotacao;
 
-    public Espaco(String nomeEspaco) {
+    public Espaco(String nomeEspaco, int lotacao) {
         this.setNomeEspaco(nomeEspaco);
+        this.setLotacao(lotacao);
     }
 
     public Espaco() {}
@@ -65,5 +67,13 @@ public class Espaco {
     public void removerIntegrantesSegundaEtapa(Pessoa integrante){
         this.getIntegrantesSegundaEtapa().remove(integrante);        
         integrante.setEspacoSegundaEtapa(null);
+    }
+
+    public int getLotacao() {
+        return lotacao;
+    }
+
+    public void setLotacao(int lotacao) {
+        this.lotacao = lotacao;
     }
 }

@@ -66,20 +66,10 @@ public class DataHandler {
         FileHandler.removerLinha(arquivo, 1);
     }
 
-    public static void salvarDados(File arquivo, List<EspacoCafe> espacoCafe, EspacoCafe dummy){
+    public static void salvarDados(File arquivo, List<Espaco> espaco, Espaco dummy){
         StringBuilder textoSalvar = new StringBuilder();
-        for (EspacoCafe espaco : espacoCafe) {
-            textoSalvar.append(FileHandler.ENTER).append(unirStringParaSalvar(espaco.getNomeEspaco(), String.valueOf(espaco.getLotacao())));
-        }
-
-        FileHandler.escreverArquivo(arquivo , textoSalvar.toString());
-        FileHandler.removerLinha(arquivo, 1);
-    }
-
-    public static void salvarDados(File arquivo, List<EspacoTreinamento> espacoTreinamentos, EspacoTreinamento dummy){
-        StringBuilder textoSalvar = new StringBuilder();
-        for (EspacoTreinamento espaco : espacoTreinamentos) {
-            textoSalvar.append(FileHandler.ENTER).append(unirStringParaSalvar(espaco.getNomeEspaco(), String.valueOf(espaco.getLotacao())));
+        for (Espaco espacoAppend : espaco) {
+            textoSalvar.append(FileHandler.ENTER).append(unirStringParaSalvar(espacoAppend.getNomeEspaco(), String.valueOf(espacoAppend.getLotacao())));
         }
 
         FileHandler.escreverArquivo(arquivo , textoSalvar.toString());
@@ -93,15 +83,9 @@ public class DataHandler {
         FileHandler.adicionarAoArquivo(arquivo, textoSalvar.toString());
     }
 
-    public static void adicionarEspacoCafe(File arquivo, EspacoCafe espacoCafe){
+    public static void adicionarEspaco(File arquivo, Espaco espaco){
         StringBuilder textoSalvar = new StringBuilder();
-        textoSalvar.append(unirStringParaSalvar(espacoCafe.getNomeEspaco(), String.valueOf(espacoCafe.getLotacao())));
-        FileHandler.adicionarAoArquivo(arquivo, textoSalvar.toString());
-    }
-
-    public static void adicionarSalaTreinamento(File arquivo, EspacoTreinamento salaTreinamento){
-        StringBuilder textoSalvar = new StringBuilder();
-        textoSalvar.append(unirStringParaSalvar(salaTreinamento.getNomeEspaco(), String.valueOf(salaTreinamento.getLotacao())));
+        textoSalvar.append(unirStringParaSalvar(espaco.getNomeEspaco(), String.valueOf(espaco.getLotacao())));
         FileHandler.adicionarAoArquivo(arquivo, textoSalvar.toString());
     }
 
@@ -142,43 +126,23 @@ public class DataHandler {
         return retorno;
     }
 
-    public static String[][] gerarStrings(List<EspacoCafe> espacoCafeList, EspacoCafe dummy){
-        String[][] retorno = new String[espacoCafeList.size()][1];
-        for (int i = 0; i < espacoCafeList.size(); i++) {
-            retorno[i][0] = espacoCafeList.get(i).getNomeEspaco();
-            retorno[i][1] = String.valueOf(espacoCafeList.get(i).getLotacao());
+    public static String[][] gerarStrings(List<Espaco> espacoList, Espaco dummy){
+        String[][] retorno = new String[espacoList.size()][1];
+        for (int i = 0; i < espacoList.size(); i++) {
+            retorno[i][0] = espacoList.get(i).getNomeEspaco();
+            retorno[i][1] = String.valueOf(espacoList.get(i).getLotacao());
         }
         return retorno;
     }
 
-    public static ObservableList<EspacoCafe> gerarEspacosCafe(String[][] espacosStrings) {
-        ObservableList<EspacoCafe> retorno = FXCollections.observableArrayList();
+    public static ObservableList<Espaco> gerarEspacos(String[][] espacosStrings) {
+        ObservableList<Espaco> retorno = FXCollections.observableArrayList();
         for (String[] strings : espacosStrings) {
             if(strings[1]==null) {
                 break;
                 //strings[1] = String.valueOf(0);
             }
-            retorno.add(new EspacoCafe(strings[0], Integer.parseInt(strings[1])));
-        }
-        return retorno;
-    }
-
-    public static String[][] gerarStrings(List<EspacoTreinamento> espacoTreinamentoList, EspacoTreinamento dummy){
-        String[][] retorno = new String[espacoTreinamentoList.size()][1];
-        for (int i = 0; i < espacoTreinamentoList.size(); i++) {
-            retorno[i][0] = espacoTreinamentoList.get(i).getNomeEspaco();
-            retorno[i][1] = String.valueOf(espacoTreinamentoList.get(i).getLotacao());
-        }
-        return retorno;
-    }
-
-    public static ObservableList<EspacoTreinamento> gerarSalasTreinamento(String[][] salasStrings) {
-        ObservableList<EspacoTreinamento> retorno = FXCollections.observableArrayList();
-        for (String[] strings : salasStrings) {
-            if(strings[1] == null) {
-                break;
-            }
-            retorno.add(new EspacoTreinamento(strings[0], Integer.parseInt(strings[1])));
+            retorno.add(new Espaco(strings[0], Integer.parseInt(strings[1])));
         }
         return retorno;
     }
