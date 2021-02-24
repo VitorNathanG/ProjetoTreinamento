@@ -170,10 +170,45 @@ public class PrincipalController implements Initializable {
         definirElementosOcultaveis();
         esmaecerBotoes();
         janelasReativas();
+        popularSalasTreinamento();
+        //popularEspacosCafe();
         definirTabelas();
         definirVisibilidadeInicial();
         criarOpcoesDeSaida();
 
+    }
+
+    private void popularSalasTreinamento() {
+        for (Pessoa pessoa: pessoas) {
+            for (Espaco salaPrimeiraEtapa: salasTreinamento) {
+                if(pessoa.getEspacoPrimeiraEtapa().equals(salaPrimeiraEtapa.getNomeEspaco())){
+                    salaPrimeiraEtapa.adicionarIntegrantesPrimeiraEtapa(pessoa);
+                    break;
+                }
+            }
+            System.out.println(pessoa.toString());
+            for (Espaco salaSegundaEtapa: salasTreinamento) {
+                if(pessoa.getEspacoSegundaEtapa().equals(salaSegundaEtapa.getNomeEspaco())){
+                    salaSegundaEtapa.adicionarIntegrantesSegundaEtapa(pessoa);
+                    break;
+                }
+            }
+            System.out.println(pessoa.toString());
+            for (Espaco espacoCafePrimeiraEtapa: espacosCafe) {
+                if(pessoa.getEspacoCafePrimeiraEtapa().equals(espacoCafePrimeiraEtapa.getNomeEspaco())){
+                    espacoCafePrimeiraEtapa.adicionarIntegrantesPrimeiraEtapa(pessoa);
+                    break;
+                }
+            }
+            System.out.println(pessoa.toString());
+            for (Espaco espacoCafeSegundaEtapa: espacosCafe) {
+                if(pessoa.getEspacoCafeSegundaEtapa().equals(espacoCafeSegundaEtapa.getNomeEspaco())){
+                    espacoCafeSegundaEtapa.adicionarIntegrantesSegundaEtapa(pessoa);
+                    break;
+                }
+            }
+            System.out.println(pessoa.toString());
+        }
     }
 
     private void ocultarElementos(Region[] elementosOcultaveis) {
@@ -204,9 +239,24 @@ public class PrincipalController implements Initializable {
         } else if (adicionarParticipanteNome.getText().contains("$")){
             System.out.println("O caractere $ não é válido");
         } else {
-            pessoas.add(new Pessoa(Pessoa.separarNome(adicionarParticipanteNome.getText()),
-                    Pessoa.separarSobrenome(adicionarParticipanteNome.getText()), "", "",
-                    "", ""));
+
+            String pessoaNome = Pessoa.separarNome(adicionarParticipanteNome.getText());
+            String pessoaSobrenome = Pessoa.separarSobrenome(adicionarParticipanteNome.getText());
+            String salaPrimeiraEtapa = getNextEspacoPrimeiraEtapa(salasTreinamento).getNomeEspaco();
+            String salaSegundaEtapa = getNextEspacoSegundaEtapa(salasTreinamento).getNomeEspaco();
+            String espacoCafePrimeiraEtapa = getNextEspacoPrimeiraEtapa(espacosCafe).getNomeEspaco();
+            String espacoCafeSegundaEtapa = getNextEspacoSegundaEtapa(espacosCafe).getNomeEspaco();
+
+            Pessoa novaPessoa = new Pessoa(pessoaNome, pessoaSobrenome, salaPrimeiraEtapa, salaSegundaEtapa,
+                    espacoCafePrimeiraEtapa, espacoCafeSegundaEtapa);
+
+            getNextEspacoPrimeiraEtapa(salasTreinamento).adicionarIntegrantesPrimeiraEtapa(novaPessoa);
+            getNextEspacoSegundaEtapa(salasTreinamento).adicionarIntegrantesSegundaEtapa(novaPessoa);
+            getNextEspacoPrimeiraEtapa(espacosCafe).adicionarIntegrantesPrimeiraEtapa(novaPessoa);
+            getNextEspacoSegundaEtapa(espacosCafe).adicionarIntegrantesSegundaEtapa(novaPessoa);
+
+            pessoas.add(novaPessoa);
+
             adicionarParticipanteNome.setText("");
             setModificacoesRealizadas(true);
         }
@@ -252,9 +302,38 @@ public class PrincipalController implements Initializable {
     }
 
     public void botaoExcluirParticipanteClicked(){
-        ObservableList<Pessoa> selecionado = tabelaParticipantes.getSelectionModel().getSelectedItems();
-        tabelaParticipantes.getItems().removeAll(selecionado);
-        pessoas.remove(selecionado);
+        Pessoa pessoa = tabelaParticipantes.getSelectionModel().getSelectedItem();
+
+        for (Espaco salaPrimeiraEtapa: salasTreinamento) {
+            if(pessoa.getEspacoPrimeiraEtapa().equals(salaPrimeiraEtapa.getNomeEspaco())){
+                salaPrimeiraEtapa.removerIntegrantesPrimeiraEtapa(pessoa);
+                break;
+            }
+        }
+        System.out.println(pessoa.toString());
+        for (Espaco salaSegundaEtapa: salasTreinamento) {
+            if(pessoa.getEspacoSegundaEtapa().equals(salaSegundaEtapa.getNomeEspaco())){
+                salaSegundaEtapa.removerIntegrantesSegundaEtapa(pessoa);
+                break;
+            }
+        }
+        System.out.println(pessoa.toString());
+        for (Espaco espacoCafePrimeiraEtapa: espacosCafe) {
+            if(pessoa.getEspacoCafePrimeiraEtapa().equals(espacoCafePrimeiraEtapa.getNomeEspaco())){
+                espacoCafePrimeiraEtapa.removerIntegrantesPrimeiraEtapa(pessoa);
+                break;
+            }
+        }
+        System.out.println(pessoa.toString());
+        for (Espaco espacoCafeSegundaEtapa: espacosCafe) {
+            if(pessoa.getEspacoCafeSegundaEtapa().equals(espacoCafeSegundaEtapa.getNomeEspaco())){
+                espacoCafeSegundaEtapa.removerIntegrantesSegundaEtapa(pessoa);
+                break;
+            }
+        }
+        pessoas.get(pessoas.indexOf(pessoa)).getEspacoCafePrimeiraEtapa();
+        pessoas.remove(pessoa);
+
         setModificacoesRealizadas(true);
     }
 
@@ -293,6 +372,23 @@ public class PrincipalController implements Initializable {
         espacoTreinamentoSelecionado = tabelaSalas.getSelectionModel().getSelectedItem();
         try {
             Parent root = FXMLLoader.load(getClass().getResource("informacaosala.fxml"));
+
+            Scene cena = new Scene(root);
+            Stage palco = new Stage();
+            palco.setScene(cena);
+            palco.setResizable(false);
+            palco.initModality(Modality.APPLICATION_MODAL);
+            palco.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void botaoAbrirDetalhesEspacoCafeClicked(){
+        espacoCafeSelecionado = tabelaEspacosCafe.getSelectionModel().getSelectedItem();
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("informacaoespacocafe.fxml"));
 
             Scene cena = new Scene(root);
             Stage palco = new Stage();
@@ -484,5 +580,29 @@ public class PrincipalController implements Initializable {
         palcoAlertBox.setScene(cena);
         palcoAlertBox.sizeToScene();
         palcoAlertBox.show();
+    }
+
+    public Espaco getNextEspacoPrimeiraEtapa(ObservableList<Espaco> espacos){
+        int menorLotacao = Integer.MAX_VALUE;
+        Espaco retorno = new Espaco();
+        for (Espaco espaco: espacos) {
+            if(espaco.getIntegrantesPrimeiraEtapa().size() < menorLotacao){
+                retorno = espaco;
+                menorLotacao = espaco.getIntegrantesPrimeiraEtapa().size();
+            }
+        }
+        return retorno;
+    }
+
+    public Espaco getNextEspacoSegundaEtapa(ObservableList<Espaco> espacos){
+        int menorLotacao = Integer.MAX_VALUE;
+        Espaco retorno = new Espaco();
+        for (Espaco espaco: espacos) {
+            if(espaco.getIntegrantesSegundaEtapa().size() < menorLotacao){
+                retorno = espaco;
+                menorLotacao = espaco.getIntegrantesSegundaEtapa().size();
+            }
+        }
+        return retorno;
     }
 }

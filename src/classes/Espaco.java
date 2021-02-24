@@ -43,9 +43,7 @@ public class Espaco {
     public void adicionarIntegrantesPrimeiraEtapa(Pessoa... novosIntegrantes) {
         for (Pessoa pessoa : novosIntegrantes) {
             this.getIntegrantesPrimeiraEtapa().add(pessoa);
-            pessoa.setEspacoPrimeiraEtapa(this.getNomeEspaco());
-
-            System.out.println("O integrante " + pessoa.getNome() + 
+            System.out.println("O integrante " + pessoa.getNome() +
             " foi adicionado ao espaço \"" + this.getNomeEspaco() + "\" na primeira etapa");
         }        
     }
@@ -58,8 +56,7 @@ public class Espaco {
     public void adicionarIntegrantesSegundaEtapa(Pessoa... novosIntegrantes) {
         for (Pessoa pessoa : novosIntegrantes) {
             this.getIntegrantesSegundaEtapa().add(pessoa);
-            pessoa.setEspacoSegundaEtapa(this.getNomeEspaco());
-            System.out.println("O integrante " + pessoa.getNome() + 
+            System.out.println("O integrante " + pessoa.getNome() +
             " foi adicionado ao espaço \"" + this.getNomeEspaco() + "\" na segunda etapa");
         }        
     }

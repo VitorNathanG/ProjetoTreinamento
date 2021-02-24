@@ -23,11 +23,11 @@ public class InformacaoEspacoCafeController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Espaco salaTreinamento = PrincipalController.getEspacoTreinamentoSelecionado();
-        nomeEspacoCafe.setText(salaTreinamento.getNomeEspaco());
-        lotacaoEspacoCafe.setText(String.valueOf(salaTreinamento.getLotacao()));
-        totalIntegrantesPrimeiraEtapa.setText(String.valueOf(salaTreinamento.getIntegrantesPrimeiraEtapa().size()));
-        totalIntegrantesSegundaEtapa.setText(String.valueOf(salaTreinamento.getIntegrantesSegundaEtapa().size()));
+        Espaco espacoCafe = PrincipalController.getEspacoCafeSelecionado();
+        nomeEspacoCafe.setText(espacoCafe.getNomeEspaco());
+        lotacaoEspacoCafe.setText(String.valueOf(espacoCafe.getLotacao()));
+        totalIntegrantesPrimeiraEtapa.setText(String.valueOf(espacoCafe.getIntegrantesPrimeiraEtapa().size()));
+        totalIntegrantesSegundaEtapa.setText(String.valueOf(espacoCafe.getIntegrantesSegundaEtapa().size()));
 
     }
 }
