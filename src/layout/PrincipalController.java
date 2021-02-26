@@ -780,6 +780,9 @@ public class PrincipalController implements Initializable {
          * possível que ocorra algum bug ou freeze durante a execução deste método, e uma implementação mais robusta
          * deveria ser aplicada para um software de uso comercial.
          *
+         * Edit: as anomalias de distribuição citadas acima são causadas por fatores matemáticos. Leia mais informações
+         * no ReadMe do programa
+         *
          * *Comentário de implementação por Vitor Nathan Gonçalves.
          */
 
@@ -818,7 +821,6 @@ public class PrincipalController implements Initializable {
                 for (Pessoa p: pessoasQueMudamDeEspaco) {
                     p.setEspacoCafeSegundaEtapa(espaco.getNomeEspaco());
                     espaco.adicionarIntegrantesSegundaEtapa(p);
-                    pessoasQueMudamDeEspaco.remove(pessoasQueMudamDeEspaco.indexOf(p));
                 }
                 break;
             }
@@ -834,9 +836,9 @@ public class PrincipalController implements Initializable {
                     if(rollOver2){
                         if (rollOver3) {
                             rollOver1 = rollOver2 = rollOver3 = false;
-                            Espaco espaco = getEspacosMaisVaziosSegundaEtapa(salasTreinamento).get(0);
+                            Espaco espaco = getEspacosMaisVaziosSegundaEtapa(espacosCafe).get(0);
                             espaco.adicionarIntegrantesSegundaEtapa(pessoasQueMudamDeEspaco.get(contadorPessoa));
-                            pessoasQueMudamDeEspaco.get(contadorPessoa).setEspacoSegundaEtapa(espaco.getNomeEspaco());
+                            pessoasQueMudamDeEspaco.get(contadorPessoa).setEspacoCafeSegundaEtapa(espaco.getNomeEspaco());
                             pessoasQueMudamDeEspaco.remove(pessoasQueMudamDeEspaco.get(contadorPessoa));
                         }
                         rollOver3 = true;
@@ -858,9 +860,9 @@ public class PrincipalController implements Initializable {
                     if(rollOver2){
                         if (rollOver3) {
                             rollOver1 = rollOver2 = rollOver3 = false;
-                            Espaco espaco = getEspacosMaisVaziosSegundaEtapa(salasTreinamento).get(0);
+                            Espaco espaco = getEspacosMaisVaziosSegundaEtapa(espacosCafe).get(0);
                             espaco.adicionarIntegrantesSegundaEtapa(pessoasQueMudamDeEspaco.get(contadorPessoa));
-                            pessoasQueMudamDeEspaco.get(contadorPessoa).setEspacoSegundaEtapa(espaco.getNomeEspaco());
+                            pessoasQueMudamDeEspaco.get(contadorPessoa).setEspacoCafeSegundaEtapa(espaco.getNomeEspaco());
                             pessoasQueMudamDeEspaco.remove(pessoasQueMudamDeEspaco.get(contadorPessoa));
                         }
                         rollOver3 = true;
@@ -884,7 +886,7 @@ public class PrincipalController implements Initializable {
             }
 
             //Caso seja possível mudar o espaço
-            else if (!pessoasQueMudamDeEspaco.get(contadorPessoa).getEspacoPrimeiraEtapa().equals(espacosCafe.get(contadorEspaco).getNomeEspaco()) &&
+            else if (!pessoasQueMudamDeEspaco.get(contadorPessoa).getEspacoCafePrimeiraEtapa().equals(espacosCafe.get(contadorEspaco).getNomeEspaco()) &&
                     espacosCafe.get(contadorEspaco).getIntegrantesSegundaEtapa().size() < valorEsperadoPorSala){
 
                 pessoasQueMudamDeEspaco.get(contadorPessoa).setEspacoCafeSegundaEtapa(espacosCafe.get(contadorEspaco).getNomeEspaco());
@@ -1031,9 +1033,12 @@ public class PrincipalController implements Initializable {
          * testes seria necessária para ter uma melhor avaliação estatística da probabilidade de falha em situações
          * extremas (salas com tamanhos muito variados ou próximas do limite de lotação), algo que meu tempo disponível
          * não permitiria fazer.
-         *     A implementação atual não demonstrou nenhuma anomalia às regras de distribuição. Mas, reiterando, é
+         *     A implementação atual demonstrou poucas anomalias às regras de distribuição. Mas, reiterando, é
          * possível que ocorra algum bug ou freeze durante a execução deste método, e uma implementação mais robusta
          * deveria ser aplicada para um software de uso comercial.
+         *
+         * Edit: as anomalias de distribuição citadas acima são causadas por fatores matemáticos. Leia mais informações
+         * no ReadMe do programa.
          *
          * *Comentário de implementação por Vitor Nathan Gonçalves.
          */
