@@ -824,7 +824,7 @@ public class PrincipalController implements Initializable {
             }
             //Capacidade máxima se refere à população das salas que possuem 1 participante a mais que as outras
             //Caso a sala esteja com sua capacidade máxima esperada, pula para a próxima sala
-            if (espacosCafe.get(contadorEspaco).getIntegrantesSegundaEtapa().size() == valorEsperadoPorSala) {
+            else if (espacosCafe.get(contadorEspaco).getIntegrantesSegundaEtapa().size() == valorEsperadoPorSala) {
                 if (contadorEspaco >= espacosCafe.size()-1){
                     contadorEspaco = 0;
                 } else {
@@ -848,7 +848,7 @@ public class PrincipalController implements Initializable {
             }
 
             //Caso o limite de salas com a capacidade máxima seja alcançado (as outras terão capacidade máx. - 1)
-            if (espacosCafe.get(contadorEspaco).getIntegrantesSegundaEtapa().size() == valorEsperadoPorSala-1 && totalMaximosEsperados ==0) {
+            else if (espacosCafe.get(contadorEspaco).getIntegrantesSegundaEtapa().size() == valorEsperadoPorSala-1 && totalMaximosEsperados ==0) {
                 if (contadorEspaco >= espacosCafe.size()-1){
                     contadorEspaco = 0;
                 } else {
@@ -872,7 +872,7 @@ public class PrincipalController implements Initializable {
             }
 
             //Caso o espaco esteja lotado, pula para o próximo espaço
-            if(espacosCafe.get(contadorEspaco).getIntegrantesSegundaEtapa().size() == espacosCafe.get(contadorEspaco).getLotacao()){
+            else if(espacosCafe.get(contadorEspaco).getIntegrantesSegundaEtapa().size() == espacosCafe.get(contadorEspaco).getLotacao()){
                 espacosNaoLotados.remove(espacosCafe.get(contadorEspaco));
                 if (contadorEspaco >= espacosCafe.size()-1){
                     contadorEspaco = 0;
@@ -884,7 +884,7 @@ public class PrincipalController implements Initializable {
             }
 
             //Caso seja possível mudar o espaço
-            if (!pessoasQueMudamDeEspaco.get(contadorPessoa).getEspacoPrimeiraEtapa().equals(espacosCafe.get(contadorEspaco).getNomeEspaco()) &&
+            else if (!pessoasQueMudamDeEspaco.get(contadorPessoa).getEspacoPrimeiraEtapa().equals(espacosCafe.get(contadorEspaco).getNomeEspaco()) &&
                     espacosCafe.get(contadorEspaco).getIntegrantesSegundaEtapa().size() < valorEsperadoPorSala){
 
                 pessoasQueMudamDeEspaco.get(contadorPessoa).setEspacoCafeSegundaEtapa(espacosCafe.get(contadorEspaco).getNomeEspaco());
@@ -916,7 +916,7 @@ public class PrincipalController implements Initializable {
             }
             //Atuação do rollOver: todas pessoas foram testadas no espaço e nenhuma pode ser atribuida a ele
             //Pula para o próximo espaço e reseta os rollovers
-            if (rollOver2) {
+            else if (rollOver2) {
                 if(rollOver3) { //se tudo der errado acontece isso, e sai com imperfeições
                     Espaco espaco = getEspacosMaisVaziosSegundaEtapa(espacosCafe).get(0);
                     espaco.adicionarIntegrantesSegundaEtapa(pessoasQueMudamDeEspaco.get(contadorPessoa));
@@ -1102,7 +1102,7 @@ public class PrincipalController implements Initializable {
             }
 
             //Caso o limite de salas com a capacidade máxima seja alcançado (as outras terão capacidade máx. - 1)
-            if (salasTreinamento.get(contadorEspaco).getIntegrantesSegundaEtapa().size() == valorEsperadoPorSala-1 && totalMaximosEsperados ==0) {
+            else if (salasTreinamento.get(contadorEspaco).getIntegrantesSegundaEtapa().size() == valorEsperadoPorSala-1 && totalMaximosEsperados ==0) {
                 if (contadorEspaco >= salasTreinamento.size()-1){
                     contadorEspaco = 0;
                 } else {
@@ -1126,7 +1126,7 @@ public class PrincipalController implements Initializable {
             }
 
             //Caso o espaco esteja lotado, pula para o próximo espaço
-            if(salasTreinamento.get(contadorEspaco).getIntegrantesSegundaEtapa().size() == salasTreinamento.get(contadorEspaco).getLotacao()){
+            else if(salasTreinamento.get(contadorEspaco).getIntegrantesSegundaEtapa().size() == salasTreinamento.get(contadorEspaco).getLotacao()){
                 espacosNaoLotados.remove(salasTreinamento.get(contadorEspaco));
                 if (contadorEspaco >= salasTreinamento.size()-1){
                     contadorEspaco = 0;
@@ -1137,7 +1137,7 @@ public class PrincipalController implements Initializable {
             }
 
             //Caso seja possível mudar a sala
-            if (!pessoasQueMudamDeSala.get(contadorPessoa).getEspacoPrimeiraEtapa().equals(salasTreinamento.get(contadorEspaco).getNomeEspaco()) &&
+            else if (!pessoasQueMudamDeSala.get(contadorPessoa).getEspacoPrimeiraEtapa().equals(salasTreinamento.get(contadorEspaco).getNomeEspaco()) &&
                     salasTreinamento.get(contadorEspaco).getIntegrantesSegundaEtapa().size() < valorEsperadoPorSala){
 
                 pessoasQueMudamDeSala.get(contadorPessoa).setEspacoSegundaEtapa(salasTreinamento.get(contadorEspaco).getNomeEspaco());
@@ -1170,7 +1170,7 @@ public class PrincipalController implements Initializable {
             }
             //Atuação do rollOver: todas pessoas foram testadas no espaço e nenhuma pode ser atribuida a ele
             //Pula para o próximo espaço e reseta os rollovers
-            if (rollOver2) {
+            else if (rollOver2) {
                 if(rollOver3) { //se tudo der errado acontece isso, e sai com imperfeições
                     Espaco espaco = getEspacosMaisVaziosSegundaEtapa(salasTreinamento).get(0);
                     espaco.adicionarIntegrantesSegundaEtapa(pessoasQueMudamDeSala.get(contadorPessoa));
