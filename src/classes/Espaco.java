@@ -8,6 +8,9 @@ public class Espaco {
     private List<Pessoa> integrantesPrimeiraEtapa = new ArrayList<>();
     private List<Pessoa> integrantesSegundaEtapa = new ArrayList<>();
     private int lotacao;
+    private int ocupacaoPrimeiraEtapa;
+    private int ocupacaoSegundaEtapa;
+
 
     public Espaco(String nomeEspaco, int lotacao) {
         this.setNomeEspaco(nomeEspaco);
@@ -47,7 +50,7 @@ public class Espaco {
     }
 
     public void removerIntegrantesPrimeiraEtapa(Pessoa integrante){
-        this.getIntegrantesPrimeiraEtapa().remove(integrante);   
+        this.getIntegrantesPrimeiraEtapa().remove(integrante);
     }
 
     public void adicionarIntegrantesSegundaEtapa(Pessoa... novosIntegrantes) {
@@ -79,5 +82,31 @@ public class Espaco {
 
     public void setLotacao(int lotacao) {
         this.lotacao = lotacao;
+    }
+
+    public int getOcupacaoPrimeiraEtapa() {
+        atualizarOcupacaoPrimeiraEtapa();
+        return ocupacaoPrimeiraEtapa;
+    }
+
+    public void setOcupacaoPrimeiraEtapa(int ocupacaoPrimeiraEtapa) {
+        this.ocupacaoPrimeiraEtapa = ocupacaoPrimeiraEtapa;
+    }
+
+    public int getOcupacaoSegundaEtapa() {
+        atualizarOcupacaoSegundaEtapa();
+        return ocupacaoSegundaEtapa;
+    }
+
+    public void setOcupacaoSegundaEtapa(int ocupacaoSegundaEtapa) {
+        this.ocupacaoSegundaEtapa = ocupacaoSegundaEtapa;
+    }
+
+    private void atualizarOcupacaoPrimeiraEtapa(){
+        ocupacaoPrimeiraEtapa = getIntegrantesPrimeiraEtapa().size();
+    }
+
+    private void atualizarOcupacaoSegundaEtapa(){
+        ocupacaoSegundaEtapa = getIntegrantesSegundaEtapa().size();
     }
 }

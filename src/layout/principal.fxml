@@ -70,22 +70,26 @@
             </VBox>
             <AnchorPane fx:id="anchorPaneTabelas" prefHeight="200.0" prefWidth="720.0">
                <children>
-                  <TableView fx:id="tabelaParticipantes" editable="true" prefHeight="616.0" prefWidth="720.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="15.0">
+                  <TableView fx:id="tabelaParticipantes" editable="true" prefHeight="616.0" prefWidth="720.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="15.0">
                     <columns>
                       <TableColumn fx:id="colunaNome" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" resizable="false" text="Nome" />
                         <TableColumn fx:id="colunaSobrenome" prefWidth="184.0" text="Sobrenome" />
                     </columns>
                   </TableView>
-                  <TableView fx:id="tabelaSalas" prefHeight="616.0" prefWidth="720.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="15.0">
+                  <TableView fx:id="tabelaSalas" prefHeight="616.0" prefWidth="720.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="15.0">
                      <columns>
                         <TableColumn fx:id="colunaIdentificacaoSala" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" resizable="false" text="Identificação da Sala" />
-                        <TableColumn fx:id="colunaLotacaoSala" prefWidth="75.0" resizable="false" text="Lotação da Sala" />
+                        <TableColumn fx:id="colunaLotacaoSala" maxWidth="110.0" minWidth="110.0" prefWidth="110.0" resizable="false" text="Lotação da Sala" />
+                        <TableColumn fx:id="colunaOcupacaoPrimeiraFaseSalas" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" resizable="false" text="Ocupação Primeira Fase" />
+                        <TableColumn fx:id="colunaOcupacaoSegundaFaseSalas" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" resizable="false" text="Ocupação Segunda Fase" />
                      </columns>
                   </TableView>
-                  <TableView fx:id="tabelaEspacosCafe" prefHeight="616.0" prefWidth="720.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="15.0">
+                  <TableView fx:id="tabelaEspacosCafe" prefHeight="616.0" prefWidth="720.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="15.0">
                      <columns>
                         <TableColumn fx:id="colunaIdentificacaoEspacosCafe" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" resizable="false" text="Identificação do Espaço de Café" />
-                        <TableColumn fx:id="colunaLotacaoEspacosCafe" prefWidth="75.0" resizable="false" text="Lotação do Espaço" />
+                        <TableColumn fx:id="colunaLotacaoEspacosCafe" maxWidth="110.0" minWidth="110.0" prefWidth="110.0" resizable="false" text="Lotação do Espaço" />
+                        <TableColumn fx:id="colunaOcupacaoPrimeiraFaseEspacoCafe" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" resizable="false" text="Ocupação Primeira Fase" />
+                        <TableColumn fx:id="colunaOcupacaoSegundaFaseEspacoCafe" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" resizable="false" text="Ocupação Segunda Fase" />
                      </columns>
                   </TableView>
                </children>

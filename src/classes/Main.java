@@ -7,11 +7,21 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import layout.PrincipalController;
 
+import java.io.File;
 import java.io.IOException;
 
 public class Main extends Application {
 
     public static void main(String args[]){
+        File pastaBackup = new File("backup");
+        if (!pastaBackup.exists()) {
+            pastaBackup.mkdir();
+        }
+
+        File dados = new File("dados");
+        if (!dados.exists()) {
+            dados.mkdir();
+        }
         launch(args);
     }
 
