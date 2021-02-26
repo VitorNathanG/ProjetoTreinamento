@@ -140,7 +140,6 @@ public class DataHandler {
         for (String[] strings : espacosStrings) {
             if(strings[1]==null) {
                 break;
-                //strings[1] = String.valueOf(0);
             }
             retorno.add(new Espaco(strings[0], Integer.parseInt(strings[1])));
         }

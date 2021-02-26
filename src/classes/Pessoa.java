@@ -99,12 +99,11 @@ public class Pessoa {
 
     @Override
     public String toString(){
-        return this.getNome() + ": " + FileHandler.ENTER +
-                this.getSobrenome() + ": " + FileHandler.ENTER +
+        return this.getNome() + " " + this.getSobrenome() + ": " + FileHandler.ENTER +
                 this.getEspacoPrimeiraEtapa() + FileHandler.ENTER +
                 this.getEspacoSegundaEtapa() + FileHandler.ENTER +
                 this.getEspacoCafePrimeiraEtapa() + FileHandler.ENTER +
-                this.getEspacoCafeSegundaEtapa();
+                this.getEspacoCafeSegundaEtapa() + FileHandler.ENTER;
     }
 
     public String getSobrenome() {

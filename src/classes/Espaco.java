@@ -43,27 +43,34 @@ public class Espaco {
     public void adicionarIntegrantesPrimeiraEtapa(Pessoa... novosIntegrantes) {
         for (Pessoa pessoa : novosIntegrantes) {
             this.getIntegrantesPrimeiraEtapa().add(pessoa);
-            System.out.println("O integrante " + pessoa.getNome() +
-            " foi adicionado ao espaço \"" + this.getNomeEspaco() + "\" na primeira etapa");
-        }        
+        }
     }
 
     public void removerIntegrantesPrimeiraEtapa(Pessoa integrante){
         this.getIntegrantesPrimeiraEtapa().remove(integrante);   
-        integrante.setEspacoPrimeiraEtapa(null);     
     }
 
     public void adicionarIntegrantesSegundaEtapa(Pessoa... novosIntegrantes) {
         for (Pessoa pessoa : novosIntegrantes) {
             this.getIntegrantesSegundaEtapa().add(pessoa);
-            System.out.println("O integrante " + pessoa.getNome() +
-            " foi adicionado ao espaço \"" + this.getNomeEspaco() + "\" na segunda etapa");
-        }        
+        }
+    }
+
+    public void adicionarIntegrantesSegundaEtapa(List<Pessoa> novosIntegrantes) {
+        for (Pessoa pessoa : novosIntegrantes) {
+            this.getIntegrantesSegundaEtapa().add(pessoa);
+        }
     }
 
     public void removerIntegrantesSegundaEtapa(Pessoa integrante){
-        this.getIntegrantesSegundaEtapa().remove(integrante);        
-        integrante.setEspacoSegundaEtapa(null);
+        ArrayList<Pessoa> novosIntegrantes = new ArrayList<>();
+        for (Pessoa pessoa: this.getIntegrantesSegundaEtapa()) {
+            if (pessoa.equals(integrante)){
+                continue;
+            }
+            novosIntegrantes.add(pessoa);
+        }
+        this.setIntegrantesSegundaEtapa(novosIntegrantes);
     }
 
     public int getLotacao() {

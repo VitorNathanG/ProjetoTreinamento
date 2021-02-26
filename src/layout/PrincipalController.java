@@ -1,8 +1,12 @@
 package layout;
 
-import classes.*;
+import classes.DataHandler;
+import classes.Espaco;
+import classes.FileHandler;
+import classes.Pessoa;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,7 +27,7 @@ import javafx.util.StringConverter;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class PrincipalController implements Initializable {
 
@@ -108,7 +112,24 @@ public class PrincipalController implements Initializable {
     private static Pessoa pessoaSelecionada;
     private static Espaco espacoCafeSelecionado;
     private static Espaco espacoTreinamentoSelecionado;
+    public static int capacidadeSalas;
+    public static int capacidadeEspacosCafe;
 
+    public int atualizarCapacidadeSalas() {
+        capacidadeSalas = 0;
+        for (Espaco salaTreinamento: salasTreinamento) {
+            capacidadeSalas += salaTreinamento.getLotacao();
+        }
+        return PrincipalController.capacidadeSalas;
+    }
+
+    public int atualizarCapacidadeEspacosCafe() {
+        capacidadeEspacosCafe = 0;
+        for (Espaco salaTreinamento: espacosCafe) {
+            capacidadeEspacosCafe += salaTreinamento.getLotacao();
+        }
+        return PrincipalController.capacidadeEspacosCafe;
+    }
 
     public static boolean isModificacoesRealizadas() {
         return modificacoesRealizadas;
@@ -167,18 +188,19 @@ public class PrincipalController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources){
 
+        atualizarCapacidadeEspacosCafe();
+        atualizarCapacidadeSalas();
         definirElementosOcultaveis();
         esmaecerBotoes();
         janelasReativas();
-        popularSalasTreinamento();
-        //popularEspacosCafe();
+        popularSalas();
         definirTabelas();
         definirVisibilidadeInicial();
         criarOpcoesDeSaida();
 
     }
 
-    private void popularSalasTreinamento() {
+    private void popularSalas() {
         for (Pessoa pessoa: pessoas) {
             for (Espaco salaPrimeiraEtapa: salasTreinamento) {
                 if(pessoa.getEspacoPrimeiraEtapa().equals(salaPrimeiraEtapa.getNomeEspaco())){
@@ -186,28 +208,24 @@ public class PrincipalController implements Initializable {
                     break;
                 }
             }
-            System.out.println(pessoa.toString());
             for (Espaco salaSegundaEtapa: salasTreinamento) {
                 if(pessoa.getEspacoSegundaEtapa().equals(salaSegundaEtapa.getNomeEspaco())){
                     salaSegundaEtapa.adicionarIntegrantesSegundaEtapa(pessoa);
                     break;
                 }
             }
-            System.out.println(pessoa.toString());
             for (Espaco espacoCafePrimeiraEtapa: espacosCafe) {
                 if(pessoa.getEspacoCafePrimeiraEtapa().equals(espacoCafePrimeiraEtapa.getNomeEspaco())){
                     espacoCafePrimeiraEtapa.adicionarIntegrantesPrimeiraEtapa(pessoa);
                     break;
                 }
             }
-            System.out.println(pessoa.toString());
             for (Espaco espacoCafeSegundaEtapa: espacosCafe) {
                 if(pessoa.getEspacoCafeSegundaEtapa().equals(espacoCafeSegundaEtapa.getNomeEspaco())){
                     espacoCafeSegundaEtapa.adicionarIntegrantesSegundaEtapa(pessoa);
                     break;
                 }
             }
-            System.out.println(pessoa.toString());
         }
     }
 
@@ -235,9 +253,12 @@ public class PrincipalController implements Initializable {
 
     public void adicionarParticipanteBotaoClicked() {
         if (adicionarParticipanteNome.getText().length() < 5) {
-            System.out.println("Nome muito curto");
+            emitirAlertBox("Nome", "O nome inserido é muito curto");
         } else if (adicionarParticipanteNome.getText().contains("$")){
-            System.out.println("O caractere $ não é válido");
+            emitirAlertBox("Caractere Inválido", "O caractere $ não é valido");
+        } else if (pessoas.size() > capacidadeEspacosCafe || pessoas.size() > capacidadeSalas){
+            emitirAlertBox("Baixa capacidade", "O evento não comporta mais participantes." + FileHandler.ENTER +
+                    "Aumente a lotação de salas e espaços de café");
         } else {
 
             String pessoaNome = Pessoa.separarNome(adicionarParticipanteNome.getText());
@@ -256,9 +277,14 @@ public class PrincipalController implements Initializable {
             getNextEspacoSegundaEtapa(espacosCafe).adicionarIntegrantesSegundaEtapa(novaPessoa);
 
             pessoas.add(novaPessoa);
+            System.out.println(novaPessoa.toString());
 
             adicionarParticipanteNome.setText("");
             setModificacoesRealizadas(true);
+            redistribuirSalasTreinamento();
+            System.out.println(novaPessoa.toString());
+            redistribuirEspacosCafeTreinamento();
+            System.out.println(novaPessoa.toString());
         }
     }
 
@@ -275,6 +301,8 @@ public class PrincipalController implements Initializable {
                 adicionarSalaNome.setText("");
                 adicionarSalaLotacao.setText("");
                 setModificacoesRealizadas(true);
+                atualizarCapacidadeSalas();
+                redistribuirSalasTreinamento();
             }
         } catch (NumberFormatException e) {
             emitirAlertBox("Erro na lotação", "Verifique o valor da lotação");
@@ -295,6 +323,8 @@ public class PrincipalController implements Initializable {
                 adicionarEspacoCafeNome.setText("");
                 adicionarEspacoCafeLotacao.setText("");
                 setModificacoesRealizadas(true);
+                atualizarCapacidadeEspacosCafe();
+                redistribuirEspacosCafeTreinamento();
             }
         } catch (NumberFormatException e) {
             emitirAlertBox("Erro na lotação", "Verifique o valor da lotação");
@@ -310,45 +340,83 @@ public class PrincipalController implements Initializable {
                 break;
             }
         }
-        System.out.println(pessoa.toString());
         for (Espaco salaSegundaEtapa: salasTreinamento) {
             if(pessoa.getEspacoSegundaEtapa().equals(salaSegundaEtapa.getNomeEspaco())){
                 salaSegundaEtapa.removerIntegrantesSegundaEtapa(pessoa);
                 break;
             }
         }
-        System.out.println(pessoa.toString());
         for (Espaco espacoCafePrimeiraEtapa: espacosCafe) {
             if(pessoa.getEspacoCafePrimeiraEtapa().equals(espacoCafePrimeiraEtapa.getNomeEspaco())){
                 espacoCafePrimeiraEtapa.removerIntegrantesPrimeiraEtapa(pessoa);
                 break;
             }
         }
-        System.out.println(pessoa.toString());
         for (Espaco espacoCafeSegundaEtapa: espacosCafe) {
             if(pessoa.getEspacoCafeSegundaEtapa().equals(espacoCafeSegundaEtapa.getNomeEspaco())){
                 espacoCafeSegundaEtapa.removerIntegrantesSegundaEtapa(pessoa);
                 break;
             }
         }
-        pessoas.get(pessoas.indexOf(pessoa)).getEspacoCafePrimeiraEtapa();
-        pessoas.remove(pessoa);
 
+        /*
+         * As 8 linhas abaixo fazem exatamente o mesmo que pessoas.remove(pessoa), mas por algum
+         * motivo, esse método quebra o ObservableList pessoas completamente
+         */
+        ObservableList<Pessoa> novasPessoas = FXCollections.observableArrayList();
+        for (Pessoa pessoaSubstituta: pessoas) {
+            if(!pessoaSubstituta.equals(pessoa)){
+                novasPessoas.add(pessoaSubstituta);
+            }
+        }
+        pessoas = FXCollections.observableArrayList();
+        pessoas.addAll(novasPessoas);
+        definirTabelas();
         setModificacoesRealizadas(true);
+        redistribuirSalasTreinamento();
+        redistribuirEspacosCafeTreinamento();
     }
 
     public void botaoExcluirSalaClicked(){
-        ObservableList<Espaco> selecionado = tabelaSalas.getSelectionModel().getSelectedItems();
-        tabelaSalas.getItems().removeAll(selecionado);
-        salasTreinamento.remove(selecionado);
-        setModificacoesRealizadas(true);
+        Espaco selecionado = tabelaSalas.getSelectionModel().getSelectedItem();
+
+        if (pessoas.size() != 0 && capacidadeSalas - selecionado.getLotacao() < pessoas.size()) {
+            emitirAlertBox("Lotação insuficiente", "Não é possível excluir, capacidade do evento insuficiente");
+        } else if (salasTreinamento.size() == 2) {
+            tabelaSalas.getItems().removeAll(selecionado);
+            salasTreinamento.remove(selecionado);
+            Espaco remanescente = tabelaSalas.getItems().get(0);
+            remanescente.setIntegrantesSegundaEtapa(new ArrayList<>());
+            remanescente.setIntegrantesPrimeiraEtapa(new ArrayList<>());
+            for (Pessoa participante: pessoas) {
+
+                participante.setEspacoPrimeiraEtapa(selecionado.getNomeEspaco());
+                participante.setEspacoSegundaEtapa(selecionado.getNomeEspaco());
+                remanescente.adicionarIntegrantesPrimeiraEtapa(participante);
+                remanescente.adicionarIntegrantesSegundaEtapa(participante);
+            }
+        } else {
+            tabelaSalas.getItems().removeAll(selecionado);
+            salasTreinamento.remove(selecionado);
+            redistribuirSalasTreinamento();
+            definirTabelas();
+            atualizarCapacidadeSalas();
+            setModificacoesRealizadas(true);
+        }
     }
 
     public void botaoExcluirEspacoCafeClicked(){
-        ObservableList<Espaco> selecionado = tabelaEspacosCafe.getSelectionModel().getSelectedItems();
-        tabelaEspacosCafe.getItems().removeAll(selecionado);
-        espacosCafe.remove(selecionado);
-        setModificacoesRealizadas(true);
+        Espaco selecionado = tabelaEspacosCafe.getSelectionModel().getSelectedItem();
+        if(capacidadeEspacosCafe - selecionado.getLotacao() < pessoas.size()) {
+            emitirAlertBox("Lotação insuficiente", "Não é possível excluir, capacidade do evento insuficiente");
+        } else {
+            tabelaEspacosCafe.getItems().removeAll(selecionado);
+            espacosCafe.remove(selecionado);
+            redistribuirEspacosCafeTreinamento();
+            definirTabelas();
+            atualizarCapacidadeEspacosCafe();
+            setModificacoesRealizadas(true);
+        }
     }
 
     public void botaoAbrirDetalhesParticipanteClicked(){
@@ -601,6 +669,406 @@ public class PrincipalController implements Initializable {
             if(espaco.getIntegrantesSegundaEtapa().size() < menorLotacao){
                 retorno = espaco;
                 menorLotacao = espaco.getIntegrantesSegundaEtapa().size();
+            }
+        }
+        return retorno;
+    }
+
+    public void redistribuirEspacosCafeTreinamento(){
+        Random gerador = new Random();
+
+        for (Pessoa pessoa: pessoas) {
+            pessoa.setEspacoCafePrimeiraEtapa("");
+            pessoa.setEspacoCafeSegundaEtapa("");
+        }
+        for (Espaco espacoCafe: espacosCafe) {
+            espacoCafe.setIntegrantesPrimeiraEtapa(new ArrayList<>());
+            espacoCafe.setIntegrantesSegundaEtapa(new ArrayList<>());
+        }
+
+        /*
+         * As linhas abaixo definem aleatoriamente as salas de treinamento e espacos de café para
+         * cada um dos participantes, mas não fazem a troca de participantes entre a primeira e a segunda etapas
+         */
+
+        for (Pessoa pessoa: pessoas) {
+            ArrayList<Espaco> cafes = getEspacosMaisVaziosPrimeiraEtapa(espacosCafe);
+            Espaco cafe = cafes.get(gerador.nextInt(cafes.size()));
+
+            pessoa.setEspacoCafePrimeiraEtapa(cafe.getNomeEspaco());
+            pessoa.setEspacoCafeSegundaEtapa(cafe.getNomeEspaco());
+            cafe.adicionarIntegrantesPrimeiraEtapa(pessoa);
+            cafe.adicionarIntegrantesSegundaEtapa(pessoa);
+        }
+
+        ArrayList<Pessoa> pessoasQueMudamDeSala = new ArrayList<>();
+
+        for (Espaco espaco : espacosCafe) {
+            boolean selecionador = true;
+            for (Pessoa participante: espaco.getIntegrantesSegundaEtapa()) {
+                if (selecionador) {
+                    espaco.removerIntegrantesSegundaEtapa(participante);
+                    pessoasQueMudamDeSala.add(participante);
+                    selecionador = false;
+                } else {
+                    selecionador = true;
+                }
+            }
+        }
+
+        for (Pessoa p: pessoasQueMudamDeSala) {
+            p.setEspacoCafeSegundaEtapa("");
+        }
+
+        ArrayList<Espaco> espacosMaisCheios = getEspacosMaisCheiosSegundaEtapa(espacosCafe);
+        int contadorPessoa = espacosCafe.indexOf(espacosMaisCheios.get(espacosMaisCheios.size()-1)); //PEGAR O ESPAÇO SEGUINTE AO MAIS CHEIO
+        int contadorEspaco = 0;
+        boolean rollOver1 = false;
+        boolean rollOver2 = true;
+        int valorEsperadoPorSala = getEspacosMaisCheiosPrimeiraEtapa(espacosCafe).get(0).getIntegrantesPrimeiraEtapa().size();
+
+        ArrayList<Espaco> espacosNaoLotados = new ArrayList<>();
+        espacosNaoLotados.addAll(espacosCafe);
+
+        while (pessoasQueMudamDeSala.size() != 0) {
+            if(espacosNaoLotados.size() == 1) {
+                Espaco espaco = espacosCafe.get(espacosCafe.indexOf(espacosNaoLotados.get(0)));
+                for (Pessoa p: pessoasQueMudamDeSala) {
+                    p.setEspacoCafeSegundaEtapa(espaco.getNomeEspaco());
+                    espaco.adicionarIntegrantesSegundaEtapa(p);
+                    pessoasQueMudamDeSala.remove(pessoasQueMudamDeSala.indexOf(p));
+                    rollOver1 = false;
+                    rollOver2 = false;
+                }
+                break;
+            }
+            if(espacosCafe.get(contadorEspaco).getIntegrantesSegundaEtapa().size() == espacosCafe.get(contadorEspaco).getLotacao()){
+                espacosNaoLotados.remove(espacosCafe.get(contadorEspaco));
+                if (contadorEspaco >= espacosCafe.size()-1){
+                    contadorEspaco = 0;
+                } else {
+                    contadorEspaco++;
+                }
+                continue;
+            }
+            if (!pessoasQueMudamDeSala.get(contadorPessoa).getEspacoCafePrimeiraEtapa().equals(espacosCafe.get(contadorEspaco).getNomeEspaco()) &&
+                    espacosCafe.get(contadorEspaco).getIntegrantesSegundaEtapa().size() < valorEsperadoPorSala){
+                pessoasQueMudamDeSala.get(contadorPessoa).setEspacoCafeSegundaEtapa(espacosCafe.get(contadorEspaco).getNomeEspaco());
+                espacosCafe.get(contadorEspaco).adicionarIntegrantesSegundaEtapa(pessoasQueMudamDeSala.get(contadorPessoa));
+                pessoasQueMudamDeSala.remove(contadorPessoa);
+                if (contadorEspaco >= espacosCafe.size()-1){
+                    contadorEspaco = 0;
+                } else {
+                    contadorEspaco++;
+                }
+                if (contadorPessoa >= pessoasQueMudamDeSala.size()-1){
+                    contadorPessoa = 0;
+                }
+                continue;
+            }
+            if (rollOver2) {
+                if (contadorEspaco >= espacosCafe.size()-1){
+                    contadorEspaco = 0;
+                } else {
+                    contadorEspaco++;
+                }
+                rollOver1 = false;
+                rollOver2 = false;
+            }
+            if (contadorPessoa >= pessoasQueMudamDeSala.size()-1){
+                contadorPessoa = 0;
+                if (rollOver1) {
+                    rollOver2 = true;
+                }
+                rollOver1 = true;
+            } else {
+                contadorPessoa++;
+            }
+        }
+    }
+
+    /**
+     * Redistribui os participantes nas salas de treinamento
+     *
+     * Perigo: o método abaixo pode causar dor de cabeça, ansiedade e desespero.
+     */
+    public void redistribuirSalasTreinamento(){
+        /*
+         * As linhas abaixo limpam as atuais definições de salas
+         * Dificuldade: 1
+         */
+        Random gerador = new Random();
+
+        Collections.shuffle(pessoas);
+
+        for (Pessoa pessoa: pessoas) {
+            pessoa.setEspacoPrimeiraEtapa("");
+            pessoa.setEspacoSegundaEtapa("");
+        }
+        for (Espaco sala: salasTreinamento) {
+            sala.setIntegrantesPrimeiraEtapa(new ArrayList<>());
+            sala.setIntegrantesSegundaEtapa(new ArrayList<>());
+        }
+
+        /*
+         * As linhas abaixo definem aleatoriamente as salas de treinamento para
+         * cada um dos participantes, mas não fazem a troca de participantes entre a primeira e a segunda etapas
+         * Dificuldade: 3
+         */
+
+        for (Pessoa pessoa: pessoas) {
+            ArrayList<Espaco> salas = getEspacosMaisVaziosPrimeiraEtapa(salasTreinamento);
+            Espaco sala = salas.get(gerador.nextInt(salas.size()));
+
+            pessoa.setEspacoPrimeiraEtapa(sala.getNomeEspaco());
+            pessoa.setEspacoSegundaEtapa(sala.getNomeEspaco());
+            sala.adicionarIntegrantesPrimeiraEtapa(pessoa);
+            sala.adicionarIntegrantesSegundaEtapa(pessoa);
+        }
+
+        /*
+         * As linhas abaixo definem quais participantes continuam na sala na segunda etapa
+         * e quais pessoas vão para outras salas
+         * Dificuldade: 4
+         */
+
+        ArrayList<Pessoa> pessoasQueMudamDeSala = new ArrayList<>();
+        for (Espaco espaco : salasTreinamento) {
+            boolean selecionador = true;
+            for (Pessoa participante: espaco.getIntegrantesSegundaEtapa()) {
+                if (selecionador) {
+                    espaco.removerIntegrantesSegundaEtapa(participante);
+                    pessoasQueMudamDeSala.add(participante);
+                    selecionador = false;
+                } else {
+                    selecionador = true;
+                }
+            }
+        }
+
+        for (Pessoa p: pessoasQueMudamDeSala) {
+            p.setEspacoSegundaEtapa("");
+        }
+
+        /*
+         *     As linhas até o final do método são responsáveis por distribuir os participantes que
+         * trocam de espaço. Cada um deles é destinado aleatoriamente para um espaço que não esteja cheio
+         * ou que já tenha atingido o seu "valor esperado". A extensão e complexidade do método se devem
+         * às condições propostas no problema:
+         *
+         *  1- Para estimular a troca de conhecimentos, metade das pessoas precisam trocar de sala entre
+         *     as duas etapas do treinamento.
+         *  2- A diferença de pessoas em cada sala deverá ser de no máximo 1 pessoa.
+         *
+         *     Como a implementação deste sistema leva em conta um número arbitrário de participantes, salas de
+         * treinamento e espaços de café, delegar os participantes consistentemente para uma sala diferente da qual eles
+         * realizaram a primeira parte do treinamento torna-se complicado.
+         *     A situação é agravada ao se considerar a segunda condição do problema. Tal condição torna muito complexo
+         * o processo de correção de eventuais erros que os algoritmos usados para implementar a primeira parte
+         * geram.
+         *     As implementações anteriores que tentei aparentavam corrigir todos os problemas citados acima, porém,
+         * em situações limite, falhavam e geravam anomalias na distribuição. Uma grande quantidade de
+         * testes seria necessária para ter uma melhor avaliação estatística da probabilidade de falha em situações
+         * extremas (salas com tamanhos muito variados ou próximas do limite de lotação), algo que meu tempo disponível
+         * não permitiria fazer.
+         *     A implementação atual não demonstrou nenhuma anomalia às regras de distribuição. Mas, reiterando, é
+         * possível que ocorra algum bug ou freeze durante a execução deste método, e uma implementação mais robusta
+         * deveria ser aplicada para um software de uso comercial.
+         *
+         * *Comentário de implementação por Vitor Nathan Gonçalves.
+         */
+
+        /*
+         * As linhas abaixo definem alguns parâmetros necessários para definir os limites de lotação e distribuição dos
+         * participantes. Destaque especial para os Booleanos rollOver: eles servem como sistema para evitar que o algoritmo
+         * entre em softlock devido a uma tentativa de atribuir um participante ao mesmo espaço que ele realizou a
+         * primeira etapa do treinamento.
+         */
+        ArrayList<Espaco> espacosMaisCheios = getEspacosMaisCheiosSegundaEtapa(salasTreinamento);
+        int contadorPessoa = 0;
+        int contadorEspaco = salasTreinamento.indexOf(espacosMaisCheios.get(espacosMaisCheios.size()-1)); //PEGAR O ESPAÇO SEGUINTE AO MAIS CHEIO
+        if (contadorEspaco == salasTreinamento.size()-1) { // Evita um IndexOutOfBounds caso todos os espaços estejam com
+            contadorEspaco = 0;                            // a mesma capacidade
+        }
+        boolean rollOver1 = false;
+        boolean rollOver2 = true;
+        int valorEsperadoPorSala = getEspacosMaisCheiosPrimeiraEtapa(salasTreinamento).get(0).getIntegrantesPrimeiraEtapa().size();
+        int totalMaximosEsperados = getEspacosMaisCheiosPrimeiraEtapa(salasTreinamento).size();
+
+        ArrayList<Espaco> espacosNaoLotados = new ArrayList<>();
+        espacosNaoLotados.addAll(salasTreinamento);
+
+        /*
+         * Início do loop principal de distribuição, só termina quando todos participantes tenham sido designados para
+         * uma sala que atende aos critérios. Um espaço é mantido fixo enquanto os participantes são "ciclados" até
+         * que um participante possa integrar o espaço, respeitando os critérios de distribuição
+         */
+        while (pessoasQueMudamDeSala.size() != 0) {
+
+            //Caso somente uma sala não esteja lotada, atribui todos os participantes que restam à ela
+            if(espacosNaoLotados.size() == 1) {
+                Espaco espaco = salasTreinamento.get(salasTreinamento.indexOf(espacosNaoLotados.get(0)));
+                for (Pessoa p: pessoasQueMudamDeSala) {
+                    p.setEspacoSegundaEtapa(espaco.getNomeEspaco());
+                    espaco.adicionarIntegrantesSegundaEtapa(p);
+                    pessoasQueMudamDeSala.remove(pessoasQueMudamDeSala.indexOf(p));
+                }
+                break;
+            }
+            //Capacidade máxima se refere à população das salas que possuem 1 participante a mais que as outras
+            //Caso a sala esteja com sua capacidade máxima esperada, pula para a próxima sala
+            if (salasTreinamento.get(contadorEspaco).getIntegrantesSegundaEtapa().size() == valorEsperadoPorSala) {
+                if (contadorEspaco >= salasTreinamento.size()-1){
+                    contadorEspaco = 0;
+                } else {
+                    contadorEspaco++;
+                }
+                continue;
+            }
+
+            //Caso o limite de salas com a capacidade máxima seja alcançado (as outras terão capacidade máx. - 1)
+            if (salasTreinamento.get(contadorEspaco).getIntegrantesSegundaEtapa().size() == valorEsperadoPorSala-1 && totalMaximosEsperados ==0) {
+                if (contadorEspaco >= salasTreinamento.size()-1){
+                    contadorEspaco = 0;
+                } else {
+                    contadorEspaco++;
+                }
+                continue;
+            }
+
+            //Caso o espaco esteja lotado, pula para o próximo espaço
+            if(salasTreinamento.get(contadorEspaco).getIntegrantesSegundaEtapa().size() == salasTreinamento.get(contadorEspaco).getLotacao()){
+                espacosNaoLotados.remove(salasTreinamento.get(contadorEspaco));
+                if (contadorEspaco >= salasTreinamento.size()-1){
+                    contadorEspaco = 0;
+                } else {
+                    contadorEspaco++;
+                }
+                continue;
+            }
+
+            //Caso seja possível mudar a sala
+            if (!pessoasQueMudamDeSala.get(contadorPessoa).getEspacoPrimeiraEtapa().equals(salasTreinamento.get(contadorEspaco).getNomeEspaco()) &&
+                    salasTreinamento.get(contadorEspaco).getIntegrantesSegundaEtapa().size() < valorEsperadoPorSala){
+
+                pessoasQueMudamDeSala.get(contadorPessoa).setEspacoSegundaEtapa(salasTreinamento.get(contadorEspaco).getNomeEspaco());
+                salasTreinamento.get(contadorEspaco).adicionarIntegrantesSegundaEtapa(pessoasQueMudamDeSala.get(contadorPessoa));
+                pessoasQueMudamDeSala.remove(contadorPessoa);
+
+                //Reduz 1 no número de salas que ainda podem ter 1 integrante a mais que as outras
+                if (salasTreinamento.get(contadorEspaco).getIntegrantesSegundaEtapa().size() == valorEsperadoPorSala) {
+                    totalMaximosEsperados--;
+                }
+
+                //Pula para o próximo espaço
+                if (contadorEspaco >= salasTreinamento.size()-1){
+                    contadorEspaco = 0;
+                } else {
+                    contadorEspaco++;
+                }
+
+                //Pula para a próxima pessoa da lista
+                if (contadorPessoa >= pessoasQueMudamDeSala.size()-1){
+                    contadorPessoa = 0;
+                }
+
+                //Reseta os rollOvers, visto que não houve necessidade de pular um espaço indisponível
+                rollOver1 = false;
+                rollOver2 = false;
+                continue;
+
+            }
+            //Atuação do rollOver: todas pessoas foram testadas no espaço e nenhuma pode ser atribuida a ele
+            //Pula para o próximo espaço e reseta os rollovers
+            if (rollOver2) {
+                if (contadorEspaco >= salasTreinamento.size()-1){
+                    contadorEspaco = 0;
+                } else {
+                    contadorEspaco++;
+                }
+                rollOver1 = false;
+                rollOver2 = false;
+            }
+            //Caso nenhuma das opções acima seja atendida, simplesmente pula para a próxima pessoa
+            if (contadorPessoa >= pessoasQueMudamDeSala.size()-1){
+                contadorPessoa = 0;
+                if (rollOver1) {
+                    rollOver2 = true;
+                }
+                rollOver1 = true;
+            } else {
+                contadorPessoa++;
+            }
+        }
+    }
+
+    public ArrayList<Espaco> getEspacosMaisVaziosPrimeiraEtapa(ObservableList<Espaco> espacos){
+        int minimoPessoas = Integer.MAX_VALUE;
+        ArrayList<Espaco> retorno = new ArrayList<>();
+        for (Espaco espaco : espacos) {
+            if (espaco.getLotacao() == espaco.getIntegrantesPrimeiraEtapa().size()){
+                continue;
+            }
+            if (espaco.getIntegrantesPrimeiraEtapa().size() < minimoPessoas) {
+                retorno = new ArrayList<>();
+                retorno.add(espaco);
+                minimoPessoas = espaco.getIntegrantesPrimeiraEtapa().size();
+            } else if (espaco.getIntegrantesPrimeiraEtapa().size() == minimoPessoas) {
+                retorno.add(espaco);
+            }
+        }
+        return retorno;
+    }
+
+    public ArrayList<Espaco> getEspacosMaisVaziosSegundaEtapa(ObservableList<Espaco> espacos){
+        int minimoPessoas = Integer.MAX_VALUE;
+        ArrayList<Espaco> retorno = new ArrayList<>();
+        for (Espaco espaco : espacos) {
+            if(espaco.getLotacao() == espaco.getIntegrantesSegundaEtapa().size()) {
+                continue;
+            }
+            if (espaco.getIntegrantesSegundaEtapa().size() < minimoPessoas) {
+                retorno = new ArrayList<>();
+                retorno.add(espaco);
+                minimoPessoas = espaco.getIntegrantesSegundaEtapa().size();
+            } else if (espaco.getIntegrantesSegundaEtapa().size() == minimoPessoas) {
+                retorno.add(espaco);
+            }
+        }
+        return retorno;
+    }
+
+    public ArrayList<Espaco> getEspacosMaisCheiosSegundaEtapa(ObservableList<Espaco> espacos){
+        int maximoPessoas = Integer.MIN_VALUE;
+        ArrayList<Espaco> retorno = new ArrayList<>();
+        for (Espaco espaco : espacos) {
+            if(espaco.getLotacao() == espaco.getIntegrantesSegundaEtapa().size()) {
+                continue;
+            }
+            if (espaco.getIntegrantesSegundaEtapa().size() > maximoPessoas) {
+                retorno = new ArrayList<>();
+                retorno.add(espaco);
+                maximoPessoas = espaco.getIntegrantesSegundaEtapa().size();
+            } else if (espaco.getIntegrantesSegundaEtapa().size() == maximoPessoas) {
+                retorno.add(espaco);
+            }
+        }
+        return retorno;
+    }
+
+    public ArrayList<Espaco> getEspacosMaisCheiosPrimeiraEtapa(ObservableList<Espaco> espacos){
+        int maximoPessoas = Integer.MIN_VALUE;
+        ArrayList<Espaco> retorno = new ArrayList<>();
+        for (Espaco espaco : espacos) {
+            if(espaco.getLotacao() == espaco.getIntegrantesPrimeiraEtapa().size()) {
+                continue;
+            }
+            if (espaco.getIntegrantesPrimeiraEtapa().size() > maximoPessoas) {
+                retorno = new ArrayList<>();
+                retorno.add(espaco);
+                maximoPessoas = espaco.getIntegrantesPrimeiraEtapa().size();
+            } else if (espaco.getIntegrantesPrimeiraEtapa().size() == maximoPessoas) {
+                retorno.add(espaco);
             }
         }
         return retorno;
