@@ -10,9 +10,12 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 
 /**
- * Diversos métodos para manipular linhas em um arquivo de texto qualquer.
+ * Classe FileHandler: diversos métodos para manipular linhas em um arquivo de texto qualquer.
  * Permite adicionar uma linha ao fim do documento, remover linhas, ler um 
  * arquivo e sobrescrever um arquivo.
+ *
+ * O conteúdo desta classe não deve ser utilizado para situações de muita carga, visto que os métodos são pouco
+ * otimizados para velocidade. Nesse caso, um banco de dados tradicional deve ser aplicado.
  * 
  * @author Vitor Nathan Gonçalves
  * @version 1.0
@@ -31,7 +34,7 @@ public class FileHandler {
     public static File criarArquivo(String endereco) {
         File arquivo = new File(endereco);
         try {
-            if (!arquivo.exists()) { //cria um novo arquivo caso ele não exista
+            if (!arquivo.exists()) {        //cria um novo arquivo caso ele não exista
                 arquivo.createNewFile();
             } 
         } catch (Exception e) {
@@ -47,7 +50,7 @@ public class FileHandler {
      */
     public static String lerArquivo(File arquivo){
         try(BufferedReader br = new BufferedReader(new FileReader(arquivo))){
-            return new String(Files.readAllBytes(arquivo.toPath())); //lê o arquivo inteiro
+            return new String(Files.readAllBytes(arquivo.toPath()));        //lê o arquivo inteiro
         } catch (Exception e){
             Alerta.novoErro(e.getClass().toString(), "exceção no método FileHandling.lerArquivo(). Arquivo não encontrado");
             return "";
@@ -68,7 +71,7 @@ public class FileHandler {
                 }
                 out.write(ENTER + string);   //adiciona a próxima linha
             }
-        } catch (Exception e) {
+        } catch (Exception e) { //Debug
             Alerta.novoErro(e.getClass().toString(), "exceção no método FileHandling.adicionarAoArquivo(). Arquivo inválido.");
         } 
     }
@@ -81,7 +84,7 @@ public class FileHandler {
     public static void escreverArquivo(File arquivo, String texto) {
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(arquivo, false)))){
             out.write(texto);
-        } catch (Exception e) {
+        } catch (Exception e) { //Debug
             Alerta.novoErro(e.getClass().toString(), "exceção no método FileHandling.escreverArquivo(). Arquivo inválido.");
         }
     }
@@ -97,8 +100,8 @@ public class FileHandler {
             linhaLeitura.skip(arquivo.length());            //pula para a ultima linha do arquivo
             int qtdLinha = linhaLeitura.getLineNumber();    //recupera o número da última linha do arquivo
             linhaLeitura.close();
-            return qtdLinha + 1;                            //retorna + 1, visto que a contagem de linhas
-        } catch (Exception e) {                             //começa em 0
+            return qtdLinha + 1;                            //retorna + 1, visto que a contagem de linhas começa em 0
+        } catch (Exception e) {  //Debug
             Alerta.novoErro("IOException", "removerDoArquivo em FileHandling. O arquivo passado para contLinhas não existe.");
             return 0;
         }
@@ -113,33 +116,34 @@ public class FileHandler {
         BufferedReader br;
         
         try (FileReader fr = new FileReader(arquivo)) {
+
             // Inicializa as instâncias necessárias
             br = new BufferedReader(fr);
-            String novoTextoArquivo = "";
+            StringBuilder novoTextoArquivo = new StringBuilder();
             int qtdLinha= contLinhas(arquivo);
 
             //String que armazena a próxima linha a ser adicionada ao novo arquivo
             String apendice;
 
-            if (indexLinha == 1) { //Caso a linha removida seja a primeira linha do arquivo, para evitar erros
+            if (indexLinha == 1) {      //Caso a linha removida seja a primeira linha do arquivo, para evitar erros
                 br.readLine();
-                novoTextoArquivo += br.readLine();
+                novoTextoArquivo.append(br.readLine());
                 for (int i = 2; i < qtdLinha; i++) {
-                    novoTextoArquivo += ENTER + br.readLine();
+                    novoTextoArquivo.append(ENTER).append(br.readLine());
                 } 
             
             } else {
-                novoTextoArquivo += br.readLine();
+                novoTextoArquivo.append(br.readLine());
                 for (int i = 1; i < qtdLinha; i++) {
                     apendice = br.readLine();
                     if (i == indexLinha - 1 || apendice == null) {
                         
                     } else {
-                        novoTextoArquivo += ENTER + apendice;
+                        novoTextoArquivo.append(ENTER).append(apendice);
                     }
                 }
             }
-            escreverArquivo(arquivo, novoTextoArquivo);
+            escreverArquivo(arquivo, novoTextoArquivo.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }

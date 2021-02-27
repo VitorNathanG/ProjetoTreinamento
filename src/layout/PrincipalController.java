@@ -32,6 +32,14 @@ import java.util.Collections;
 import java.util.Random;
 import java.util.ResourceBundle;
 
+/**
+ * Classe controller do layout principal.FXML.
+ * A classe é responsável por fazer o controle de dados a serem exibidos, adicionados ou removidos das tabelas, o que a
+ * torna a classe mais relevante para o projeto.
+ *
+ * @author Vitor Nathan Gonçalves
+ * @version 1.0
+ */
 public class PrincipalController implements Initializable {
 
     //Indicações dos elementos contidos no layout FXML
@@ -285,7 +293,6 @@ public class PrincipalController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources){
-
         atualizarCapacidadeEspacosCafe();
         atualizarCapacidadeSalas();
         definirElementosOcultaveis();
@@ -295,7 +302,6 @@ public class PrincipalController implements Initializable {
         definirTabelas();
         definirVisibilidadeInicial();
         criarOpcoesDeSaida();
-
     }
 
     /**
@@ -449,7 +455,7 @@ public class PrincipalController implements Initializable {
 
         for (Espaco salaPrimeiraEtapa: salasTreinamento) {
             if(pessoa.getEspacoPrimeiraEtapa().equals(salaPrimeiraEtapa.getNomeEspaco())){
-                salaPrimeiraEtapa.removerIntegrantesPrimeiraEtapa(pessoa);
+                salaPrimeiraEtapa.removerIntegrantePrimeiraEtapa(pessoa);
                 break;
             }
         }
@@ -461,7 +467,7 @@ public class PrincipalController implements Initializable {
         }
         for (Espaco espacoCafePrimeiraEtapa: espacosCafe) {
             if(pessoa.getEspacoCafePrimeiraEtapa().equals(espacoCafePrimeiraEtapa.getNomeEspaco())){
-                espacoCafePrimeiraEtapa.removerIntegrantesPrimeiraEtapa(pessoa);
+                espacoCafePrimeiraEtapa.removerIntegrantePrimeiraEtapa(pessoa);
                 break;
             }
         }
@@ -1345,6 +1351,12 @@ public class PrincipalController implements Initializable {
         }
     }
 
+    /**
+     * Retorna um ArrayList<Espaco> que contém os espacos que possuem menos participantes na primeira etapa.
+     * (todos os espacos retornados possuem a mesma ocupação).
+     * @param espacos
+     * @return
+     */
     public ArrayList<Espaco> getEspacosMaisVaziosPrimeiraEtapa(ObservableList<Espaco> espacos){
         int minimoPessoas = Integer.MAX_VALUE;
         ArrayList<Espaco> retorno = new ArrayList<>();
@@ -1363,6 +1375,12 @@ public class PrincipalController implements Initializable {
         return retorno;
     }
 
+    /**
+     * Retorna um ArrayList<Espaco> que contém os espacos que possuem menos participantes na segunda etapa.
+     * (todos os espacos retornados possuem a mesma ocupação).
+     * @param espacos
+     * @return
+     */
     public ArrayList<Espaco> getEspacosMaisVaziosSegundaEtapa(ObservableList<Espaco> espacos){
         int minimoPessoas = Integer.MAX_VALUE;
         ArrayList<Espaco> retorno = new ArrayList<>();
@@ -1381,6 +1399,36 @@ public class PrincipalController implements Initializable {
         return retorno;
     }
 
+    /**
+     * Retorna um ArrayList<Espaco> que contém os espacos que possuem mais participantes na primeira etapa.
+     * (todos os espacos retornados possuem a mesma ocupação).
+     * @param espacos
+     * @return
+     */
+    public ArrayList<Espaco> getEspacosMaisCheiosPrimeiraEtapa(ObservableList<Espaco> espacos){
+        int maximoPessoas = Integer.MIN_VALUE;
+        ArrayList<Espaco> retorno = new ArrayList<>();
+        for (Espaco espaco : espacos) {
+            if(espaco.getLotacao() == espaco.getIntegrantesPrimeiraEtapa().size()) {
+                continue;
+            }
+            if (espaco.getIntegrantesPrimeiraEtapa().size() > maximoPessoas) {
+                retorno = new ArrayList<>();
+                retorno.add(espaco);
+                maximoPessoas = espaco.getIntegrantesPrimeiraEtapa().size();
+            } else if (espaco.getIntegrantesPrimeiraEtapa().size() == maximoPessoas) {
+                retorno.add(espaco);
+            }
+        }
+        return retorno;
+    }
+
+    /**
+     * Retorna um ArrayList<Espaco> que contém os espacos que possuem mais participantes na segunda etapa.
+     * (todos os espacos retornados possuem a mesma ocupação).
+     * @param espacos
+     * @return
+     */
     public ArrayList<Espaco> getEspacosMaisCheiosSegundaEtapa(ObservableList<Espaco> espacos){
         int maximoPessoas = Integer.MIN_VALUE;
         ArrayList<Espaco> retorno = new ArrayList<>();
@@ -1399,21 +1447,5 @@ public class PrincipalController implements Initializable {
         return retorno;
     }
 
-    public ArrayList<Espaco> getEspacosMaisCheiosPrimeiraEtapa(ObservableList<Espaco> espacos){
-        int maximoPessoas = Integer.MIN_VALUE;
-        ArrayList<Espaco> retorno = new ArrayList<>();
-        for (Espaco espaco : espacos) {
-            if(espaco.getLotacao() == espaco.getIntegrantesPrimeiraEtapa().size()) {
-                continue;
-            }
-            if (espaco.getIntegrantesPrimeiraEtapa().size() > maximoPessoas) {
-                retorno = new ArrayList<>();
-                retorno.add(espaco);
-                maximoPessoas = espaco.getIntegrantesPrimeiraEtapa().size();
-            } else if (espaco.getIntegrantesPrimeiraEtapa().size() == maximoPessoas) {
-                retorno.add(espaco);
-            }
-        }
-        return retorno;
-    }
+
 }
