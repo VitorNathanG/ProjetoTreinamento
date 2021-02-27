@@ -11,6 +11,11 @@ public class Pessoa {
 
     public Pessoa(){}
 
+    public Pessoa(String nome, String sobrenome) {
+        this.setNome(nome);
+        this.setSobrenome(sobrenome);
+    }
+
     public Pessoa(String nome, String sobrenome, String espacoPrimeiraEtapa, String espacoSegundaEtapa,
                   String espacoCafePrimeiraEtapa, String espacoCafeSegundaEtapa){
         this.setNome(nome);

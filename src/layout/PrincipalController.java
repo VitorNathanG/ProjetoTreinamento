@@ -27,7 +27,10 @@ import javafx.util.StringConverter;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
+import java.util.ResourceBundle;
 
 public class PrincipalController implements Initializable {
 
@@ -376,18 +379,7 @@ public class PrincipalController implements Initializable {
 
             String pessoaNome = Pessoa.separarNome(adicionarParticipanteNome.getText());
             String pessoaSobrenome = Pessoa.separarSobrenome(adicionarParticipanteNome.getText());
-            String salaPrimeiraEtapa = getNextEspacoPrimeiraEtapa(salasTreinamento).getNomeEspaco();
-            String salaSegundaEtapa = getNextEspacoSegundaEtapa(salasTreinamento).getNomeEspaco();
-            String espacoCafePrimeiraEtapa = getNextEspacoPrimeiraEtapa(espacosCafe).getNomeEspaco();
-            String espacoCafeSegundaEtapa = getNextEspacoSegundaEtapa(espacosCafe).getNomeEspaco();
-
-            Pessoa novaPessoa = new Pessoa(pessoaNome, pessoaSobrenome, salaPrimeiraEtapa, salaSegundaEtapa,
-                    espacoCafePrimeiraEtapa, espacoCafeSegundaEtapa);
-
-            getNextEspacoPrimeiraEtapa(salasTreinamento).adicionarIntegrantesPrimeiraEtapa(novaPessoa);
-            getNextEspacoSegundaEtapa(salasTreinamento).adicionarIntegrantesSegundaEtapa(novaPessoa);
-            getNextEspacoPrimeiraEtapa(espacosCafe).adicionarIntegrantesPrimeiraEtapa(novaPessoa);
-            getNextEspacoSegundaEtapa(espacosCafe).adicionarIntegrantesSegundaEtapa(novaPessoa);
+            Pessoa novaPessoa = new Pessoa(pessoaNome, pessoaSobrenome);
 
             pessoas.add(novaPessoa);
             adicionarParticipanteNome.setText("");
@@ -509,20 +501,7 @@ public class PrincipalController implements Initializable {
 
         if (pessoas.size() != 0 && capacidadeSalas - selecionado.getLotacao() < pessoas.size()) {
             emitirAlertBox("Lotação insuficiente", "Não é possível excluir, capacidade do evento insuficiente");
-        } /* else if (salasTreinamento.size() == 2) {
-            tabelaSalas.getItems().removeAll(selecionado);
-            salasTreinamento.remove(selecionado);
-            Espaco remanescente = tabelaSalas.getItems().get(0);
-            remanescente.setIntegrantesSegundaEtapa(new ArrayList<>());
-            remanescente.setIntegrantesPrimeiraEtapa(new ArrayList<>());
-            for (Pessoa participante: pessoas) {
-
-                participante.setEspacoPrimeiraEtapa(remanescente.getNomeEspaco());
-                participante.setEspacoSegundaEtapa(remanescente.getNomeEspaco());
-                remanescente.adicionarIntegrantesPrimeiraEtapa(participante);
-                remanescente.adicionarIntegrantesSegundaEtapa(participante);
-            }
-        } */ else {
+        } else {
             tabelaSalas.getItems().removeAll(selecionado);
             salasTreinamento.remove(selecionado);
             redistribuirSalasTreinamento();
@@ -533,6 +512,10 @@ public class PrincipalController implements Initializable {
         definirTabelas();
     }
 
+    /**
+     * Chamado ao apertar o botão excluir espaço de café. Verifica se os outros espaços comportam os participantes, para
+     * evitar que falte espaço para as pessoas.
+     */
     public void botaoExcluirEspacoCafeClicked(){
         Espaco selecionado = tabelaEspacosCafe.getSelectionModel().getSelectedItem();
         if(capacidadeEspacosCafe - selecionado.getLotacao() < pessoas.size()) {
@@ -548,6 +531,10 @@ public class PrincipalController implements Initializable {
         definirTabelas();
     }
 
+    /**
+     * Chamado ao apertar o botão detalhes do participante. Abre um pop-up com as informações do participante selecionado
+     * na tabela.
+     */
     public void botaoAbrirDetalhesParticipanteClicked(){
         pessoaSelecionada = tabelaParticipantes.getSelectionModel().getSelectedItem();
         try {
@@ -565,6 +552,9 @@ public class PrincipalController implements Initializable {
         }
     }
 
+    /**
+     * Chamado ao apertar o botão detalhes da sala. Abre um pop-up com as informações da sala selecionada na tabela.
+     */
     public void botaoAbrirDetalhesSalaClicked(){
         salaTreinamentoSelecionada = tabelaSalas.getSelectionModel().getSelectedItem();
         try {
@@ -582,6 +572,10 @@ public class PrincipalController implements Initializable {
         }
     }
 
+    /**
+     * Chamado ao apertar o botão de detalhes dos espaços de café. Abre um pop-up com as informações do espaço selecionado
+     * na tabela.
+     */
     public void botaoAbrirDetalhesEspacoCafeClicked(){
         espacoCafeSelecionado = tabelaEspacosCafe.getSelectionModel().getSelectedItem();
         try {
@@ -599,6 +593,10 @@ public class PrincipalController implements Initializable {
         }
     }
 
+    /**
+     * Chamado ao apertar o botão Participantes. Oculta a tabela atual e os elementos de adição e torna a tabela de
+     * participantes visível.
+     */
     public void mudarParaParticipantesClicked() {
         ocultarElementos(elementosOcultaveis);
         adicionarParticipantePainel.setVisible(true);
@@ -607,6 +605,10 @@ public class PrincipalController implements Initializable {
         botaoAbrirDetalhesParticipante.setVisible(true);
     }
 
+    /**
+     * Chamado ao apertar o botão Salas. Oculta a tabela atual e os elementos de adição e torna a tabela de
+     * salas de treinamento visível.
+     */
     public void mudarParaSalasClicked() {
         ocultarElementos(elementosOcultaveis);
 
@@ -616,6 +618,10 @@ public class PrincipalController implements Initializable {
         botaoExcluirSala.setVisible(true);
     }
 
+    /**
+     * Chamado ao apertar o botão Espaços de Café. Oculta a tabela atual e os elementos de adição e torna a tabela de
+     * espaços de café visível.
+     */
     public void mudarParaEspacosCafeClicked() {
 
         ocultarElementos(elementosOcultaveis);
@@ -626,8 +632,11 @@ public class PrincipalController implements Initializable {
         botaoExcluirEspacoCafe.setVisible(true);
     }
 
+    /**
+     * Define a tabela que é mostrada ao se iniciar o programa. Por padrão, abre a tabela de participantes
+     */
     public void definirVisibilidadeInicial(){
-        ocultarElementos(elementosOcultaveis);
+        ocultarElementos(elementosOcultaveis); //Oculta os elementos deixados visíveis durante a elaboração do layout
 
         adicionarParticipantePainel.setVisible(true);
         tabelaParticipantes.setVisible(true);
@@ -635,6 +644,10 @@ public class PrincipalController implements Initializable {
         botaoAbrirDetalhesParticipante.setVisible(true);
     }
 
+    /**
+     * Define algumas properties das janelas e tabelas, para que tenham o tamanho correto de exibição independentemente
+     * do redimensionamento da janela
+     */
     public void janelasReativas(){
         janela.widthProperty().addListener((obs, oldVal, newVal) -> {
             tabelaParticipantes.setMaxWidth((Math.round((double) newVal)) - 180);
@@ -668,6 +681,9 @@ public class PrincipalController implements Initializable {
         });
     }
 
+    /**
+     * Define os dados que serão exibidos em todas as colunas de tabelas do software.
+     */
     public void definirTabelas(){
         colunaNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
         colunaSobrenome.setCellValueFactory(new PropertyValueFactory<>("sobrenome"));
@@ -705,6 +721,11 @@ public class PrincipalController implements Initializable {
         tabelaEspacosCafe.setItems(espacosCafe);
     }
 
+    /**
+     * Responsável por criar os listeners para os elementos selecionados na tabela. Caso algum elemento em alguma
+     * tabela seja selecionado, os botões de excluir e de abrir detalhes desse elemento se tornam disponíveis para o
+     * usuário. Caso contrário, esmaece-os.
+     */
     private void esmaecerBotoes(){
 
         tabelaParticipantes.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
@@ -716,6 +737,7 @@ public class PrincipalController implements Initializable {
                 botaoAbrirDetalhesParticipante.setDisable(true);
             }
         });
+
         tabelaEspacosCafe.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if(newVal != null) {
                 botaoExcluirEspacoCafe.setDisable(false);
@@ -725,6 +747,7 @@ public class PrincipalController implements Initializable {
                 botaoAbrirDetalhesEspacoCafe.setDisable(true);
             }
         });
+
         tabelaSalas.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if(newVal != null) {
                 botaoExcluirSala.setDisable(false);
@@ -736,20 +759,32 @@ public class PrincipalController implements Initializable {
         });
     }
 
+    /**
+     * Executado ao se clicar no MenuItem Salvar e Sair. Salva os dados da tabela e fecha o programa.
+     */
     public void salvarESair(){
         salvarDados();
         fecharPrograma();
     }
 
+    /**
+     * Executado ao se clicar no MenuItem Sair sem Salvar. Fecha o programa e descarta os dados das tabelas.
+     */
     public void sairSemSalvar(){
         fecharPrograma();
     }
 
+    /**
+     * Fecha o Stage principal, encerrando o ciclo do programa.
+     */
     public void fecharPrograma(){
         Stage palco = (Stage) janela.getScene().getWindow();
         palco.close();
     }
 
+    /**
+     * Salva os dados das tabelas nos arquivos contidos na pasta dados, no mesmo diretório que o .jar do programa.
+     */
     public void salvarDados(){
         DataHandler.salvarDados(infoPessoas, pessoas, new Pessoa());
         DataHandler.salvarDados(infoSalasTreinamento, salasTreinamento, new Espaco());
@@ -758,6 +793,10 @@ public class PrincipalController implements Initializable {
         setModificacoesRealizadas(false);
     }
 
+    /**
+     * Cria o listener que escuta alterações ao atributo salvarAoSair. Quando escuta uma modificação, fecha o programa,
+     * respeitando a escolha do usuário de salvar ou não as modificações.
+     */
     private void criarOpcoesDeSaida(){
         salvarAoSair.addListener((observable, oldVal, newVal) -> {
             if(newVal.intValue()==1){
@@ -769,6 +808,11 @@ public class PrincipalController implements Initializable {
         });
     }
 
+    /**
+     * Cria um pop-up com informações escolhidas pelo desenvolvedor para alertar ou informar o usuário.
+     * @param titulo o título da caixa de alerta.
+     * @param mensagem a mensagem que será exibida para o usuário.
+     */
     public void emitirAlertBox(String titulo, String mensagem) {
         Stage palcoAlertBox = new Stage();
         palcoAlertBox.setTitle(titulo);
@@ -781,7 +825,7 @@ public class PrincipalController implements Initializable {
         layout.getChildren().setAll(texto, botaoOk);
         layout.setAlignment(Pos.CENTER);
         layout.setPrefHeight(150);
-        layout.setPrefWidth(300);
+        layout.setPrefWidth(500);
         Scene cena = new Scene(layout);
         palcoAlertBox.setResizable(false);
         palcoAlertBox.initModality(Modality.APPLICATION_MODAL);
@@ -790,37 +834,12 @@ public class PrincipalController implements Initializable {
         palcoAlertBox.show();
     }
 
-    public Espaco getNextEspacoPrimeiraEtapa(ObservableList<Espaco> espacos){
-        int menorLotacao = Integer.MAX_VALUE;
-        Espaco retorno = new Espaco();
-        for (Espaco espaco: espacos) {
-            if(espaco.getIntegrantesPrimeiraEtapa().size() < menorLotacao){
-                retorno = espaco;
-                menorLotacao = espaco.getIntegrantesPrimeiraEtapa().size();
-            }
-        }
-        return retorno;
-    }
-
-    public Espaco getNextEspacoSegundaEtapa(ObservableList<Espaco> espacos){
-        int menorLotacao = Integer.MAX_VALUE;
-        Espaco retorno = new Espaco();
-        for (Espaco espaco: espacos) {
-            if(espaco.getIntegrantesSegundaEtapa().size() < menorLotacao){
-                retorno = espaco;
-                menorLotacao = espaco.getIntegrantesSegundaEtapa().size();
-            }
-        }
-        return retorno;
-    }
-
     /**
      * Redistribui os participantes nas salas de treinamento
      */
     public void redistribuirEspacosCafe(){
         /*
          * As linhas abaixo limpam as atuais definições de espaços de café
-         * Dificuldade: 1
          */
         Random gerador = new Random();
 
@@ -838,7 +857,6 @@ public class PrincipalController implements Initializable {
         /*
          * As linhas abaixo definem aleatoriamente as salas de treinamento para
          * cada um dos participantes, mas não fazem a troca de participantes entre a primeira e a segunda etapas
-         * Dificuldade: 3
          */
 
         for (Pessoa pessoa: pessoas) {
@@ -854,7 +872,6 @@ public class PrincipalController implements Initializable {
         /*
          * As linhas abaixo definem quais participantes continuam na sala na segunda etapa
          * e quais pessoas vão para outras salas
-         * Dificuldade: 4
          */
 
         ArrayList<Pessoa> pessoasQueMudamDeEspaco = new ArrayList<>();
@@ -871,7 +888,7 @@ public class PrincipalController implements Initializable {
             }
         }
 
-        for (Pessoa p: pessoasQueMudamDeEspaco) {
+        for (Pessoa p: pessoasQueMudamDeEspaco) { //Desnecessário para o funcionamento correto, mas facilita no debug
             p.setEspacoCafeSegundaEtapa("");
         }
 
@@ -900,8 +917,10 @@ public class PrincipalController implements Initializable {
          * possível que ocorra algum bug ou freeze durante a execução deste método, e uma implementação mais robusta
          * deveria ser aplicada para um software de uso comercial.
          *
-         * Edit: as anomalias de distribuição citadas acima são causadas por fatores matemáticos. Leia mais informações
+         * Edit #1: as anomalias de distribuição citadas acima são causadas por fatores matemáticos. Leia mais informações
          * no ReadMe do programa
+         * Edit #2: caso a lotação máxima de uma sala não seja atingida, não ocorre nenhum tipo de bug e a distribuição
+         * ocorre perfeitamente.
          *
          * *Comentário de implementação por Vitor Nathan Gonçalves.
          */
@@ -1077,7 +1096,6 @@ public class PrincipalController implements Initializable {
     public void redistribuirSalasTreinamento(){
         /*
          * As linhas abaixo limpam as atuais definições de salas
-         * Dificuldade: 1
          */
         Random gerador = new Random();
 
@@ -1095,7 +1113,6 @@ public class PrincipalController implements Initializable {
         /*
          * As linhas abaixo definem aleatoriamente as salas de treinamento para
          * cada um dos participantes, mas não fazem a troca de participantes entre a primeira e a segunda etapas
-         * Dificuldade: 3
          */
 
         for (Pessoa pessoa: pessoas) {
@@ -1111,7 +1128,6 @@ public class PrincipalController implements Initializable {
         /*
          * As linhas abaixo definem quais participantes continuam na sala na segunda etapa
          * e quais pessoas vão para outras salas
-         * Dificuldade: 4
          */
 
         ArrayList<Pessoa> pessoasQueMudamDeSala = new ArrayList<>();
@@ -1157,8 +1173,10 @@ public class PrincipalController implements Initializable {
          * possível que ocorra algum bug ou freeze durante a execução deste método, e uma implementação mais robusta
          * deveria ser aplicada para um software de uso comercial.
          *
-         * Edit: as anomalias de distribuição citadas acima são causadas por fatores matemáticos. Leia mais informações
+         * Edit #1: as anomalias de distribuição citadas acima são causadas por fatores matemáticos. Leia mais informações
          * no ReadMe do programa.
+         * Edit #2: caso a lotação máxima de uma sala não seja atingida, não ocorre nenhum tipo de bug e a distribuição
+         * ocorre perfeitamente.
          *
          * *Comentário de implementação por Vitor Nathan Gonçalves.
          */
