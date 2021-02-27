@@ -24,7 +24,7 @@ public class InformacaoSalaController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Espaco salaTreinamento = PrincipalController.getEspacoTreinamentoSelecionado();
+        Espaco salaTreinamento = PrincipalController.getSalaTreinamentoSelecionada();
         nomeSalaTreinamento.setText(salaTreinamento.getNomeEspaco());
         lotacaoSalaTreinamento.setText(String.valueOf(salaTreinamento.getLotacao()));
         totalIntegrantesPrimeiraEtapa.setText(String.valueOf(salaTreinamento.getIntegrantesPrimeiraEtapa().size()));

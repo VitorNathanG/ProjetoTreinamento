@@ -31,6 +31,7 @@ import java.util.*;
 
 public class PrincipalController implements Initializable {
 
+    //Indicações dos elementos contidos no layout FXML
     @FXML private AnchorPane janela;
 
     @FXML private MenuBar barraDeMenu;
@@ -89,6 +90,7 @@ public class PrincipalController implements Initializable {
     @FXML private Button botaoAbrirDetalhesEspacoCafe;
     @FXML private Button botaoExcluirEspacoCafe;
 
+    //Recuperação dos dados salvos e atribuição para as listas manipuláveis
     private File infoEspacosCafe = FileHandler.criarArquivo("dados\\InfoEspacosCafe.data");
     private ObservableList<Espaco> espacosCafe = DataHandler.gerarEspacos(DataHandler.recuperarDadosSalvos(infoEspacosCafe));
 
@@ -98,6 +100,7 @@ public class PrincipalController implements Initializable {
     private File infoPessoas = FileHandler.criarArquivo("dados\\InfoPessoas.data");
     private ObservableList<Pessoa> pessoas = DataHandler.gerarPessoas(DataHandler.recuperarDadosSalvos(infoPessoas));
 
+    //StringConverter necessário para popular as tabelas
     private StringConverter<Integer> conversor = new StringConverter<Integer>() {
         @Override
         public String toString(Integer object) {
@@ -110,15 +113,55 @@ public class PrincipalController implements Initializable {
         }
     };
 
+    /**
+     * Possui 3 estados:
+     * 1 - Salva ao sair
+     * 0 - Não definido ainda
+     *-1 - Não salva ao sair
+     * É definido ao responder sim/não no pop-up de fechamento do programa.
+     */
     public static IntegerProperty salvarAoSair = new SimpleIntegerProperty();
+
+    /**
+     * Recebe verdadeiro se ocorre alguma modificação em alguma tabela. É utilizado ao fechar o programa, caso
+     * verdadeiro, abre o pop-up questionando o salvamento ou não das modificações realizadas.
+     */
     private static boolean modificacoesRealizadas;
+
+    /**
+     * Encapsula todos os elementos do layout que têm suas visibilidades alteradas durante o uso.
+     */
     private static Region[] elementosOcultaveis;
+
+    /**
+     * Recebe a pessoa que está na linha selecionada da tabela de participantes
+     */
     private static Pessoa pessoaSelecionada;
+
+    /**
+     * Recebe o espaço que está na linha selecionada da tabela de espaços de café
+     */
     private static Espaco espacoCafeSelecionado;
-    private static Espaco espacoTreinamentoSelecionado;
+
+    /**
+     * Recebe o espaço que está na linha selecionada da tabela de espaços de café
+     */
+    private static Espaco salaTreinamentoSelecionada;
+
+    /**
+     * Recebe a capacidade total disponível nas salas de treinamento
+     */
     public static int capacidadeSalas;
+
+    /**
+     * Recebe a capacidade total disponível nos espaços de café
+     */
     public static int capacidadeEspacosCafe;
 
+    /**
+     * Atualiza a capacidade total disponível nas salas de treinamento
+     * @return int - valor atualizado da capacidade das salas
+     */
     public int atualizarCapacidadeSalas() {
         capacidadeSalas = 0;
         for (Espaco salaTreinamento: salasTreinamento) {
@@ -127,6 +170,10 @@ public class PrincipalController implements Initializable {
         return PrincipalController.capacidadeSalas;
     }
 
+    /**
+     * Atualiza a capacidade total disponível nos espaços de café
+     * @return int - valor atualizado da capacidade dos espaços de café
+     */
     public int atualizarCapacidadeEspacosCafe() {
         capacidadeEspacosCafe = 0;
         for (Espaco salaTreinamento: espacosCafe) {
@@ -135,38 +182,74 @@ public class PrincipalController implements Initializable {
         return PrincipalController.capacidadeEspacosCafe;
     }
 
+    /**
+     * Getter para o atributo modificações realizadas
+     * @return modificacoesRealizadas - verdadeiro caso alguma modificação tenha sido realizada
+     */
     public static boolean isModificacoesRealizadas() {
         return modificacoesRealizadas;
     }
 
+    /**
+     * Setter para o atributo modificações realizadas
+     * @param modificacoesRealizadas - verdadeiro caso alguma modificação tenha sido realizada
+     */
     public static void setModificacoesRealizadas(boolean modificacoesRealizadas) {
         PrincipalController.modificacoesRealizadas = modificacoesRealizadas;
     }
 
+    /**
+     * Getter para pessoaSelecionada
+     * @return Pessoa pessoaSelecionada
+     */
     public static Pessoa getPessoaSelecionada() {
         return pessoaSelecionada;
     }
 
+    /**
+     * Setter para pessoaSelecionada
+     * @param pessoaSelecionada - a pessoa contida no atributo
+     */
     public static void setPessoaSelecionada(Pessoa pessoaSelecionada) {
         PrincipalController.pessoaSelecionada = pessoaSelecionada;
     }
 
+    /**
+     * Getter para espacoCafeSelecionado
+     * @return Espaco espacoCafeSelecionado
+     */
     public static Espaco getEspacoCafeSelecionado() {
         return espacoCafeSelecionado;
     }
 
+    /**
+     * Setter para espacoCafe selecionado
+     * @param espacoCafe - o espaco contido no atributo
+     */
     public static void setEspacoCafeSelecionado(Espaco espacoCafe) {
         PrincipalController.espacoCafeSelecionado = espacoCafe;
     }
 
-    public static Espaco getEspacoTreinamentoSelecionado() {
-        return espacoTreinamentoSelecionado;
+    /**
+     * Getter para salaTreinamento selecionado
+     * @return Espaco salaTreinamentoSelecionada
+     */
+    public static Espaco getSalaTreinamentoSelecionada() {
+        return salaTreinamentoSelecionada;
     }
 
-    public static void setEspacoTreinamentoSelecionado(Espaco espacoTreinamentoSelecionado) {
-        PrincipalController.espacoTreinamentoSelecionado = espacoTreinamentoSelecionado;
+    /**
+     * Setter para salaTreinamento selecionada
+     * @param salaTreinamentoSelecionada - o espaco contido no atributo
+     */
+    public static void setSalaTreinamentoSelecionada(Espaco salaTreinamentoSelecionada) {
+        PrincipalController.salaTreinamentoSelecionada = salaTreinamentoSelecionada;
     }
 
+    /**
+     * Acionado ao selecionar a opção de fazer backup na barra de menu. Cria uma cópia das informações contidas no momento
+     * nas tabelas, que é salva na pasta backup, criada no mesmo diretório que o .jar do programa está localizado
+     */
     public void fazerBackupMenuClicked(){
         DataHandler.salvarDados(FileHandler.criarArquivo("backup\\InfoPessoas.bkp"), pessoas, new Pessoa());
         DataHandler.salvarDados(FileHandler.criarArquivo("backup\\InfoEspacosCafe.bkp"), espacosCafe, new Espaco());
@@ -174,11 +257,14 @@ public class PrincipalController implements Initializable {
         emitirAlertBox("Backup", "O backup foi realizado com sucesso");
     }
 
+    /**
+     * Recupera os arquivos de backup contidos na pasta backup, descartando os elementos atuais das tabelas
+     */
     public void recuperarBackupMenuClicked() {
         File infoEspacosCafeBackup = new File("backup\\InfoEspacosCafe.bkp");
         File infoPessoasBackup = new File("backup\\InfoPessoas.bkp");
         File infoSalasTreinamentoBackup = new File("backup\\InfoSalasTreinamento.bkp");
-        if (!infoEspacosCafeBackup.exists()||!infoPessoasBackup.exists()|| !infoSalasTreinamentoBackup.exists()) {
+        if (!infoEspacosCafeBackup.exists() || !infoPessoasBackup.exists() || !infoSalasTreinamentoBackup.exists()) {
             emitirAlertBox("Recuperar Backup", "Os arquivos de backup estão incompletos");
         } else {
             espacosCafe = DataHandler.gerarEspacos(DataHandler.recuperarDadosSalvos(infoEspacosCafeBackup));
@@ -189,6 +275,11 @@ public class PrincipalController implements Initializable {
         }
     }
 
+    /**
+     * Método que é executado ao criar o Stage. Chama métodos de configuração inicial de exibição.
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources){
 
@@ -204,6 +295,10 @@ public class PrincipalController implements Initializable {
 
     }
 
+    /**
+     * Método chamado para atribuir os participantes às salas de treinamento e espaços de café.
+     * Somente é chamado ao iniciar o programa, devido ao método de gerenciamento de arquivo utilizado no programa
+     */
     private void popularSalas() {
         for (Pessoa pessoa: pessoas) {
             for (Espaco salaPrimeiraEtapa: salasTreinamento) {
@@ -233,12 +328,20 @@ public class PrincipalController implements Initializable {
         }
     }
 
+    /**
+     * Oculta todos os elementos contidos em um vetor de Region. Utilizado sempre que ocorre uma troca de visibilidade
+     * das tabelas
+     * @param elementosOcultaveis vetor com os elementos a serem ocultados
+     */
     private void ocultarElementos(Region[] elementosOcultaveis) {
         for (Region elemento: elementosOcultaveis) {
             elemento.setVisible(false);
         }
     }
 
+    /**
+     * Define todos os elementos ocultáveis da cena, adicionando-os ao vetor elementosOcultaveis
+     */
     private void definirElementosOcultaveis() {
         elementosOcultaveis = new Region[12];
         elementosOcultaveis[0] = adicionarParticipantePainel;
@@ -255,6 +358,10 @@ public class PrincipalController implements Initializable {
         elementosOcultaveis[11] = botaoExcluirEspacoCafe;
     }
 
+    /**
+     * Chamado ao clicar no botão de adição de participante. Checa se é possível adicionar o participante ao evento,
+     * conferindo o nome e a lotação das salas.
+     */
     public void adicionarParticipanteBotaoClicked() {
         atualizarCapacidadeSalas();
         atualizarCapacidadeEspacosCafe();
@@ -291,6 +398,9 @@ public class PrincipalController implements Initializable {
         }
     }
 
+    /**
+     * Chamado ao clicar no botão de adicionar uma sala. Checa se os valores contidos nos textFields são válidos.
+     */
     public void adicionarSalaBotaoClicked() {
         try {
             if (Integer.parseInt(adicionarSalaLotacao.getText()) < 1){
@@ -302,7 +412,6 @@ public class PrincipalController implements Initializable {
             } else {
                 salasTreinamento.add(new Espaco(adicionarSalaNome.getText(), Integer.parseInt(adicionarSalaLotacao.getText())));
                 adicionarSalaNome.setText("");
-                adicionarSalaLotacao.setText("");
                 setModificacoesRealizadas(true);
                 atualizarCapacidadeSalas();
                 redistribuirSalasTreinamento();
@@ -313,6 +422,10 @@ public class PrincipalController implements Initializable {
         }
     }
 
+    /**
+     * Chamado ao clicar no botão de adicionar um espaço de café. Checa se os valores contidos nos textFields são válidos.
+     * Chama o método para redistribuir os participantes nos espaços de café.
+     */
     public void adicionarEspacoCafeBotaoClicked() {
 
         try {
@@ -325,10 +438,9 @@ public class PrincipalController implements Initializable {
             } else {
                 espacosCafe.add(new Espaco(adicionarEspacoCafeNome.getText(), Integer.parseInt(adicionarEspacoCafeLotacao.getText())));
                 adicionarEspacoCafeNome.setText("");
-                adicionarEspacoCafeLotacao.setText("");
                 setModificacoesRealizadas(true);
                 atualizarCapacidadeEspacosCafe();
-                redistribuirEspacosCafe();
+                redistribuirEspacosCafe(); //Redistribui os participantes
                 definirTabelas();
             }
         } catch (NumberFormatException e) {
@@ -336,6 +448,10 @@ public class PrincipalController implements Initializable {
         }
     }
 
+    /**
+     * Chamado ao apertar o botão excluir participante. Exclui o participante e o retira das salas de treinamento e dos
+     * espaços de café que ele estiver. Depois disso, chama os métodos de reorganização dos espaços.
+     */
     public void botaoExcluirParticipanteClicked(){
         Pessoa pessoa = tabelaParticipantes.getSelectionModel().getSelectedItem();
 
@@ -377,18 +493,23 @@ public class PrincipalController implements Initializable {
         pessoas = FXCollections.observableArrayList();
         pessoas.addAll(novasPessoas);
 
+        //Redistribui os participantes e redefine as tabelas
         setModificacoesRealizadas(true);
         redistribuirSalasTreinamento();
         redistribuirEspacosCafe();
         definirTabelas();
     }
 
+    /**
+     * Chamado ao apertar o botão excluir sala. Verifica se as outras salas comportam os participantes, para evitar que
+     * falte espaço para as pessoas.
+     */
     public void botaoExcluirSalaClicked(){
         Espaco selecionado = tabelaSalas.getSelectionModel().getSelectedItem();
 
         if (pessoas.size() != 0 && capacidadeSalas - selecionado.getLotacao() < pessoas.size()) {
             emitirAlertBox("Lotação insuficiente", "Não é possível excluir, capacidade do evento insuficiente");
-        } else if (salasTreinamento.size() == 2) {
+        } /* else if (salasTreinamento.size() == 2) {
             tabelaSalas.getItems().removeAll(selecionado);
             salasTreinamento.remove(selecionado);
             Espaco remanescente = tabelaSalas.getItems().get(0);
@@ -396,12 +517,12 @@ public class PrincipalController implements Initializable {
             remanescente.setIntegrantesPrimeiraEtapa(new ArrayList<>());
             for (Pessoa participante: pessoas) {
 
-                participante.setEspacoPrimeiraEtapa(selecionado.getNomeEspaco());
-                participante.setEspacoSegundaEtapa(selecionado.getNomeEspaco());
+                participante.setEspacoPrimeiraEtapa(remanescente.getNomeEspaco());
+                participante.setEspacoSegundaEtapa(remanescente.getNomeEspaco());
                 remanescente.adicionarIntegrantesPrimeiraEtapa(participante);
                 remanescente.adicionarIntegrantesSegundaEtapa(participante);
             }
-        } else {
+        } */ else {
             tabelaSalas.getItems().removeAll(selecionado);
             salasTreinamento.remove(selecionado);
             redistribuirSalasTreinamento();
@@ -445,7 +566,7 @@ public class PrincipalController implements Initializable {
     }
 
     public void botaoAbrirDetalhesSalaClicked(){
-        espacoTreinamentoSelecionado = tabelaSalas.getSelectionModel().getSelectedItem();
+        salaTreinamentoSelecionada = tabelaSalas.getSelectionModel().getSelectedItem();
         try {
             Parent root = FXMLLoader.load(getClass().getResource("informacaosala.fxml"));
 
@@ -553,7 +674,6 @@ public class PrincipalController implements Initializable {
 
         colunaNome.setCellFactory(TextFieldTableCell.forTableColumn());
         colunaSobrenome.setCellFactory(TextFieldTableCell.forTableColumn());
-
         tabelaParticipantes.setItems(pessoas);
 
         colunaIdentificacaoSala.setCellValueFactory(new PropertyValueFactory<>("nomeEspaco"));
@@ -1077,7 +1197,6 @@ public class PrincipalController implements Initializable {
                 for (Pessoa p: pessoasQueMudamDeSala) {
                     p.setEspacoSegundaEtapa(espaco.getNomeEspaco());
                     espaco.adicionarIntegrantesSegundaEtapa(p);
-                    pessoasQueMudamDeSala.remove(pessoasQueMudamDeSala.indexOf(p));
                 }
                 break;
             }
