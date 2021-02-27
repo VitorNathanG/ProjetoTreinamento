@@ -11,6 +11,11 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Classe InformacaoParticipanteController: controlador do pop-up com os detalhes de um participante
+ *
+ * @author Vitor Nathan Gonçalves
+ */
 public class InformacaoParticipanteController implements Initializable {
 
     @FXML private Label nomeParticipante;
