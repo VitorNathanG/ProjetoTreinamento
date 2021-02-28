@@ -389,6 +389,7 @@ public class PrincipalController implements Initializable {
 
             pessoas.add(novaPessoa);
             adicionarParticipanteNome.setText("");
+            adicionarParticipanteNome.requestFocus();
             setModificacoesRealizadas(true);
             redistribuirSalasTreinamento();
             redistribuirEspacosCafe();
@@ -410,6 +411,7 @@ public class PrincipalController implements Initializable {
             } else {
                 salasTreinamento.add(new Espaco(adicionarSalaNome.getText(), Integer.parseInt(adicionarSalaLotacao.getText())));
                 adicionarSalaNome.setText("");
+                adicionarSalaNome.requestFocus();
                 setModificacoesRealizadas(true);
                 atualizarCapacidadeSalas();
                 redistribuirSalasTreinamento();
@@ -438,6 +440,7 @@ public class PrincipalController implements Initializable {
                 adicionarEspacoCafeNome.setText("");
                 setModificacoesRealizadas(true);
                 atualizarCapacidadeEspacosCafe();
+                adicionarEspacoCafeNome.requestFocus();
                 redistribuirEspacosCafe(); //Redistribui os participantes
                 definirTabelas();
             }
@@ -953,6 +956,11 @@ public class PrincipalController implements Initializable {
         ArrayList<Espaco> espacosNaoLotados = new ArrayList<>();
         espacosNaoLotados.addAll(espacosCafe);
 
+        /*
+         * A reversão no espaço reduz a probabilidade de erro de distribuição, visto que os espaços ficam em
+         * contra-alinhamento com as pessoas. Esse fato dificulta que o último indivíduo tenha como único alvo possível
+         * o espaço que realizou a primeira etapa.
+         */
         ObservableList<Espaco> espacosCafeRevertido = FXCollections.observableList(new ArrayList<>());
         for (int i = espacosCafe.size()-1; i >= 0; i--) {
             espacosCafeRevertido.add(espacosCafe.get(i));
@@ -1213,6 +1221,11 @@ public class PrincipalController implements Initializable {
         ArrayList<Espaco> espacosNaoLotados = new ArrayList<>();
         espacosNaoLotados.addAll(salasTreinamento);
 
+        /*
+         * A reversão no espaço reduz a probabilidade de erro de distribuição, visto que os espaços ficam em
+         * contra-alinhamento com as pessoas. Esse fato dificulta que o último indivíduo tenha como único alvo possível
+         * o espaço que realizou a primeira etapa.
+         */
         ObservableList<Espaco> salasTreinamentoRevertido = FXCollections.observableList(new ArrayList<>());
         for (int i = salasTreinamento.size()-1; i >= 0; i--) {
             salasTreinamentoRevertido.add(salasTreinamento.get(i));
@@ -1419,9 +1432,6 @@ public class PrincipalController implements Initializable {
         int maximoPessoas = Integer.MIN_VALUE;
         ArrayList<Espaco> retorno = new ArrayList<>();
         for (Espaco espaco : espacos) {
-            if(espaco.getLotacao() == espaco.getIntegrantesPrimeiraEtapa().size()) {
-                continue;
-            }
             if (espaco.getIntegrantesPrimeiraEtapa().size() > maximoPessoas) {
                 retorno = new ArrayList<>();
                 retorno.add(espaco);
