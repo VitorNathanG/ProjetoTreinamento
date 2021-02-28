@@ -1,6 +1,6 @@
 # Projeto Gerenciamento de Treinamento
 
-###Objetivo
+### Objetivo
 Criar um sistema simples para gerenciar a distribuição de participantes em um
 evento.
 
