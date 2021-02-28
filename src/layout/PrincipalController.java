@@ -953,6 +953,11 @@ public class PrincipalController implements Initializable {
         ArrayList<Espaco> espacosNaoLotados = new ArrayList<>();
         espacosNaoLotados.addAll(espacosCafe);
 
+        ObservableList<Espaco> espacosCafeRevertido = FXCollections.observableList(new ArrayList<>());
+        for (int i = espacosCafe.size()-1; i >= 0; i--) {
+            espacosCafeRevertido.add(espacosCafe.get(i));
+        }
+        espacosCafe = espacosCafeRevertido;
         /*
          * Início do loop principal de distribuição, só termina quando todos participantes tenham sido designados para
          * uma sala que atende aos critérios. Um espaço é mantido fixo enquanto os participantes são "ciclados" até
@@ -1208,6 +1213,11 @@ public class PrincipalController implements Initializable {
         ArrayList<Espaco> espacosNaoLotados = new ArrayList<>();
         espacosNaoLotados.addAll(salasTreinamento);
 
+        ObservableList<Espaco> salasTreinamentoRevertido = FXCollections.observableList(new ArrayList<>());
+        for (int i = salasTreinamento.size()-1; i >= 0; i--) {
+            salasTreinamentoRevertido.add(salasTreinamento.get(i));
+        }
+        salasTreinamento = salasTreinamentoRevertido;
         /*
          * Início do loop principal de distribuição, só termina quando todos participantes tenham sido designados para
          * uma sala que atende aos critérios. Um espaço é mantido fixo enquanto os participantes são "ciclados" até

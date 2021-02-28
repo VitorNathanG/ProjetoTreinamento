@@ -53,7 +53,7 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="95.0" prefWidth="130.0" spacing="10.0">
+                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="143.0" prefWidth="130.0" spacing="10.0">
                      <children>
                         <Button fx:id="mudarParaParticipantes" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#mudarParaParticipantesClicked" prefHeight="25.0" prefWidth="130.0" text="Participantes" />
                         <Button fx:id="mudarParaSalas" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#mudarParaSalasClicked" prefHeight="25.0" prefWidth="130.0" text="Salas" />
@@ -70,13 +70,13 @@
             </VBox>
             <AnchorPane fx:id="anchorPaneTabelas" prefHeight="200.0" prefWidth="720.0">
                <children>
-                  <TableView fx:id="tabelaParticipantes" editable="true" prefHeight="616.0" prefWidth="720.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="15.0">
+                  <TableView fx:id="tabelaParticipantes" editable="true" prefHeight="616.0" prefWidth="720.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="15.0">
                     <columns>
                       <TableColumn fx:id="colunaNome" editable="false" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" resizable="false" text="Nome" />
                         <TableColumn fx:id="colunaSobrenome" editable="false" prefWidth="184.0" text="Sobrenome" />
                     </columns>
                   </TableView>
-                  <TableView fx:id="tabelaSalas" prefHeight="616.0" prefWidth="720.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="15.0">
+                  <TableView fx:id="tabelaSalas" prefHeight="616.0" prefWidth="720.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="15.0">
                      <columns>
                         <TableColumn fx:id="colunaIdentificacaoSala" editable="false" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" resizable="false" text="Identificação da Sala" />
                         <TableColumn fx:id="colunaLotacaoSala" editable="false" maxWidth="110.0" minWidth="110.0" prefWidth="110.0" resizable="false" text="Lotação da Sala" />
@@ -84,7 +84,7 @@
                         <TableColumn fx:id="colunaOcupacaoSegundaFaseSalas" editable="false" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" resizable="false" text="Ocupação Segunda Fase" />
                      </columns>
                   </TableView>
-                  <TableView fx:id="tabelaEspacosCafe" prefHeight="616.0" prefWidth="720.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="15.0">
+                  <TableView fx:id="tabelaEspacosCafe" prefHeight="616.0" prefWidth="720.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="15.0">
                      <columns>
                         <TableColumn fx:id="colunaIdentificacaoEspacosCafe" editable="false" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" resizable="false" text="Identificação do Espaço de Café" />
                         <TableColumn fx:id="colunaLotacaoEspacosCafe" editable="false" maxWidth="110.0" minWidth="110.0" prefWidth="110.0" resizable="false" text="Lotação do Espaço" />
