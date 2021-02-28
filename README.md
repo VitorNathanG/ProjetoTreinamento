@@ -1,7 +1,7 @@
 # Projeto Gerenciamento de Treinamento
 
-##Compilação
-###Requisitos
+## Compilação
+### Requisitos
 
 SDK Liberica 11 (versão full, que contém a biblioteca JavaFX):
 
@@ -15,7 +15,7 @@ SDK Liberica 11 (versão full, que contém a biblioteca JavaFX):
 
 IntelliJ Idea Community Edition:
 
-###Instruções de compilação
+### Instruções de compilação
 [Link para download do IntelliJ](https://www.jetbrains.com/pt-br/idea/)
 
 Para compilar no IntelliJ: 
@@ -29,7 +29,7 @@ Na barra de menu, vá para File -> New -> Project from Version Control...
 
  4. O arquivo .jar gerado está localizado na pasta out/artifacts/ProjetoTreinamento_jar. Arraste esse arquivo para sua área de trabalho e execute o programa.
 
-##Como o programa funciona
+## Como o programa funciona
 
 Este projeto é baseado na organização de um evento. Tal evento ocorre de uma maneira bem definida:
 
@@ -42,7 +42,7 @@ Este projeto é baseado na organização de um evento. Tal evento ocorre de uma 
 
 Isto posto, partiremos para um exemplo de funcionamento:
 
-###Exemplo de uso
+### Exemplo de uso
 
 Suponha que você precise organizar um treinamento para 40 pessoas, seguindo as diretrizes estabelecidas acima. 
 Você tem acesso a 3 salas com capacidade máxima para 15 participantes cada, uma pequena cantina e um café,
@@ -75,5 +75,5 @@ você deseja salvar os arquivos.
 
 Você também pode fazer um backup do evento, que pode ser recuperado caso você se equivoque ao editar alguma informação. 
 
-##Para desenvolvedores
+## Para desenvolvedores
 A implementação do programa leva em conta a resolução do problema acima citado 
