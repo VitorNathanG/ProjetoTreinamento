@@ -2,6 +2,7 @@ package classes;
 
 /**
  * Classe capaz de emitir erros
+ *
  * @author Vitor Nathan Gonçalves
  */
 public class Alerta {

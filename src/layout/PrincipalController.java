@@ -374,7 +374,18 @@ public class PrincipalController implements Initializable {
     public void adicionarParticipanteBotaoClicked() {
         atualizarCapacidadeSalas();
         atualizarCapacidadeEspacosCafe();
-        if (adicionarParticipanteNome.getText().length() < 5) {
+        boolean jaExiste = false;
+        if(true) {
+            for (Pessoa p: pessoas) {
+                if (adicionarParticipanteNome.getText().equals(p.getNomeCompleto())) {
+                    jaExiste = true;
+                    break;
+                }
+            }
+        }
+        if (jaExiste) {
+            emitirAlertBox("Nome", "O participante já está cadastrado");
+        } else if (adicionarParticipanteNome.getText().length() < 5) {
             emitirAlertBox("Nome", "O nome inserido é muito curto");
         } else if (adicionarParticipanteNome.getText().contains("$")){
             emitirAlertBox("Caractere Inválido", "O caractere $ não é valido");
@@ -402,7 +413,18 @@ public class PrincipalController implements Initializable {
      */
     public void adicionarSalaBotaoClicked() {
         try {
-            if (Integer.parseInt(adicionarSalaLotacao.getText()) < 1){
+            boolean jaExiste = false;
+            if(true) {
+                for (Espaco p: salasTreinamento) {
+                    if (adicionarSalaNome.getText().equals(p.getNomeEspaco())) {
+                        jaExiste = true;
+                        break;
+                    }
+                }
+            }
+            if (jaExiste){
+                emitirAlertBox("Sala", "Esta sala já está cadastrada");
+            } else if (Integer.parseInt(adicionarSalaLotacao.getText()) < 1){
                 throw new NumberFormatException();
             } else if (adicionarSalaNome.getText().contains("$")){
                 emitirAlertBox("Erro","O caractere $ não é válido");
@@ -429,7 +451,18 @@ public class PrincipalController implements Initializable {
     public void adicionarEspacoCafeBotaoClicked() {
 
         try {
-            if (Integer.parseInt(adicionarEspacoCafeLotacao.getText()) < 1){
+            boolean jaExiste = false;
+            if(true) {
+                for (Espaco e: espacosCafe) {
+                    if (adicionarEspacoCafeNome.getText().equals(e.getNomeEspaco())) {
+                        jaExiste = true;
+                        break;
+                    }
+                }
+            }
+            if (jaExiste) {
+                emitirAlertBox("Sala", "Esta sala já está cadastrada");
+            } else if (Integer.parseInt(adicionarEspacoCafeLotacao.getText()) < 1){
                 throw new NumberFormatException();
             } else if (adicionarEspacoCafeNome.getText().contains("$")){
                 emitirAlertBox("Erro","O caractere $ não é válido");
@@ -554,6 +587,7 @@ public class PrincipalController implements Initializable {
             palco.setScene(cena);
             palco.setResizable(false);
             palco.initModality(Modality.APPLICATION_MODAL);
+            palco.setTitle("Detalhes de " + pessoaSelecionada.getNomeCompleto());
             palco.show();
 
         } catch (IOException e) {
@@ -573,6 +607,7 @@ public class PrincipalController implements Initializable {
             Stage palco = new Stage();
             palco.setScene(cena);
             palco.setResizable(false);
+            palco.setTitle("Detalhes de " + salaTreinamentoSelecionada.getNomeEspaco());
             palco.initModality(Modality.APPLICATION_MODAL);
             palco.show();
 
@@ -594,6 +629,7 @@ public class PrincipalController implements Initializable {
             Stage palco = new Stage();
             palco.setScene(cena);
             palco.setResizable(false);
+            palco.setTitle("Detalhes de " + espacoCafeSelecionado.getNomeEspaco());
             palco.initModality(Modality.APPLICATION_MODAL);
             palco.show();
 
@@ -800,6 +836,14 @@ public class PrincipalController implements Initializable {
         DataHandler.salvarDados(infoEspacosCafe, espacosCafe, new Espaco());
         emitirAlertBox("Salvamento", "Os dados foram salvos");
         setModificacoesRealizadas(false);
+    }
+
+    public void abrirReadme(){
+        try {
+            java.awt.Desktop.getDesktop().open( new File( "README.md" ) );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

@@ -20,6 +20,7 @@ public class Pessoa {
     private String espacoCafePrimeiraEtapa;
     private String espacoCafeSegundaEtapa;
     private String espacoSegundaEtapa;
+    private String nomeCompleto;
 
     /**
      * Construtor vazio, para uso exclusivo dos dummies de salvamento da classe DataHandler
@@ -35,6 +36,7 @@ public class Pessoa {
     public Pessoa(String nome, String sobrenome) {
         this.setNome(nome);
         this.setSobrenome(sobrenome);
+        this.nomeCompleto = this.getNome() + " " + this.getSobrenome();
     }
 
     /**
@@ -51,6 +53,7 @@ public class Pessoa {
                   String espacoCafePrimeiraEtapa, String espacoCafeSegundaEtapa){
         this.setNome(nome);
         this.setSobrenome(sobrenome);
+        this.nomeCompleto = this.getNome() + " " + this.getSobrenome();
         this.setEspacoCafePrimeiraEtapa(espacoCafePrimeiraEtapa);
         this.setEspacoCafeSegundaEtapa(espacoCafeSegundaEtapa);
         this.setEspacoPrimeiraEtapa(espacoPrimeiraEtapa);
@@ -223,5 +226,21 @@ public class Pessoa {
                 this.getEspacoSegundaEtapa() + FileHandler.ENTER +
                 this.getEspacoCafePrimeiraEtapa() + FileHandler.ENTER +
                 this.getEspacoCafeSegundaEtapa() + FileHandler.ENTER;
+    }
+
+    /**
+     * Getter para o atributo nomeCompleto
+     * @return String nomeCompleto
+     */
+    public String getNomeCompleto() {
+        return nomeCompleto;
+    }
+
+    /**
+     * Setter para o atributo nome completo
+     * @param nomeCompleto
+     */
+    public void setNomeCompleto(String nomeCompleto) {
+        this.nomeCompleto = nomeCompleto;
     }
 }

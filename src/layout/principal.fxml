@@ -36,7 +36,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Ajuda">
             <items>
-              <MenuItem fx:id="abrirReadmeMenuItem" mnemonicParsing="false" text="Abrir README" />
+              <MenuItem fx:id="abrirReadmeMenuItem" mnemonicParsing="false" onAction="#abrirReadme" text="Abrir README" />
             </items>
           </Menu>
         </menus>

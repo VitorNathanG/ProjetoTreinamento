@@ -43,6 +43,7 @@ public class Main extends Application {
         Scene scene = new Scene(root);
         primaryStage.setMinWidth(500);
         primaryStage.setMinHeight(400);
+        primaryStage.setTitle("Organizador de Treinamento v1.0");
 
         primaryStage.setScene(scene);
         primaryStage.show();

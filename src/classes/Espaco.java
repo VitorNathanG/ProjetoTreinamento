@@ -133,7 +133,14 @@ public class Espaco {
      * @param integrante contendo o integrante a ser removido
      */
     public void removerIntegrantePrimeiraEtapa(Pessoa integrante){
-        this.getIntegrantesPrimeiraEtapa().remove(integrante);
+        ArrayList<Pessoa> novosIntegrantes = new ArrayList<>();
+        for (Pessoa pessoa: this.getIntegrantesPrimeiraEtapa()) {
+            if (pessoa.equals(integrante)){
+                continue;
+            }
+            novosIntegrantes.add(pessoa);
+        }
+        this.setIntegrantesPrimeiraEtapa(novosIntegrantes);
     }
 
     /**

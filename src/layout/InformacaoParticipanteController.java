@@ -18,6 +18,7 @@ import java.util.ResourceBundle;
  */
 public class InformacaoParticipanteController implements Initializable {
 
+    //Indicações dos elementos contidos no layout informacoesparticipante.fxml
     @FXML private Label nomeParticipante;
     @FXML private Label salaPrimeiraFase;
     @FXML private Label salaSegundaFase;
@@ -30,7 +31,10 @@ public class InformacaoParticipanteController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        //Define qual é a pessoa que será detalhada
         Pessoa participanteSelecionado = PrincipalController.getPessoaSelecionada();
+
+        //Definição do conteúdo das listas
         nomeParticipante.setText(participanteSelecionado.getNome()+" "+participanteSelecionado.getSobrenome());
         salaPrimeiraFase.setText(participanteSelecionado.getEspacoPrimeiraEtapa());
         salaSegundaFase.setText(participanteSelecionado.getEspacoSegundaEtapa());

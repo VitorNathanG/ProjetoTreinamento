@@ -1,5 +1,11 @@
 # Projeto Gerenciamento de Treinamento
 
+###Objetivo
+Criar um sistema simples para gerenciar a distribuição de participantes em um
+evento.
+
+Por Vitor Nathan Gonçalves.
+
 ## Compilação
 ### Requisitos
 
@@ -33,12 +39,12 @@ Na barra de menu, vá para File -> New -> Project from Version Control...
 
 Este projeto é baseado na organização de um evento. Tal evento ocorre de uma maneira bem definida:
 
- - É divido em duas etapas (ou fases);
+ - É dividido em duas etapas (ou fases);
  - Cada fase consiste em uma parte de __treinamento__ e um __Coffee Break__  
  - As pessoas são divididas em salas de treinamento (qualquer quantidade delas), para receber o treinamento;
  - Os participantes também são separados em dois (ou mais) espaços de café;
  - Metade dos participantes de cada sala deve trocar de sala entre a primeira e a segunda fase do treinamento;
- - Os participantes devem ser bem divididos entre as salas, ou seja, não pode haver uma diferença superior a 1 participante entre salas ou fases do treinamnto
+ - Os participantes devem ser bem divididos entre as salas, ou seja, não pode haver uma diferença superior a 1 participante entre salas ou fases do treinamento
 
 Isto posto, partiremos para um exemplo de funcionamento:
 
@@ -46,11 +52,11 @@ Isto posto, partiremos para um exemplo de funcionamento:
 
 Suponha que você precise organizar um treinamento para 40 pessoas, seguindo as diretrizes estabelecidas acima. 
 Você tem acesso a 3 salas com capacidade máxima para 15 participantes cada, uma pequena cantina e um café,
-ambos com capacidade máxima de 25 pessoas, e deseja usar este aplicativo para fazer a organização.
+ambos com capacidade máxima de 25 pessoas, e deseja usar este aplicativp para fazer a organização.
 
-Ao abrir o programa, clique na opção __Salas__, à direita da interface. Digite um nome para uma sala no local indicado 
-na parte inferior da tela, juntamente com a lotação (capacidade máxima) da sala, que é de 15 pessoas e clique em Adicionar.
-Repita esse processo para as outras duas salas. As salas criadas aparecerão na tabela acima, juntamente com as
+Ao abrir o programa, clique na opção __Salas__, à esquerda da interface. Digite um nome para uma sala no local indicado 
+na parte inferior da tela, juntamente com a lotação (capacidade máxima) da sala, que é de 15 pessoas, e clique em Adicionar.
+Repita este processo para as outras duas salas. As salas criadas aparecerão na tabela acima, juntamente com as
 indicações de ocupação.
 
 Feito isso, clique no botão __Espaços de Café__, abaixo do botão __Salas__. Repita o processo utilizado para adicionar uma
@@ -59,18 +65,18 @@ sala para incluir também os espaços de café na organização do evento.
 Para adicionar os participantes, clique no botão __Participantes__. Insira o nome do participante a ser incluido no evento
 e aperte em adicionar participante. Adicione todos os participantes ao evento.
 
-Caso você queira excluir um participante, sala ou espaço, clique sobre o nome do elemento na tabela e clique em __Excluir__,
+Caso você queira excluir um participante, sala ou espaço, selecione o nome do elemento na tabela e clique em __Excluir__,
 no canto inferior esquerdo.
 
 Repare que o programa redistribui automaticamente os participantes quando um participante, sala ou espaço de café
-é adicionado ou removido ao evento.
+é adicionado ou removido do evento.
 
 Você pode conferir os espaços que cada participante utilizará selecionando a pessoa desejada na tabela e clicando em 
-__Detalhes__. Isto abrirá uma janela contendo as todas as informações do participante. O mesmo procedimento pode ser 
-feito para consultar os detalhes de cada sala de treinamento ou espaço de café.
+__Detalhes__. Isto abrirá uma janela contendo todas as informações do participante. O mesmo procedimento pode ser 
+utilizado para consultar os detalhes de cada sala de treinamento ou espaço de café.
 
-Com todas as informações alimentadas para o programa, você pode salvar as informações na barra de Menu, no topo da tela, 
-em Arquivo -> Salvar Dados. Mas não se preocupe, caso você esqueça de salvar os arquivos antes fechar o programa, uma janela abrirá perguntando se 
+Com todas as informações alimentadas no programa, você pode salvar as informações na barra de Menu, no topo da tela, 
+em Arquivo -> Salvar Dados. Mas não se preocupe, caso você se esqueça de salvar os arquivos antes fechar o programa, uma janela se abrirá perguntando se 
 você deseja salvar os arquivos. 
 
 Você também pode fazer um backup do evento, que pode ser recuperado caso você se equivoque ao editar alguma informação. 
@@ -81,8 +87,8 @@ Disclaimer: caso uma sala tenha um número ímpar de participantes, o algoritmo 
 Caso uma sala seja para 1 participante (generalização matemática do problema), esse participante deve trocar de sala.
 
 A implementação do programa leva em conta a resolução do problema acima citado para uma quantidade arbitrária tanto de pessoas, 
-quanto de espaços(tanto as salas quanto os espaços de café), levando em consideração também, espaços com capacidade variáveis.
-Para situações onde uma das salas com capacidade menor lote, o programa ainda consegue separar as outras pessoas nas salas que
+quanto de espaços (tanto as salas quanto os espaços de café), levando em consideração também, espaços com capacidades distintas.
+Para situações onde uma das salas com capacidade menor fique lotada, o programa ainda consegue separar as outras pessoas nas salas que
 ainda não estão lotadas __às vezes__*. 
 
 No exemplo de uso anterior, caso uma das salas tivesse lotação máxima de 12 participantes, o algoritmo designaria 
@@ -90,7 +96,7 @@ No exemplo de uso anterior, caso uma das salas tivesse lotação máxima de 12 p
 pessoas cada (sendo que 7 trocariam de sala para a segunda fase).
 
 Tornando a situação mais complexa: caso além dessas 3 salas, fosse adicionada uma 4ª sala, que tivesse lotação máxima de 7
-pessoas, o programa distribuiria 7 pessoas para essa sala e 10 para a sala que comporta apenas 10. As outras 23 pessoas seriam
+pessoas, o programa distribuiria 7 pessoas para essa sala e 10 pessoas para a sala que comporta apenas 10. As outras 23 pessoas seriam
 distribuídas entre as salas que comportam 20 pessoas, ficando uma sala com 11 e a outra com 12 pessoas.
 
 *Explicação para o "às vezes": o algoritmo que foi criado com o propósito de distribuir os integrantes
@@ -104,7 +110,7 @@ salas não atende às diretrizes estabelecidas e não funcionará se inserida no
 
 O autor definiu uma família infinita de situações que não segue as diretrizes do algoritmo, e que não terá sua 
 distribuição bem sucedida. Essa família consiste na generalização do exemplo impossível acima: um número arbitrário de 
-salas com lotação baixa e uma sala com lotação maior. Caso a ocupação necessária (número mínimo de pessoas que 
+salas com capacidade máxima baixa e uma sala com capacidade maior. Caso a ocupação necessária (número mínimo de pessoas que 
 necessariamente utilizará este espaço) da sala maior seja superior à metade do número de total de participantes, 
 a distribuição torna-se sempre impossível. 
 
@@ -115,15 +121,15 @@ teoricamente possível._
 ### Demonstração
 Denotaremos por Xp o número de participantes que estão na sala P.
 
-Assuma uma quantidade N de participantes para o evento, onde N é um inteiro positivo. Por definição, 
-a sala A possui no máximo N/2 ((N-1)/2 caso N ímpar) participantes, tomando uma sala A qualquer sem perda de generalidade. 
-Todas as outras salas possuem, no mínimo, N/2 ((N+1)/2 caso N ímpar) participantes. Devido ao disclaimer apresentado no 
-início desta seção, é percebido que o número de participantes que precisam trocar de sala para a segunda etapa da sala 
-A é, no máximo, N/4.
+Assuma uma quantidade N de participantes para o evento, onde N é um inteiro positivo. Tomando uma sala A qualquer sem
+perda de generalidade, por definição, a sala A possui no máximo N/2 (ou (N-1)/2 caso N ímpar) participantes.
+Todas as outras salas combinadas possuem, no mínimo, N/2 (ou (N+1)/2 caso N ímpar) participantes. Devido ao disclaimer apresentado no 
+início da seção "Para desenvolvedores", é percebido que o número de participantes que precisam trocar de sala para a segunda etapa da sala 
+A é de, no máximo, N/4.
 
-As N/2 pessoas que não estão na sala A são particionadas e atribuidas para uma quantidade qualquer de salas. Tomemos uma
-dessas salas e chamemos-a de sala B, sem perda de generalidade. A sala B terá um valor Xb de participantes, dos quais pelo menos
-Xb/2 troca de sala para a segunda parte ((Xb + 1)/2 caso ímpar). Tomemos então o somatório S de todos os participantes em
+As N/2 pessoas que não estão na sala A são particionadas e atribuídas para uma quantidade qualquer de salas. Tomemos uma
+destas salas e chamemo-la sala B, sem perda de generalidade. A sala B terá um valor Xb de participantes, dentre os quais pelo menos
+Xb/2 troca de sala para a segunda parte (ou (Xb + 1)/2 caso ímpar). Tomemos então o somatório S de todos os participantes em
 todas as salas (exceto a sala A) que trocam de sala para a segunda fase. É fácil perceber que o valor mínimo deste somatório 
 será de:
 
@@ -144,3 +150,11 @@ sala A para outras salas P quaisquer na segunda etapa. Como tomamos todas as sal
 
 _Caso nenhuma sala tenha sua ocupação mínima superior à metade do total de participantes, é sempre possível fazer 
 a distribuição dos participantes nos espaços para a segunda etapa do treinamento._
+
+### Informações adicionais
+
+Este é o primeiro projeto que o autor desenvolveu depois de um hiato de quase 3 anos sem programar. É possível que em certas
+situações, más práticas de programação tenham sido empregadas, ou que algum algoritmo não funcione corretamente 100% das vezes, 
+especialmente graças ao nível de generalização do problema que o autor optou por implementar. 
+
+Tirando isso, esse desafio foi uma experiência interessantíssima que reavivou (e muito), meu desejo de voltar a programar.

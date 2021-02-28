@@ -151,7 +151,7 @@ public class DataHandler {
      * @return String contendo uma linha de texto concatenado e pronto para ser salvo seguindo
      *         o estilo da classe FileHandler
      */
-    private static String unirStringParaSalvar (String... termos){
+    public static String unirStringParaSalvar (String... termos){
 
         StringBuilder textoRetorno = new StringBuilder();
         String[] infoStrings = termos;
@@ -163,25 +163,6 @@ public class DataHandler {
             }
         }
         return textoRetorno.toString();
-    }
-
-    /**
-     * @deprecated Método anteriormente utilizado como parâmetro para o método gerarPessoas
-     * @param pessoasList lista de pessoas para serem transformadas em String[][]
-     * @param dummy
-     * @return String [][] contendo as informações das pessoas
-     */
-    public static String[][] gerarStrings(List<Pessoa> pessoasList, Pessoa dummy){
-        String[][] retorno = new String[pessoasList.size()][6];
-        for (int i = 0; i < pessoasList.size(); i++) {
-            retorno[i][0] = pessoasList.get(i).getNome();
-            retorno[i][1] = pessoasList.get(i).getSobrenome();
-            retorno[i][2] = pessoasList.get(i).getEspacoPrimeiraEtapa();
-            retorno[i][3] = pessoasList.get(i).getEspacoSegundaEtapa();
-            retorno[i][4] = pessoasList.get(i).getEspacoCafePrimeiraEtapa();
-            retorno[i][5] = pessoasList.get(i).getEspacoCafeSegundaEtapa();
-        }
-        return retorno;
     }
 
     /**
@@ -197,21 +178,6 @@ public class DataHandler {
                 break;
             }
             retorno.add(new Pessoa(strings[0], strings[1], strings[2], strings[3], strings[4], strings[5]));
-        }
-        return retorno;
-    }
-
-    /**
-     * @deprecated Método anteriormente utilizado como parâmetro para o método gerarEspacos
-     * @param espacoList lista de Espaco para serem transformados em String[][]
-     * @param dummy
-     * @return String [][] contendo as informações dos espaços
-     */
-    public static String[][] gerarStrings(List<Espaco> espacoList, Espaco dummy){
-        String[][] retorno = new String[espacoList.size()][1];
-        for (int i = 0; i < espacoList.size(); i++) {
-            retorno[i][0] = espacoList.get(i).getNomeEspaco();
-            retorno[i][1] = String.valueOf(espacoList.get(i).getLotacao());
         }
         return retorno;
     }
