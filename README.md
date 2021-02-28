@@ -13,10 +13,10 @@ SDK Liberica 11 (versão full, que contém a biblioteca JavaFX):
 
  - [Instruções para instalação](https://bell-sw.com/pages/liberica_install_guide-11.0.9/)
 
-IntelliJ Idea Community Edition:
+IntelliJ Idea Community Edition: [Download do IntelliJ](https://www.jetbrains.com/pt-br/idea/)
 
 ### Instruções de compilação
-[Link para download do IntelliJ](https://www.jetbrains.com/pt-br/idea/)
+
 
 Para compilar no IntelliJ: 
 Na barra de menu, vá para File -> New -> Project from Version Control...
@@ -76,4 +76,71 @@ você deseja salvar os arquivos.
 Você também pode fazer um backup do evento, que pode ser recuperado caso você se equivoque ao editar alguma informação. 
 
 ## Para desenvolvedores
-A implementação do programa leva em conta a resolução do problema acima citado 
+
+Disclaimer: caso uma sala tenha um número ímpar de participantes, o algoritmo define que a metade desses participantes + 1 deve trocar de sala.
+Caso uma sala seja para 1 participante (generalização matemática do problema), esse participante deve trocar de sala.
+
+A implementação do programa leva em conta a resolução do problema acima citado para uma quantidade arbitrária tanto de pessoas, 
+quanto de espaços(tanto as salas quanto os espaços de café), levando em consideração também, espaços com capacidade variáveis.
+Para situações onde uma das salas com capacidade menor lote, o programa ainda consegue separar as outras pessoas nas salas que
+ainda não estão lotadas __às vezes__*. 
+
+No exemplo de uso anterior, caso uma das salas tivesse lotação máxima de 12 participantes, o algoritmo designaria 
+12 pessoas para essa sala (sendo que 6 delas trocariam de sala para a segunda fase), e as outras duas salas ficariam com 14 
+pessoas cada (sendo que 7 trocariam de sala para a segunda fase).
+
+Tornando a situação mais complexa: caso além dessas 3 salas, fosse adicionada uma 4ª sala, que tivesse lotação máxima de 7
+pessoas, o programa distribuiria 7 pessoas para essa sala e 10 para a sala que comporta apenas 10. As outras 23 pessoas seriam
+distribuídas entre as salas que comportam 20 pessoas, ficando uma sala com 11 e a outra com 12 pessoas.
+
+*Explicação para o "às vezes": o algoritmo que foi criado com o propósito de distribuir os integrantes
+para a segunda fase não consegue lidar com algumas situações extremas relacionadas a uma grande discrepância de capacidades
+máximas entre salas/cafés. Parte desse problema está relacionado com a natureza do algoritmo, que não é 100% funcional nessas situações,
+mas outra parte provém de fatores matemáticos.
+
+Um exemplo onde seria impossível a distribuição: distribuir 10 pessoas em 3 salas, uma para 6 pessoas e duas salas para 2 pessoas.
+Como 3 pessoas precisam sair da primeira sala, e só há 2 vagas nas outras salas para elas (uma pessoa por sala), essa disposição de
+salas não atende às diretrizes estabelecidas e não funcionará se inserida no programa.
+
+O autor definiu uma família infinita de situações que não segue as diretrizes do algoritmo, e que não terá sua 
+distribuição bem sucedida. Essa família consiste na generalização do exemplo impossível acima: um número arbitrário de 
+salas com lotação baixa e uma sala com lotação maior. Caso a ocupação necessária (número mínimo de pessoas que 
+necessariamente utilizará este espaço) da sala maior seja superior à metade do número de total de participantes, 
+a distribuição torna-se sempre impossível. 
+
+### Teorema:
+_Qualquer situação que não esteja descrita no parágrafo acima é uma situação onde a distribuição é 
+teoricamente possível._
+
+###Demonstração
+Denotaremos por Xp o número de participantes que estão na sala P.
+
+Assuma uma quantidade N de participantes para o evento, onde N é um inteiro positivo. Por definição, 
+a sala A possui no máximo N/2 ((N-1)/2 caso N ímpar) participantes, tomando uma sala A qualquer sem perda de generalidade. 
+Todas as outras salas possuem, no mínimo, N/2 ((N+1)/2 caso N ímpar) participantes. Devido ao disclaimer apresentado no 
+início desta seção, é percebido que o número de participantes que precisam trocar de sala para a segunda etapa da sala 
+A é, no máximo, N/4.
+
+As N/2 pessoas que não estão na sala A são particionadas e atribuidas para uma quantidade qualquer de salas. Tomemos uma
+dessas salas e chamemos-a de sala B, sem perda de generalidade. A sala B terá um valor Xb de participantes, dos quais pelo menos
+Xb/2 troca de sala para a segunda parte ((Xb + 1)/2 caso ímpar). Tomemos então o somatório S de todos os participantes em
+todas as salas (exceto a sala A) que trocam de sala para a segunda fase. É fácil perceber que o valor mínimo deste somatório 
+será de:
+
+    S ≥ Xb/2 + Xc/2 + Xd/2 + ... + Xn/2
+    S ≥ (Xb + Xc + Xd + ... + Xn)/2
+
+Perceba que o somatório Xb + Xc + Xd + ... + Xn é justamente o total N de participantes em todas as salas, menos o total de
+participantes da Sala A, que é de, no máximo, N/2, ou seja:
+
+    S ≥ (Xb + Xc + Xd + ... + Xn)/2 = (N - Xa)/2
+    S ≥ (N-Xa)/2 ≥ (N-N/2)/2
+    S ≥ (N-N/2)/2 = N/4
+    S ≥ N/4
+
+Como S é o número de participantes que trocam de sala em todas as salas que não são a sala A, e N/4 é o valor máximo de 
+participantes que saem da sala A para outras salas, podemos concluir que sempre é possível transferir os participantes da
+sala A para outras salas P quaisquer na segunda etapa. Como tomamos todas as salas de forma arbitrária, demonstramos que:
+
+_Caso nenhuma sala tenha sua ocupação mínima superior à metade do total de participantes, é sempre possível fazer 
+a distribuição dos participantes nos espaços para a segunda etapa do treinamento._
