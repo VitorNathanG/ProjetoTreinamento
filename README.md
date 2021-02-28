@@ -112,7 +112,7 @@ a distribuição torna-se sempre impossível.
 _Qualquer situação que não esteja descrita no parágrafo acima é uma situação onde a distribuição é 
 teoricamente possível._
 
-###Demonstração
+### Demonstração
 Denotaremos por Xp o número de participantes que estão na sala P.
 
 Assuma uma quantidade N de participantes para o evento, onde N é um inteiro positivo. Por definição, 
