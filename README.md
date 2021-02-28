@@ -23,17 +23,38 @@ IntelliJ Idea Community Edition: [Download do IntelliJ](https://www.jetbrains.co
 
 ### Instruções de compilação
 
+#### Caso seja a primeira abertura do programa:
 
-Para compilar no IntelliJ: 
+Selecione a opção "Get From VCS". Continue na numeração abaixo
+
+#### Caso já tenha algum projeto aberto:
 Na barra de menu, vá para File -> New -> Project from Version Control...
 
  1. Em URL, digite https://github.com/VitorNathanG/ProjetoTreinamento e aperte em Clone;
 
- 2. Com o projeto aberto, na barra de menu, vá para Build -> Build Artifacts. 
+ 2. Abaixo e a direita do nome da janela, clique no botão Add Configuration.
 
- 3. No diálogo que é aberto, selecione build.
+ 3. No canto superior esquerdo, clique em + -> Application.
 
- 4. O arquivo .jar gerado está localizado na pasta out/artifacts/ProjetoTreinamento_jar. Arraste esse arquivo para sua área de trabalho e execute o programa.
+ 4. Na opção _module not specified_, clique em _select alternative JRE..._ e selecione o caminho até a JDK Liberica (geralmente C:\\ProgramFiles\\BellSoft\\LibericaJDK-11-Full)
+ 
+ 5. Na opção ao lado (Main class), digite classes.Main. Clique em Apply.
+
+ 6. Perto de onde estava o botão Add Configuration, clique no botão Run "Main", e uma mensagem de erro aparecerá no canto inferior direito. Clique em Configure
+
+ 7. Abaixo do nome do projeto, clique em Dependencies.
+
+ 8. Em Module SDK: selecione "11 Bellsoft Liberica JDK", e clique em Apply.
+
+ 9. Espere alguns instantes para a JDK ser indexada.
+ 
+ 10. na barra de menu, vá para Build -> Build Artifacts. 
+
+ 11. No diálogo que é aberto, selecione Rebuild.
+
+ 12. O arquivo .jar gerado está localizado na pasta out/artifacts/ProjetoTreinamento_jar. Arraste esse arquivo para sua área de trabalho e execute o programa.
+
+_Nota 1: caso ocorra algum problema no processo de compilação, é possível utilizar o .jar já construido na pasta indicada acima._
 
 ## Como o programa funciona
 
